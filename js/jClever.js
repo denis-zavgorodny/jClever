@@ -19,8 +19,14 @@
                             });
                         },
                         destroy: function() {
-                            //
-                            alert('s');
+                            //Раздеваем селекты
+                            $('form.clevered').find('select').each(function(){
+                                console.log($(this));
+                                var tmp = $(this).clone();
+                                $(this).parents('.jClever-element').empty().after(tmp);
+                            });
+                            $('.jClever-element').remove();
+                            $('form.clevered').removeClass('clevered');
                         },
                         selectActivate: function(select, innerCounter, tabindex) {
 
@@ -81,7 +87,7 @@
                                         if (selectedIndex < $(select).find('option').length-1){ selectedIndex++; }
                                         break;
                                     case 38: /* Up */
-                                        if (selectedIndex > 0){ selectedIndex-=1; }
+                                        if (selectedIndex > 0){ selectedIndex--; }
                                         break;
                                     default:
                                         return;
@@ -94,16 +100,17 @@
                                 selectObject.find('option').removeAttr('selected');
                                 selectObject.find('option:eq('+selectedIndex+')').attr('selected','selected');
                                 $(select).trigger('change');
-                                //selectText.text(selectObject.find(':selected').text());
                                 return false;
                             });    
                         },
         };
         var publicApi = {
-                            selectCollection: selects
+                            selectCollection: selects,
+                            destroy: function() {methods.destroy()}
                         };
-        this.jClever = publicApi;
+        this.jClever = publicApi;    
         return this.each(function(){
+            $(this).addClass('clevered');
             methods.init(this);
         });
     };
