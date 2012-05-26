@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<title>jClever</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+    <link rel="stylesheet" type="text/css" href="css/css.css" />
+   
+    <script src="js/jquery-1.7.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jClever.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        var api = {};
+        jQuery(document).ready(function(){
+            api = jQuery('.jClever').jClever();
+            api.jClever.selectCollection.select1.updateFromHTML('<option value="1">1</option><option value="2">2</option><option value="3">3</option>');
+        });
+    </script>
+</head>
+<body>
+    <form action="#" method="post" class="jClever">
+
+        
+
+
+        
+        <select name="select1" class="test" id="select1">
+            <option value="1">Text one</option>
+            <option value="2">Text two</option>
+            <option value="3">Text three</option>
+            <option value="4">Text four</option>
+        </select>
+        
+        <select name="select2" class="test" id="select2">
+            <option value="1">Text one</option>
+            <option value="2">Text two</option>
+            <option value="3">Text three</option>
+            <option value="4">Text four</option>
+        </select>
+       
+
+        <input type="submit" value="" />
+    </form>
+
+    <!--
+        <div class="jClever-element">
+            <div class="jClever-element-select-wrapper"><div class="jClever-element-select-wrapper-design"><div class="jClever-element-select-wrapper-design">
+                <span class="jClever-element-select-center">Значение свойства и длинное название сюда нужно списать и что получится</span>
+                <span class="jClever-element-select-right"></span>
+                <ul class="jClever-element-select-list">
+                    <li data-value="1"><span><i>Значение 1</i></span></li>
+                    <li data-value="2"><span><i>Значение 2 и еще немного текста так чтобы показать длину длинную</i></span></li>
+                    <li data-value="3"><span><i>Значение 3</i></span></li>
+                    <li data-value="4"><span><i>Значение 4</i></span></li>
+                </ul>
+            </div></div></div>
+        </div>
+    -->    
+</body>
+</html>

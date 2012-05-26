@@ -1,0 +1,66 @@
+
+.jClever-element {
+    outline: none;
+}
+.jClever-element * {
+    outline: none;
+}
+
+.jClever-element-select-wrapper {
+    position: relative;
+    width: 300px;
+    border: 1px solid red;
+    cursor: pointer;
+    height: 20px;
+}
+.jClever-element-select-wrapper select {
+    display: none;
+}
+.jClever-element-select-center {
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    display: block;
+}
+.jClever-element-select-right {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    background: #ccc;
+    height: 100%;
+    width: 30px;
+    cursor: pointer;
+    display:-moz-inline-stack; display:inline-block; zoom:1; *display:inline;
+}
+.jClever-element-select-list {
+    position: absolute;
+    border: 1px solid red;
+    border-top: 0px;
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+
+    top: 19px;
+    left: -1px;
+    background: #fff;
+
+    display: none;
+}
+.jClever-element-select-list {
+    white-space: nowrap;
+}
+.jClever-element-select-list>li:hover, .jClever-element-select-list>li.selected {
+    background: #c0c0c0;
+    color: #fff;
+}
+.jClever-element-select-list>li>span {
+    overflow: hidden;
+    width: 100%;
+    display: block;
+    position: relative;
+    height: 100%;
+    white-space: normal;
+}
+.focused {
+    
+}
