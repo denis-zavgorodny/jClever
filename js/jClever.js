@@ -1,5 +1,5 @@
 /*
-*   jClever HEAD:v 0.1.1 :)
+*   jClever HEAD:v 0.1.2 :)
 *
 *   by Denis Zavgorodny
 *   zavgorodny@alterego.biz.ua
@@ -7,9 +7,6 @@
 *   UPD:    up to v 0.1.1
 *           + scroll by scrollPane (https://github.com/vitch/jScrollPane/archives/master)
 * 
-* 
-*
-*   in next time: radiobutton, checkbox
 *
 *
 */ 
@@ -31,6 +28,17 @@
                             $(element).find('select').each(function(){
                                 methods.selectActivate(this,innerCounter, tabindex);
                                 innerCounter--;
+                                tabindex++;
+                            });
+
+                            //Инициализируем чекбоксы
+                            $(element).find('input[type=checkbox]').each(function(){
+                                methods.checkboxActivate(this, tabindex);
+                                tabindex++;
+                            });
+                            //Инициализируем радиобаттоны
+                            $(element).find('input[type=radio]').each(function(){
+                                methods.radioActivate(this, tabindex);
                                 tabindex++;
                             });
                         },
@@ -127,6 +135,58 @@
                                 return false;
                             });
                         },
+                        checkboxActivate: function(checkbox, tabindex) {
+                            $(checkbox).wrap('<div class="jClever-element" tabindex="'+tabindex+'">').hide().after('<span class="jClever-element-checkbox-twins"></span>');
+                            $(checkbox).on('change', function(){
+                                if ($(this).is(':checked'))
+                                    $(checkbox).next('.jClever-element-checkbox-twins').addClass('checked');
+                                else
+                                    $(checkbox).next('.jClever-element-checkbox-twins').removeClass('checked');
+                            });
+                            $(checkbox).next('.jClever-element-checkbox-twins').on('click', function(){
+                                if ($(this).prev('input[type=checkbox]').is(':checked'))
+                                    $(this).prev('input[type=checkbox]').removeAttr('checked');
+                                else
+                                    $(this).prev('input[type=checkbox]').attr('checked', 'checked');
+                                $(this).prev('input[type=checkbox]').trigger('change');    
+                            });
+                            // Отслеживаем нажатие клавиш для управления клавиатурой (пробел)
+                            $(checkbox).parent('.jClever-element').keydown(function(e){
+                                var _checkbox = $(this).find('input[type=checkbox]');
+                                switch(e.keyCode){
+                                    case 32: /* Space */
+                                        if (_checkbox.is(':checked'))
+                                            _checkbox.removeAttr('checked');
+                                        else
+                                            _checkbox.attr('checked', 'checked');
+                                        _checkbox.trigger('change');    
+                                        break;
+                                    default:
+                                        return;
+                                        break;
+                                }
+                                return false;
+                            });
+                        },
+                        radioActivate: function(radio, tabindex) {
+                            $(radio).wrap('<div class="jClever-element" tabindex="'+tabindex+'">').hide().after('<span class="jClever-element-radio-twins"></span>');
+                            $(radio).on('change', function(){
+                                if ($(this).is(':checked'))
+                                    $(radio).next('.jClever-element-radio-twins').addClass('checked');
+                                else
+                                    $(radio).next('.jClever-element-radio-twins').removeClass('checked');
+                                $('input:radio[name="'+ $(radio).attr('name') +'"]').not($(radio)).each(function(){
+                                    $(this).attr('checked',false).next('.jClever-element-radio-twins').removeClass('checked');
+                                });    
+                            });
+                            $(radio).next('.jClever-element-radio-twins').on('click', function(){
+                                if ($(this).prev('input[type=radio]').is(':checked'))
+                                    $(this).prev('input[type=radio]').attr('checked');
+                                else
+                                    $(this).prev('input[type=radio]').attr('checked', 'checked');
+                                $(this).prev('input[type=radio]').trigger('change');    
+                            });
+                        }
         };
         var publicApi = {
                             selectCollection: selects,

@@ -9,7 +9,16 @@
 .jClever-element * {
     outline: none;
 }
+.focused {
+    
+}
 
+
+/*
+ *
+ *   SELECT
+ *
+ */ 
 .jClever-element-select-wrapper {
     position: relative;
     width: 300px;
@@ -86,6 +95,37 @@
 .jClever-element-select-list>li>span>i {
     font-style: normal;
 }
-.focused {
-    
+
+
+/*
+ *
+ *   CHECKBOX
+ *
+ */
+
+.jClever-element-checkbox-twins {
+    display: block;
+    width: 15px;
+    height: 15px;
+    background: url(../images/checkbox.png) no-repeat left bottom;
+}
+.jClever-element-checkbox-twins.checked {
+    background-position: left top;
+}
+
+
+/*
+ *
+ *   RADIO
+ *
+ */
+
+.jClever-element-radio-twins {
+    display: block;
+    width: 15px;
+    height: 15px;
+    background: url(../images/radio.png) no-repeat left bottom;
+}
+.jClever-element-radio-twins.checked {
+    background-position: left top;
 }

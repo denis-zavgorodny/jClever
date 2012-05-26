@@ -6,39 +6,72 @@
 	<title>jClever</title>
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 
-    <link rel="stylesheet" type="text/css" href="css/css.css" />
+    <link rel="stylesheet" type="text/css" href="css/jClever.css" />
+    <link type="text/css" href="css/jquery.jscrollpane.css" rel="stylesheet" media="all" />
    
     <script src="js/jquery-1.7.2.min.js" type="text/javascript" charset="utf-8"></script>
+
+    <script type="text/javascript" src="js/jquery.mousewheel.js"></script>
+    <script type="text/javascript" src="js/jquery.jscrollpane.min.js"></script>
+
+    
     <script src="js/jClever.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
         var api = {};
         jQuery(document).ready(function(){
             api = jQuery('.jClever').jClever();
-            api.jClever.selectCollection.select1.updateFromHTML('<option value="1">1</option><option value="2">2</option><option value="3">3</option>');
+            console.log(api);
+            //api.publicMethods.selectCollection.select1.updateFromHTML('<option value="1">1</option><option value="2">2</option><option value="3">3</option>');
         });
     </script>
 </head>
 <body>
-    <form action="#" method="post" class="jClever">
-
-        
-
-
-        
+    <form action="#" method="get" class="jClever">
+        <label for="select1">Label 1</label>
         <select name="select1" class="test" id="select1">
             <option value="1">Text one</option>
             <option value="2">Text two</option>
             <option value="3">Text three</option>
             <option value="4">Text four</option>
         </select>
-        
+        <label for="select2">Label 2</label>
         <select name="select2" class="test" id="select2">
             <option value="1">Text one</option>
             <option value="2">Text two</option>
             <option value="3">Text three</option>
             <option value="4">Text four</option>
+            <option value="5">Text very very long long text text Text very very long long text text Text very very long long text text</option>
+            <option value="6">Text two</option>
+            <option value="7">Text three</option>
+            <option value="8">Text four</option>
+            <option value="9">Text one</option>
+            <option value="10">Text two</option>
+            <option value="11">Text three</option>
+            <option value="12">Text four</option>
         </select>
-       
+
+        <label for="checkbox1">Label 3</label>
+        <input type="checkbox" name="checkbox1" value="1" id="checkbox1" />
+
+        <label for="checkbox2">Label 3.1</label>
+        <input type="checkbox" name="checkbox2" value="1" id="checkbox2" />
+
+        <label for="checkbox3">Label 3.2</label>
+        <input type="checkbox" name="checkbox3" value="1" id="checkbox3" />
+
+        <label for="radio1">Label 4</label>
+        <input type="radio" name="radio1" value="1" id="radio1" />
+
+        <label for="radio2">Label 4.1</label>
+        <input type="radio" name="radio1" value="2" id="radio2" />
+
+        <label for="radio3">Label 4.2</label>
+        <input type="radio" name="radio1" value="3" id="radio3" />
+
+        <label for="radio4">Label 4.2-1</label>
+        <input type="radio" name="radio2" value="3" id="radio4" />
+        <label for="radio5">Label 4.2-2</label>
+        <input type="radio" name="radio2" value="3" id="radio5" />
 
         <input type="submit" value="" />
     </form>
