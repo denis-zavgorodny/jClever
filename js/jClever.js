@@ -1,3 +1,18 @@
+/*
+*   jClever HEAD:v 0.1.1 :)
+*
+*   by Denis Zavgorodny
+*   zavgorodny@alterego.biz.ua
+*
+*   UPD:    up to v 0.1.1
+*           + scroll by scrollPane (https://github.com/vitch/jScrollPane/archives/master)
+* 
+* 
+*
+*   in next time: radiobutton, checkbox
+*
+*
+*/ 
 (function($){
     $.fn.jClever = function(options) {
         var options = $.extend(
@@ -7,6 +22,7 @@
                                 options
                                 );
         var selects = [];                        
+        var jScrollApi = [];                        
         var methods = {
                         init: function(element) {
                             //Инициализируем селекты
@@ -21,15 +37,16 @@
                         destroy: function() {
                             //Раздеваем селекты
                             $('form.clevered').find('select').each(function(){
-                                console.log($(this));
                                 var tmp = $(this).clone();
                                 $(this).parents('.jClever-element').empty().after(tmp);
                             });
+
+                            
                             $('.jClever-element').remove();
                             $('form.clevered').removeClass('clevered');
                         },
                         selectActivate: function(select, innerCounter, tabindex) {
-
+                            jScrollApi[$(select).attr('name')] = {};
                             selects[$(select).attr('name')] = {
                                                                     object: $(select),
                                                                     updateFromHTML: function(data){
@@ -39,31 +56,39 @@
                                                                                         }
                                                                 };
 
-                            $(select).wrap('<div class="jClever-element"><div class="jClever-element-select-wrapper"><div class="jClever-element-select-wrapper-design"><div class="jClever-element-select-wrapper-design">').after('<span class="jClever-element-select-center"></span><span class="jClever-element-select-right"></span><ul class="jClever-element-select-list" style="z-index:'+innerCounter+';"></ul>');
+                            $(select).wrap('<div class="jClever-element"><div class="jClever-element-select-wrapper"><div class="jClever-element-select-wrapper-design"><div class="jClever-element-select-wrapper-design">').after('<span class="jClever-element-select-center"></span><span class="jClever-element-select-right">v</span><div class="jClever-element-select-list-wrapper" style="z-index:'+innerCounter+';"><ul class="jClever-element-select-list"></ul></div>');
                             var selectObject = $(select).parents('.jClever-element').attr('tabindex',tabindex);
                             var selectText = selectObject.find('.jClever-element-select-center');
                             var selectRight = selectObject.find('.jClever-element-select-right');
                             var selectList = selectObject.find('.jClever-element-select-list');
+                            var selectListWrapper = selectObject.find('.jClever-element-select-list-wrapper');
                             $(select).find('option').each(function(){
                                 selectObject.find('.jClever-element-select-list')
                                             .append($('<li data-value="'+$(this).val()+'"><span><i>'+$(this).text()+'</i></span></li>'));
+                                
                             });
                             selectText.text($(select).find('option:eq(0)').text());
                             selectObject.on('click', '.jClever-element-select-center',function(){
-                                selectList.show();
+                                selectListWrapper.show();
+                                jScrollApi[$(select).attr('name')] = $('.jClever-element-select-list-wrapper').jScrollPane().data('jsp');            
                             });
                             selectObject.on('click', '.jClever-element-select-right' ,function(){
-                                selectList.show();
+                                selectListWrapper.show();
+                                jScrollApi[$(select).attr('name')] = $('.jClever-element-select-list-wrapper').jScrollPane().data('jsp');            
                             });
-                            selectList.blur(function(){
+                            selectListWrapper.blur(function(){
+                                //jScrollApi[$(select).attr('name')].destroy();
                                 $(this).hide();
                             });
                             selectObject.on('click','li' ,function(event){
                                 var value = $(this).data('value');
+                                selectList.find('li.active').removeClass('active');
+                                $(this).addClass('active');
                                 $(select).find('option').removeAttr('selected');
                                 $(select).find('option[value='+value+']').attr('selected','selected');
                                 $(select).trigger('change');
-                                selectList.hide();
+                                //jScrollApi[$(select).attr('name')].destroy();
+                                selectListWrapper.hide();
                                 return false;
                             });
                             $(select).change(function(){
@@ -94,21 +119,21 @@
                                         break;
                                 }
                                 $(select)[0].selectedIndex = selectedIndex;
-                                console.log(selectedIndex);
                                 selectObject.find('li.selected').removeClass('selected');
                                 selectObject.find('li:eq('+selectedIndex+')').addClass('selected');
                                 selectObject.find('option').removeAttr('selected');
                                 selectObject.find('option:eq('+selectedIndex+')').attr('selected','selected');
                                 $(select).trigger('change');
                                 return false;
-                            });    
+                            });
                         },
         };
         var publicApi = {
                             selectCollection: selects,
-                            destroy: function() {methods.destroy()}
+                            destroy: function() {methods.destroy()},
+                            scrollingAPI: jScrollApi
                         };
-        this.jClever = publicApi;    
+        this.publicMethods = publicApi;    
         return this.each(function(){
             $(this).addClass('clevered');
             methods.init(this);
@@ -117,6 +142,6 @@
     /**************************Вспомогательная секция********************/
     //Спасибо jNiсe за идею
         $(document).mousedown(function(event){
-            if ($(event.target).parents('.jClever-element-select-wrapper').length === 0) { $('.jClever-element-select-list:visible').hide(); }
+            if ($(event.target).parents('.jClever-element-select-wrapper').length === 0) { $('.jClever-element-select-list-wrapper:visible').hide(); }
     });
 })(jQuery);    
