@@ -1,5 +1,5 @@
 /*
-*   jClever HEAD:v 0.1.2 :)
+*   jClever HEAD:v 0.2 :)
 *
 *   by Denis Zavgorodny
 *   zavgorodny@alterego.biz.ua
@@ -271,7 +271,11 @@
                             selectCollection: selects,
                             destroy: function() {methods.destroy()},
                             reset: function() {methods.reset()},
+                            selectSetPosition: function(select, value) {methods.selectSetPosition(select, value);},
+                            checkboxSetState: function(checkbox, value) {methods.checkboxSetState(checkbox, value);},                            
+                            radioSetState: function(radio, value) {methods.radioSetState(radio, value);},                            
                             scrollingAPI: jScrollApi
+                            
                         };
         this.publicMethods = publicApi;    
         return this.each(function(){
