@@ -1,4 +1,16 @@
-
+.jClever {
+    margin: 0px;
+    padding: 0px;
+    font-family: Arial;
+}
+.jClever label {
+    color: grey;
+}
+.jClever .hidden {
+    opacity: 0;
+    position: absolute;
+    
+}
 .jClever-element {
     outline: none;
     margin: 10px;
@@ -12,7 +24,17 @@
 .focused {
     
 }
-
+.row {
+    vertical-align: middle;
+}
+.row>label {
+    display:-moz-inline-box; display:inline-block; *zoom: 1; *display:inline;
+    vertical-align: middle;
+}
+.row>.jClever-element {
+    display:-moz-inline-box; display:inline-block; *zoom: 1; *display:inline;
+    vertical-align: middle;    
+}
 
 /*
  *
@@ -128,4 +150,29 @@
 }
 .jClever-element-radio-twins.checked {
     background-position: left top;
+}
+
+/*
+ *
+ *   BUTTON
+ *
+ */
+button.styled {
+    background: none;
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+    cursor: pointer;
+}
+button.styled>span {
+    display:-moz-inline-box; display:inline-block; *zoom: 1; *display:inline;
+    border: 1px solid #c0c0c0;    
+}
+button.styled:hover>span {
+    background: #c0c0c0;
+    color: #fff;
+}
+button.styled>span>span {
+    display:-moz-inline-box; display:inline-block; *zoom: 1; *display:inline;
+    padding: 5px 15px;
 }

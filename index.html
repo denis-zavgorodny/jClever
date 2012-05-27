@@ -20,60 +20,76 @@
         var api = {};
         jQuery(document).ready(function(){
             api = jQuery('.jClever').jClever();
-            console.log(api);
             //api.publicMethods.selectCollection.select1.updateFromHTML('<option value="1">1</option><option value="2">2</option><option value="3">3</option>');
         });
     </script>
 </head>
 <body>
     <form action="#" method="get" class="jClever">
-        <label for="select1">Label 1</label>
-        <select name="select1" class="test" id="select1">
-            <option value="1">Text one</option>
-            <option value="2">Text two</option>
-            <option value="3">Text three</option>
-            <option value="4">Text four</option>
-        </select>
-        <label for="select2">Label 2</label>
-        <select name="select2" class="test" id="select2">
-            <option value="1">Text one</option>
-            <option value="2">Text two</option>
-            <option value="3">Text three</option>
-            <option value="4">Text four</option>
-            <option value="5">Text very very long long text text Text very very long long text text Text very very long long text text</option>
-            <option value="6">Text two</option>
-            <option value="7">Text three</option>
-            <option value="8">Text four</option>
-            <option value="9">Text one</option>
-            <option value="10">Text two</option>
-            <option value="11">Text three</option>
-            <option value="12">Text four</option>
-        </select>
+        <div class="row">
+            <input type="text" name="test" value="test" id="" />
+        </div>
+        <div class="row">
+            <label for="select1">Label 1</label>
+            <select name="select1" class="test" id="select1">
+                <option value="1">Text one</option>
+                <option value="2">Text two</option>
+                <option value="3">Text three</option>
+                <option value="4">Text four</option>
+            </select>
+        </div>
+        <div class="row">
+            <label for="select2">Label 2</label>
+            <select name="select2" class="test" id="select2">
+                <option value="1">Text one</option>
+                <option value="2">Text two</option>
+                <option value="3">Text three</option>
+                <option value="4">Text four</option>
+                <option value="5">Text very very long long text text Text very very long long text text Text very very long long text text</option>
+                <option value="6">Text two</option>
+                <option value="7">Text three</option>
+                <option value="8">Text four</option>
+                <option value="9">Text one</option>
+                <option value="10">Text two</option>
+                <option value="11">Text three</option>
+                <option value="12">Text four</option>
+            </select>
+        </div>
 
-        <label for="checkbox1">Label 3</label>
-        <input type="checkbox" name="checkbox1" value="1" id="checkbox1" />
-
-        <label for="checkbox2">Label 3.1</label>
-        <input type="checkbox" name="checkbox2" value="1" id="checkbox2" />
-
-        <label for="checkbox3">Label 3.2</label>
-        <input type="checkbox" name="checkbox3" value="1" id="checkbox3" />
-
-        <label for="radio1">Label 4</label>
-        <input type="radio" name="radio1" value="1" id="radio1" />
-
-        <label for="radio2">Label 4.1</label>
-        <input type="radio" name="radio1" value="2" id="radio2" />
-
-        <label for="radio3">Label 4.2</label>
-        <input type="radio" name="radio1" value="3" id="radio3" />
-
-        <label for="radio4">Label 4.2-1</label>
-        <input type="radio" name="radio2" value="3" id="radio4" />
-        <label for="radio5">Label 4.2-2</label>
-        <input type="radio" name="radio2" value="3" id="radio5" />
-
-        <input type="submit" value="" />
+        <div class="row">
+            <input type="checkbox" name="checkbox1" value="1" id="checkbox1" checked="checked" />
+            <label for="checkbox1">Label 3</label>
+        </div>
+        <div class="row">        
+            <input type="checkbox" name="checkbox2" value="1" id="checkbox2" />
+            <label for="checkbox2">Label 3.1</label>            
+        </div>
+        <div class="row">        
+            <input type="checkbox" name="checkbox3" value="1" id="checkbox3" />
+            <label for="checkbox3">Label 3.2</label>            
+        </div>
+        <div class="row">        
+            <input type="radio" name="radio1" value="1" id="radio1" />
+            <label for="radio1">Label 4</label>            
+        </div>
+        <div class="row">        
+            <input type="radio" name="radio1" value="2" id="radio2" />
+            <label for="radio2">Label 4.1</label>            
+        </div>
+        <div class="row">        
+            <input type="radio" name="radio1" value="3" id="radio3"  checked="checked" />
+            <label for="radio3">Label 4.2</label>            
+        </div>
+        <div class="row">        
+            <input type="radio" name="radio2" value="3" id="radio4" />
+            <label for="radio4">Label 4.2-1</label>            
+        </div>
+        <div class="row">                
+            <input type="radio" name="radio2" value="3" id="radio5" />
+            <label for="radio5">Label 4.2-2</label>            
+        </div>
+        <input type="submit" value="Отправить" />
+        <input type="reset" value="Сбросить" />
     </form>
 
     <!--

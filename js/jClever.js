@@ -19,13 +19,18 @@
                                 options
                                 );
         var selects = [];                        
-        var jScrollApi = [];                        
+        var jScrollApi = [];
+        var formState = {};                     
         var methods = {
                         init: function(element) {
                             //Инициализируем селекты
                             var innerCounter = 9999;
                             var tabindex = 1;
                             $(element).find('select').each(function(){
+                                formState[$(this).attr('name')] = {
+                                                                        type: "select",
+                                                                        value: $(this).attr('value')
+                                                                    };
                                 methods.selectActivate(this,innerCounter, tabindex);
                                 innerCounter--;
                                 tabindex++;
@@ -33,13 +38,31 @@
 
                             //Инициализируем чекбоксы
                             $(element).find('input[type=checkbox]').each(function(){
+                                formState[$(this).attr('name')] = {
+                                                                        type: "checkbox",
+                                                                        value: ($(this).is(':checked')?1:0)
+                                                                    };
                                 methods.checkboxActivate(this, tabindex);
                                 tabindex++;
                             });
                             //Инициализируем радиобаттоны
                             $(element).find('input[type=radio]').each(function(){
+                                formState[$(this).attr('name')] = {
+                                                                        type: "radio",
+                                                                        value: ($(this).is(':checked')?1:0)
+                                                                    };
                                 methods.radioActivate(this, tabindex);
                                 tabindex++;
+                            });
+                            
+                            //Инициализируем и подменяем кнопки (input)
+                            $(element).find('input[type=submit], input[type=reset], input[type=button]').each(function(){
+                                methods.submitActivate(this, tabindex);
+                                tabindex++;
+                            });
+                            //Перехватываем сброс формы
+                            $('button[type=reset]').click(function(){
+                                methods.reset();
                             });
                         },
                         destroy: function() {
@@ -48,10 +71,58 @@
                                 var tmp = $(this).clone();
                                 $(this).parents('.jClever-element').empty().after(tmp);
                             });
-
+                            //Раздеваем checkbox
+                            $('form.clevered').find('input[type=checkbox]').each(function(){
+                                var tmp = $(this).removeClass('hidden').clone();
+                                $(this).parents('.jClever-element').empty().after(tmp);
+                            });
+                            //Раздеваем radio
+                            $('form.clevered').find('input[type=radio]').each(function(){
+                                var tmp = $(this).removeClass('hidden').clone();
+                                $(this).parents('.jClever-element').empty().after(tmp);
+                            });
                             
                             $('.jClever-element').remove();
                             $('form.clevered').removeClass('clevered');
+                        },
+                        reset: function() {
+                            $('form.clevered').find('input[type=radio], input[type=checkbox], select').each(function(){
+                                if (formState[$(this).attr('name')])
+                                    switch(formState[$(this).attr('name')].type) {
+                                        case "select":
+                                                        methods.selectSetPosition($(this), formState[$(this).attr('name')].value);
+                                                        break;
+                                        case "checkbox":
+                                                        methods.checkboxSetState($(this), formState[$(this).attr('name')].value);
+                                                        break;
+                                        case "radio":
+                                                        methods.radioSetState($(this), formState[$(this).attr('name')].value);
+                                                        break;
+                                                               
+                                        default:
+                                                        return;
+                                                        break;                
+                                    }
+                            });
+                        },
+                        selectSetPosition: function(select, value) {
+                            select.find('option').removeAttr('selected');
+                            select.find('option[value='+value+']').attr('selected','selected');
+                            select.trigger('change');
+                        },
+                        checkboxSetState: function(checkbox, value) {
+                            if (value == 1)
+                                checkbox.attr('checked', 'checked');
+                            else
+                                checkbox.removeAttr('checked');
+                            checkbox.trigger('change');    
+                        },
+                        radioSetState: function(radio, value) {
+                            if (value == 1)
+                                radio.attr('checked', 'checked');
+                            else
+                                radio.removeAttr('checked');
+                            radio.trigger('change');    
                         },
                         selectActivate: function(select, innerCounter, tabindex) {
                             jScrollApi[$(select).attr('name')] = {};
@@ -136,7 +207,9 @@
                             });
                         },
                         checkboxActivate: function(checkbox, tabindex) {
-                            $(checkbox).wrap('<div class="jClever-element" tabindex="'+tabindex+'">').hide().after('<span class="jClever-element-checkbox-twins"></span>');
+                            $(checkbox).wrap('<div class="jClever-element" tabindex="'+tabindex+'">').addClass('hidden').after('<span class="jClever-element-checkbox-twins"></span>');
+                            if ($(checkbox).is(':checked'))
+                                $(checkbox).next('.jClever-element-checkbox-twins').addClass('checked');
                             $(checkbox).on('change', function(){
                                 if ($(this).is(':checked'))
                                     $(checkbox).next('.jClever-element-checkbox-twins').addClass('checked');
@@ -169,7 +242,9 @@
                             });
                         },
                         radioActivate: function(radio, tabindex) {
-                            $(radio).wrap('<div class="jClever-element" tabindex="'+tabindex+'">').hide().after('<span class="jClever-element-radio-twins"></span>');
+                            $(radio).wrap('<div class="jClever-element" tabindex="'+tabindex+'">').addClass('hidden').after('<span class="jClever-element-radio-twins"></span>');
+                            if ($(radio).is(':checked'))
+                                $(radio).next('.jClever-element-radio-twins').addClass('checked');
                             $(radio).on('change', function(){
                                 if ($(this).is(':checked'))
                                     $(radio).next('.jClever-element-radio-twins').addClass('checked');
@@ -186,11 +261,16 @@
                                     $(this).prev('input[type=radio]').attr('checked', 'checked');
                                 $(this).prev('input[type=radio]').trigger('change');    
                             });
+                        },
+                        submitActivate: function(button, tabindex) {
+                            var value = $(button).attr('value');
+                            $(button).replaceWith('<button type="'+ button.type +'" name="'+ button.name +'" id="'+ button.id +'"  class="styled '+ button.className +'" value="'+ value +'"><span><span><span>'+ value +'</span></span></span>');
                         }
         };
         var publicApi = {
                             selectCollection: selects,
                             destroy: function() {methods.destroy()},
+                            reset: function() {methods.reset()},
                             scrollingAPI: jScrollApi
                         };
         this.publicMethods = publicApi;    
