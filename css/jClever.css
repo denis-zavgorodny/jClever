@@ -176,3 +176,26 @@ button.styled>span>span {
     display:-moz-inline-box; display:inline-block; *zoom: 1; *display:inline;
     padding: 5px 15px;
 }
+/*
+ *
+ *   input`s
+ *
+ */
+.input-type-text {
+    border: 1px solid #c0c0c0;
+    line-height: 20px;
+    padding: 0 4px;
+    color: #c0c0c0;
+} 
+
+/*
+ *
+ *   input`s
+ *
+ */
+form.jClever textarea {
+    border: 1px solid #c0c0c0;
+    padding: 0 4px;
+    color: #c0c0c0;
+    resize: none;
+} 

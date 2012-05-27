@@ -25,10 +25,8 @@
     </script>
 </head>
 <body>
+    <h1>jClever Forms example</h1>
     <form action="#" method="get" class="jClever">
-        <div class="row">
-            <input type="text" name="test" value="test" id="" />
-        </div>
         <div class="row">
             <label for="select1">Label 1</label>
             <select name="select1" class="test" id="select1">
@@ -88,6 +86,15 @@
             <input type="radio" name="radio2" value="3" id="radio5" />
             <label for="radio5">Label 4.2-2</label>            
         </div>
+        <div class="row">
+            <label for="text">Input</label><br />
+            <input type="text" name="text" class="input-type-text" value="text" id="text" />
+        </div>
+        <div class="row">
+            <label for="textarea">textarea</label><br />
+            <textarea name="textarea" cols="50" rows="10" id="textarea" ></textarea>
+        </div>
+        
         <input type="submit" value="Отправить" />
         <input type="reset" value="Сбросить" />
     </form>
