@@ -127,13 +127,12 @@
                         selectActivate: function(select, innerCounter, tabindex) {
                             jScrollApi[$(select).attr('name')] = {};
                             selects[$(select).attr('name')] = {
-                                                                    object: $(select),
-                                                                    updateFromHTML: function(data){
-                                                                                            $('select[name='+this.object[0].name+']').html(data).trigger('update');
-                                                                                            
-                                                                                            return false;
-                                                                                        }
-                                                                };
+                                object: $(select),
+                                updateFromHTML: function(data){
+                                    $('select[name='+this.object[0].name+']').html(data).trigger('update');
+                                    return false;
+                                }
+                            };
 
                             $(select).wrap('<div class="jClever-element"><div class="jClever-element-select-wrapper"><div class="jClever-element-select-wrapper-design"><div class="jClever-element-select-wrapper-design">').after('<span class="jClever-element-select-center"></span><span class="jClever-element-select-right">v</span><div class="jClever-element-select-list-wrapper" style="z-index:'+innerCounter+';"><ul class="jClever-element-select-list"></ul></div>');
                             var selectObject = $(select).parents('.jClever-element').attr('tabindex',tabindex);
@@ -147,16 +146,17 @@
                                 
                             });
                             selectText.text($(select).find('option:eq(0)').text());
-                            selectObject.on('click', '.jClever-element-select-center',function(){
-                                selectListWrapper.show();
-                                jScrollApi[$(select).attr('name')] = $('.jClever-element-select-list-wrapper').jScrollPane().data('jsp');            
+                            selectObject.on('click', '.jClever-element-select-center, .jClever-element-select-right',function(){
+                                if (selectListWrapper.is(':visible')) {
+                                    $('.jClever-element-select-list-wrapper').hide();
+                                } else {
+                                    $('.jClever-element-select-list-wrapper').hide();
+                                    selectListWrapper.show();
+                                    jScrollApi[$(select).attr('name')] = $('.jClever-element-select-list-wrapper').jScrollPane().data('jsp');
+                                }
                             });
-                            selectObject.on('click', '.jClever-element-select-right' ,function(){
-                                selectListWrapper.show();
-                                jScrollApi[$(select).attr('name')] = $('.jClever-element-select-list-wrapper').jScrollPane().data('jsp');            
-                            });
+
                             selectListWrapper.blur(function(){
-                                //jScrollApi[$(select).attr('name')].destroy();
                                 $(this).hide();
                             });
                             selectObject.on('click','li' ,function(event){
@@ -240,6 +240,7 @@
                                 }
                                 return false;
                             });
+                            $(checkbox).parent('.jClever-element').focus(function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
                         },
                         radioActivate: function(radio, tabindex) {
                             $(radio).wrap('<div class="jClever-element" tabindex="'+tabindex+'">').addClass('hidden').after('<span class="jClever-element-radio-twins"></span>');
@@ -261,6 +262,27 @@
                                     $(this).prev('input[type=radio]').attr('checked', 'checked');
                                 $(this).prev('input[type=radio]').trigger('change');    
                             });
+
+                            // Отслеживаем нажатие клавиш для управления клавиатурой (пробел)
+                            $(radio).parent('.jClever-element').keydown(function(e){
+                                var _radio = $(this).find('input[type=radio]');
+                                switch(e.keyCode){
+                                    case 32: /* Space */
+                                        if (_radio.is(':checked'))
+                                            _radio.removeAttr('checked');
+                                        else
+                                            _radio.attr('checked', 'checked');
+                                        _radio.trigger('change');    
+                                        break;
+                                    default:
+                                        return;
+                                        break;
+                                }
+                                return false;
+                            });
+
+                            
+                            $(radio).parent('.jClever-element').focus(function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
                         },
                         submitActivate: function(button, tabindex) {
                             var value = $(button).attr('value');
