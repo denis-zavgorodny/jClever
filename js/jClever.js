@@ -131,7 +131,15 @@
                                 updateFromHTML: function(data){
                                     $('select[name='+this.object[0].name+']').html(data).trigger('update');
                                     return false;
-                                }
+                                },
+                                updateFromJsonObject: function(data){
+                                    var _data = '';
+                                    for(var key in data) {
+                                        _data += '<option value="'+key+'">'+data[key]+'</option>';
+                                    }
+                                    $('select[name='+this.object[0].name+']').html(_data).trigger('update');
+                                    return false;
+                                },
                             };
 
                             $(select).wrap('<div class="jClever-element"><div class="jClever-element-select-wrapper"><div class="jClever-element-select-wrapper-design"><div class="jClever-element-select-wrapper-design">').after('<span class="jClever-element-select-center"></span><span class="jClever-element-select-right">v</span><div class="jClever-element-select-list-wrapper" style="z-index:'+innerCounter+';"><ul class="jClever-element-select-list"></ul></div>');
