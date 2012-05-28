@@ -23,7 +23,7 @@
         var formState = {};                     
         var methods = {
                         init: function(element) {
-                            //Инициализируем селекты
+                            //Select init
                             var innerCounter = 9999;
                             var tabindex = 1;
                             $(element).find('select').each(function(){
@@ -36,7 +36,7 @@
                                 tabindex++;
                             });
 
-                            //Инициализируем чекбоксы
+                            //Checkbox init
                             $(element).find('input[type=checkbox]').each(function(){
                                 formState[$(this).attr('name')] = {
                                                                         type: "checkbox",
@@ -45,7 +45,7 @@
                                 methods.checkboxActivate(this, tabindex);
                                 tabindex++;
                             });
-                            //Инициализируем радиобаттоны
+                            //Radio Button init
                             $(element).find('input[type=radio]').each(function(){
                                 formState[$(this).attr('name')] = {
                                                                         type: "radio",
@@ -55,28 +55,28 @@
                                 tabindex++;
                             });
                             
-                            //Инициализируем и подменяем кнопки (input)
+                            //Input [type=submit, reset, button] (input)
                             $(element).find('input[type=submit], input[type=reset], input[type=button]').each(function(){
                                 methods.submitActivate(this, tabindex);
                                 tabindex++;
                             });
-                            //Перехватываем сброс формы
+                            //Hook reset event
                             $('button[type=reset]').click(function(){
                                 methods.reset();
                             });
                         },
                         destroy: function() {
-                            //Раздеваем селекты
+                            //select strip
                             $('form.clevered').find('select').each(function(){
                                 var tmp = $(this).clone();
                                 $(this).parents('.jClever-element').empty().after(tmp);
                             });
-                            //Раздеваем checkbox
+                            //checkbox strip
                             $('form.clevered').find('input[type=checkbox]').each(function(){
                                 var tmp = $(this).removeClass('hidden').clone();
                                 $(this).parents('.jClever-element').empty().after(tmp);
                             });
-                            //Раздеваем radio
+                            //radio strip
                             $('form.clevered').find('input[type=radio]').each(function(){
                                 var tmp = $(this).removeClass('hidden').clone();
                                 $(this).parents('.jClever-element').empty().after(tmp);
@@ -189,7 +189,7 @@
                                 selectListWrapper.show();
                                 jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
                             });
-                            // Отслеживаем нажатие клавиш для управления клавиатурой
+                            // Hook keydown
                             selectObject.keydown(function(e){
                                 var selectedIndex = $(select)[0].selectedIndex;
                                 switch(e.keyCode){
@@ -246,7 +246,7 @@
                                     $(this).prev('input[type=checkbox]').attr('checked', 'checked');
                                 $(this).prev('input[type=checkbox]').trigger('change');    
                             });
-                            // Отслеживаем нажатие клавиш для управления клавиатурой (пробел)
+                            // Hook keydown
                             $(checkbox).parent('.jClever-element').keydown(function(e){
                                 var _checkbox = $(this).find('input[type=checkbox]');
                                 switch(e.keyCode){
@@ -286,7 +286,7 @@
                                 $(this).prev('input[type=radio]').trigger('change');    
                             });
 
-                            // Отслеживаем нажатие клавиш для управления клавиатурой (пробел)
+                            // Hook keydown
                             $(radio).parent('.jClever-element').keydown(function(e){
                                 var _radio = $(this).find('input[type=radio]');
                                 switch(e.keyCode){
@@ -328,8 +328,8 @@
             methods.init(this);
         });
     };
-    /**************************Вспомогательная секция********************/
-    //Спасибо jNiсe за идею
+    /**************************Helpers********************/
+    //Thanks jNiсe for idea
         $(document).mousedown(function(event){
             if ($(event.target).parents('.jClever-element-select-wrapper').length === 0) { $('.jClever-element-select-list-wrapper:visible').hide(); }
     });
