@@ -223,6 +223,8 @@
                                             jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
                                         }    
                                         break;
+                                    case 9:
+                                            selectListWrapper.hide();
                                     default:
                                         return;
                                         break;
