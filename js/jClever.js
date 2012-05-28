@@ -233,7 +233,8 @@
                                 selectObject.find('option').removeAttr('selected');
                                 selectObject.find('option:eq('+selectedIndex+')').attr('selected','selected');
                                 $(select).trigger('change');
-                                jScrollApi[$(select).attr('name')].scrollToElement(selectObject.find('li:eq('+selectedIndex+')'));
+                                if (selectListWrapper.is(':visible'))
+                                    jScrollApi[$(select).attr('name')].scrollToElement(selectObject.find('li:eq('+selectedIndex+')'));
                                 return false;
                             });
                         },
