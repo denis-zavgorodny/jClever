@@ -154,7 +154,7 @@
                                 } else {
                                     $('.jClever-element-select-list-wrapper').hide();
                                     selectListWrapper.show();
-                                    jScrollApi[$(select).attr('name')] = $('.jClever-element-select-list-wrapper').jScrollPane().data('jsp');
+                                    jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
                                 }
                             });
 
@@ -168,7 +168,6 @@
                                 $(select).find('option').removeAttr('selected');
                                 $(select).find('option[value='+value+']').attr('selected','selected');
                                 $(select).trigger('change');
-                                //jScrollApi[$(select).attr('name')].destroy();
                                 selectListWrapper.hide();
                                 return false;
                             });
@@ -188,7 +187,7 @@
                             selectLabel.click(function(){
                                 selectObject.trigger('focus');
                                 selectListWrapper.show();
-                                jScrollApi[$(select).attr('name')] = $('.jClever-element-select-list-wrapper').jScrollPane().data('jsp');
+                                jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
                             });
                             // Отслеживаем нажатие клавиш для управления клавиатурой
                             selectObject.keydown(function(e){
@@ -205,7 +204,7 @@
                                             selectListWrapper.hide();
                                         else {
                                             selectListWrapper.show();
-                                            jScrollApi[$(select).attr('name')] = $('.jClever-element-select-list-wrapper').jScrollPane().data('jsp');
+                                            jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
                                         }    
                                         break;
                                     case 32: /* Space */
@@ -213,7 +212,7 @@
                                             selectListWrapper.hide();
                                         else {
                                             selectListWrapper.show();
-                                            jScrollApi[$(select).attr('name')] = $('.jClever-element-select-list-wrapper').jScrollPane().data('jsp');
+                                            jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
                                         }    
                                         break;
                                     default:
@@ -226,6 +225,7 @@
                                 selectObject.find('option').removeAttr('selected');
                                 selectObject.find('option:eq('+selectedIndex+')').attr('selected','selected');
                                 $(select).trigger('change');
+                                jScrollApi[$(select).attr('name')].scrollToElement(selectObject.find('li:eq('+selectedIndex+')'));
                                 return false;
                             });
                         },
