@@ -193,6 +193,22 @@
                                     case 38: /* Up */
                                         if (selectedIndex > 0){ selectedIndex--; }
                                         break;
+                                    case 13: /* Enter */
+                                        if (selectListWrapper.is(':visible'))
+                                            selectListWrapper.hide();
+                                        else {
+                                            selectListWrapper.show();
+                                            jScrollApi[$(select).attr('name')] = $('.jClever-element-select-list-wrapper').jScrollPane().data('jsp');
+                                        }    
+                                        break;
+                                    case 32: /* Space */
+                                        if (selectListWrapper.is(':visible'))
+                                            selectListWrapper.hide();
+                                        else {
+                                            selectListWrapper.show();
+                                            jScrollApi[$(select).attr('name')] = $('.jClever-element-select-list-wrapper').jScrollPane().data('jsp');
+                                        }    
+                                        break;
                                     default:
                                         return;
                                         break;
