@@ -140,6 +140,8 @@
                             var selectRight = selectObject.find('.jClever-element-select-right');
                             var selectList = selectObject.find('.jClever-element-select-list');
                             var selectListWrapper = selectObject.find('.jClever-element-select-list-wrapper');
+                            var selectLabel = $('label[for='+$(select).attr('id')+']');
+
                             $(select).find('option').each(function(){
                                 selectObject.find('.jClever-element-select-list')
                                             .append($('<li data-value="'+$(this).val()+'"><span><i>'+$(this).text()+'</i></span></li>'));
@@ -183,6 +185,11 @@
                                 $(this).parents('.jClever-element-select-wrapper').find('.jClever-element-select-center').text($(select).find('option:eq(0)').text());    
                             });
                             selectObject.focus(function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
+                            selectLabel.click(function(){
+                                selectObject.trigger('focus');
+                                selectListWrapper.show();
+                                jScrollApi[$(select).attr('name')] = $('.jClever-element-select-list-wrapper').jScrollPane().data('jsp');
+                            });
                             // Отслеживаем нажатие клавиш для управления клавиатурой
                             selectObject.keydown(function(e){
                                 var selectedIndex = $(select)[0].selectedIndex;
