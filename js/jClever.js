@@ -14,7 +14,13 @@
     $.fn.jClever = function(options) {
         var options = $.extend(
                                 {
-                                    text: ''
+                                    applyTo: {
+                                                select: true,
+                                                checkbox: true,
+                                                radio: true,
+                                                button: true,
+                                                file: true
+                                                }
                                 },
                                 options
                                 );
@@ -23,43 +29,58 @@
         var formState = {};                     
         var methods = {
                         init: function(element) {
-                            //Select init
                             var innerCounter = 9999;
                             var tabindex = 1;
-                            $(element).find('select').each(function(){
-                                formState[$(this).attr('name')] = {
-                                                                        type: "select",
-                                                                        value: $(this).attr('value')
-                                                                    };
-                                methods.selectActivate(this,innerCounter, tabindex);
-                                innerCounter--;
-                                tabindex++;
-                            });
+                            
+                            //Select init
+                            if (options.applyTo.select)
+                                $(element).find('select').each(function(){
+                                    formState[$(this).attr('name')] = {
+                                                                            type: "select",
+                                                                            value: $(this).attr('value')
+                                                                        };
+                                    methods.selectActivate(this,innerCounter, tabindex);
+                                    innerCounter--;
+                                    tabindex++;
+                                });
 
                             //Checkbox init
-                            $(element).find('input[type=checkbox]').each(function(){
-                                formState[$(this).attr('name')] = {
-                                                                        type: "checkbox",
-                                                                        value: ($(this).is(':checked')?1:0)
-                                                                    };
-                                methods.checkboxActivate(this, tabindex);
-                                tabindex++;
-                            });
+                            if (options.applyTo.checkbox)
+                                $(element).find('input[type=checkbox]').each(function(){
+                                    formState[$(this).attr('name')] = {
+                                                                            type: "checkbox",
+                                                                            value: ($(this).is(':checked')?1:0)
+                                                                        };
+                                    methods.checkboxActivate(this, tabindex);
+                                    tabindex++;
+                                });
                             //Radio Button init
-                            $(element).find('input[type=radio]').each(function(){
-                                formState[$(this).attr('name')] = {
-                                                                        type: "radio",
-                                                                        value: ($(this).is(':checked')?1:0)
-                                                                    };
-                                methods.radioActivate(this, tabindex);
-                                tabindex++;
-                            });
+                            if (options.applyTo.radio)
+                                $(element).find('input[type=radio]').each(function(){
+                                    formState[$(this).attr('name')] = {
+                                                                            type: "radio",
+                                                                            value: ($(this).is(':checked')?1:0)
+                                                                        };
+                                    methods.radioActivate(this, tabindex);
+                                    tabindex++;
+                                });
+                            //Input File
+                            if (options.applyTo.file)
+                                $(element).find('input[type=file]').each(function(){
+                                    formState[$(this).attr('name')] = {
+                                                                            type: "file",
+                                                                            value: ''
+                                                                        };
+                                    methods.fileActivate(this, tabindex);
+                                    tabindex++;
+                                });
                             
                             //Input [type=submit, reset, button] (input)
-                            $(element).find('input[type=submit], input[type=reset], input[type=button]').each(function(){
-                                methods.submitActivate(this, tabindex);
-                                tabindex++;
-                            });
+                            if (options.applyTo.button)
+                                $(element).find('input[type=submit], input[type=reset], input[type=button]').each(function(){
+                                    methods.submitActivate(this, tabindex);
+                                    tabindex++;
+                                });
                             //Hook reset event
                             $('button[type=reset]').click(function(){
                                 methods.reset();
@@ -86,7 +107,7 @@
                             $('form.clevered').removeClass('clevered');
                         },
                         reset: function() {
-                            $('form.clevered').find('input[type=radio], input[type=checkbox], select').each(function(){
+                            $('form.clevered').find('input[type=radio], input[type=checkbox], select, input[type=file]').each(function(){
                                 if (formState[$(this).attr('name')])
                                     switch(formState[$(this).attr('name')].type) {
                                         case "select":
@@ -97,6 +118,10 @@
                                                         break;
                                         case "radio":
                                                         methods.radioSetState($(this), formState[$(this).attr('name')].value);
+                                                        break;
+                                                               
+                                        case "file":
+                                                        methods.fileSetState($(this), formState[$(this).attr('name')].value);
                                                         break;
                                                                
                                         default:
@@ -124,6 +149,9 @@
                                 radio.removeAttr('checked');
                             radio.trigger('change');    
                         },
+                        fileSetState: function(file, value) {
+                            file.parents('.jClever-element-file').find('.jClever-element-file-name').text(value);
+                        },
                         selectActivate: function(select, innerCounter, tabindex) {
                             jScrollApi[$(select).attr('name')] = {};
                             selects[$(select).attr('name')] = {
@@ -139,7 +167,7 @@
                                     }
                                     $('select[name='+this.object[0].name+']').html(_data).trigger('update');
                                     return false;
-                                },
+                                }
                             };
 
                             $(select).wrap('<div class="jClever-element"><div class="jClever-element-select-wrapper"><div class="jClever-element-select-wrapper-design"><div class="jClever-element-select-wrapper-design">').after('<span class="jClever-element-select-center"></span><span class="jClever-element-select-right">v</span><div class="jClever-element-select-list-wrapper" style="z-index:'+innerCounter+';"><ul class="jClever-element-select-list"></ul></div>');
@@ -321,6 +349,32 @@
                         submitActivate: function(button, tabindex) {
                             var value = $(button).attr('value');
                             $(button).replaceWith('<button type="'+ button.type +'" name="'+ button.name +'" id="'+ button.id +'"  class="styled '+ button.className +'" value="'+ value +'"><span><span><span>'+ value +'</span></span></span>');
+                        },
+                        fileActivate: function(file, tabindex) {
+                            $(file).wrap('<div class="jClever-element" tabindex="'+tabindex+'"><div class="jClever-element-file">').addClass('hidden-file').after('<span class="jClever-element-file-name"></span><span class="jClever-element-file-button"></span>').wrap('<div class="input-file-helper">');
+                            
+                            var jCleverElementFileName = $(file).parents('.jClever-element').find('.jClever-element-file-name');
+                            $(file).change(function(){
+                                var _name = $(this).val();
+                                _name = _name.split("\\");
+                                _name = _name[_name.length-1];
+                                jCleverElementFileName.text(_name);
+                            });
+
+                            // Hook keydown
+                            $(file).parents('.jClever-element').keydown(function(e){
+                                switch(e.keyCode){
+                                    case 32: /* Space */
+                                        $(file).trigger('click');
+                                        break;
+                                    default:
+                                        return;
+                                        break;
+                                }
+                                return false;
+                            });
+                            
+                            $(file).parents('.jClever-element').focus(function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
                         }
         };
         var publicApi = {
