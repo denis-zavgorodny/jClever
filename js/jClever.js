@@ -20,7 +20,8 @@
                                                 radio: true,
                                                 button: true,
                                                 file: true
-                                                }
+                                                },
+                                    validate: false            
                                 },
                                 options
                                 );
