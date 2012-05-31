@@ -32,7 +32,22 @@
                         init: function(element) {
                             var innerCounter = 9999;
                             var tabindex = 1;
-                            
+                            //placeholder INPUT[type=text], textarea init
+                            $(element).find('input[type=text], textarea').each(function(){
+                                var _this = $(this);
+                                var holderText = $(this).data('placeholder');
+                                if(_this.val() == '')
+                                     _this.val(holderText);
+                                     
+                                _this.focusin(function(){
+                                    if(_this.val() == holderText)
+                                     _this.val('');
+                                });
+                                _this.focusout(function(){
+                                    if(_this.val() == '')
+                                     _this.val(holderText);
+                                });
+                            });
                             //Select init
                             if (options.applyTo.select)
                                 $(element).find('select').each(function(){
