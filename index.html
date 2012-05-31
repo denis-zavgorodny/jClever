@@ -19,7 +19,17 @@
     <script type="text/javascript">
         var api = {};
         jQuery(document).ready(function(){
-            api = jQuery('.jClever').jClever();
+            api = jQuery('.jClever').jClever({
+                validate: {
+                    state: true,
+                    items: {
+                        text: {
+                            required: "Поле обязательное для заполнения",
+                            stringAndNumeric: "Поле может содержать только буквы и цифры"
+                        }
+                    }    
+                }
+            });
             //api.publicMethods.selectCollection.select1.updateFromHTML('<option value="1">1</option><option value="2">2</option><option value="3">3</option>');
         });
     </script>
@@ -96,7 +106,7 @@
         </div>
         <div class="row">
             <label for="text">Input</label><br />
-            <input tabindex="13" data-validate-required="true" data-placeholder="Введите текст" type="text" name="text" class="input-type-text" value="text" id="text" />
+            <input tabindex="13" data-placeholder="Введите текст" type="text" name="text" class="input-type-text" value="text" id="text" />
         </div>
         <div class="row">
             <label for="textarea">textarea</label><br />

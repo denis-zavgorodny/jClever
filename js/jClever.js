@@ -15,23 +15,103 @@
         var options = $.extend(
                                 {
                                     applyTo: {
-                                                select: true,
-                                                checkbox: true,
-                                                radio: true,
-                                                button: true,
-                                                file: true
-                                                },
-                                    validate: false            
+                                        select: true,
+                                        checkbox: true,
+                                        radio: true,
+                                        button: true,
+                                        file: true
+                                    },
+                                    validate: {
+                                        state: false,
+                                        items: {
+                                            
+                                        }
+                                    }
+                                                
                                 },
                                 options
                                 );
         var selects = [];                        
         var jScrollApi = [];
-        var formState = {};                     
+        var formState = {};
+
+        var validateMethod = {
+            isNumeric: function(data) {
+                var pattern = /^\d+$/;
+                return pattern.test(data);
+            },
+            isString: function(data) {
+                var pattern = /^[a-zA-ZА-Яа-я]+$/;
+                return pattern.test(data);
+            },
+            isAnyText: function(data) {
+                var pattern = /^[a-zA-ZА-Яа-я0-9]+$/;
+                return pattern.test(data);
+            },            
+            isEmail: function(data) {
+                var pattern = /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,4}$/;
+                return pattern.test(data);
+            },
+            isSiteURL: function(data) {
+                var pattern = /^((https?|ftp)\:\/\/)?([a-z0-9]{1,})([a-z0-9-.]*)\.([a-z]{2,4})$/;
+                return pattern.test(data);
+            },
+            
+        };
+                          
         var methods = {
                         init: function(element) {
                             var innerCounter = 9999;
                             var tabindex = 1;
+                            //validate form
+                            if (options.validate.state === true) {
+                                var errorsForm = {};
+                                $(element).submit(function(){
+                                    var _form = $(element).get(0);
+                                    for (var validateItem in options.validate.items) {
+                                        if (!(_form[validateItem] === undefined)) {
+                                            for (var validateType in options.validate.items[validateItem]) {
+                                                switch(validateType) {
+                                                    case "required":
+                                                        if (_form[validateItem].value == '' || _form[validateItem].value == $(_form[validateItem]).data('placeholder'))
+                                                            errorsForm[validateItem] = options.validate.items[validateItem][validateType];
+                                                        break;
+                                                    case "numeric":
+                                                        if (validateMethod.isNumeric(_form[validateItem].value) != true) {
+                                                            errorsForm[validateItem] = options.validate.items[validateItem][validateType];
+                                                        }    
+                                                        break;
+                                                    case "str":
+                                                        if (validateMethod.isString(_form[validateItem].value) != true) {
+                                                            errorsForm[validateItem] = options.validate.items[validateItem][validateType];
+                                                        }    
+                                                        break;
+                                                    case "stringAndNumeric":
+                                                        if (validateMethod.isAnyText(_form[validateItem].value) != true) {
+                                                            errorsForm[validateItem] = options.validate.items[validateItem][validateType];
+                                                        }    
+                                                        break;        
+                                                    case "mail":
+                                                        if (validateMethod.isEmail(_form[validateItem].value) != true) {
+                                                            errorsForm[validateItem] = options.validate.items[validateItem][validateType];
+                                                        }    
+                                                        break;
+                                                    case "siteURL":
+                                                        if (validateMethod.isSiteURL(_form[validateItem].value) != true) {
+                                                            errorsForm[validateItem] = options.validate.items[validateItem][validateType];
+                                                        }    
+                                                        break;        
+                                                }
+                                            }
+                                            
+                                        }    
+                                    }
+                                    //console.log(errorsForm);
+                                    return false;
+                                });
+                            }
+                            
+                            
                             //placeholder INPUT[type=text], textarea init
                             $(element).find('input[type=text], textarea').each(function(){
                                 var _this = $(this);
