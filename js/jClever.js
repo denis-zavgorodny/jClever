@@ -1,5 +1,5 @@
 /*
-*   jClever HEAD:v 0.2 :)
+*   jClever HEAD:v 0.4 :)
 *
 *   by Denis Zavgorodny
 *   zavgorodny@alterego.biz.ua
