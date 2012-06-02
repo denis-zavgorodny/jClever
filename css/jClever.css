@@ -20,6 +20,8 @@
     color: #ccc;
     position: relative;
 }
+.jClever-element.error {
+}
 .jClever-element * {
     outline: none;
 }
@@ -271,4 +273,19 @@ form.jClever textarea {
     -moz-box-shadow: inset 0 0 5px #000; /* Для Firefox */
     -webkit-box-shadow: inset 0 0 5px #000; /* Для Safari и Chrome */
     box-shadow: inset 0 0 5px #000; /* Параметры тени */
+}
+
+.jClever-error-label {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    margin-left: 100%;
+    color: #fff;
+    width: 100%;
+    padding: 5px;
+    background: #EA1010;
+    display: none;
+}
+.jClever-element.error .jClever-error-label {
+    display:-moz-inline-box; display:inline-block; *zoom: 1; *display:inline;
 }

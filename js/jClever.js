@@ -15,23 +15,139 @@
         var options = $.extend(
                                 {
                                     applyTo: {
-                                                select: true,
-                                                checkbox: true,
-                                                radio: true,
-                                                button: true,
-                                                file: true
-                                                }
+                                        select: true,
+                                        checkbox: true,
+                                        radio: true,
+                                        button: true,
+                                        file: true,
+                                        input: true,
+                                        textarea: true
+                                    },
+                                    validate: {
+                                        state: false,
+                                        items: {
+                                            
+                                        }
+                                    },
+                                    errorTemplate: '<span class="jClever-error-label"></span>',
+                                    errorClassTemplate: 'jClever-error-label'
+                                                
                                 },
                                 options
                                 );
         var selects = [];                        
         var jScrollApi = [];
-        var formState = {};                     
+        var formState = {};
+
+        var validateMethod = {
+            isNumeric: function(data) {
+                var pattern = /^\d+$/;
+                return pattern.test(data);
+            },
+            isString: function(data) {
+                var pattern = /^[a-zA-ZА-Яа-я]+$/;
+                return pattern.test(data);
+            },
+            isAnyText: function(data) {
+                var pattern = /^[a-zA-ZА-Яа-я0-9]+$/;
+                return pattern.test(data);
+            },            
+            isEmail: function(data) {
+                var pattern = /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,4}$/;
+                return pattern.test(data);
+            },
+            isSiteURL: function(data) {
+                var pattern = /^((https?|ftp)\:\/\/)?([a-z0-9]{1,})([a-z0-9-.]*)\.([a-z]{2,4})$/;
+                return pattern.test(data);
+            },
+            
+        };
+                          
         var methods = {
                         init: function(element) {
                             var innerCounter = 9999;
                             var tabindex = 1;
+                            //validate form
+                            if (options.validate.state === true) {
+                                
+                                $(element).submit(function(){
+                                    var _form = $(element).get(0);
+                                    var errorsForm = {};
+                                    $(_form).find('.error').removeClass('error');
+                                    for (var validateItem in options.validate.items) {
+                                        if (!(_form[validateItem] === undefined)) {
+                                            for (var validateType in options.validate.items[validateItem]) {
+                                                switch(validateType) {
+                                                    case "required":
+                                                        if (_form[validateItem].value == '' || _form[validateItem].value == $(_form[validateItem]).data('placeholder'))
+                                                            errorsForm[validateItem] = options.validate.items[validateItem][validateType];
+                                                        break;
+                                                    case "numeric":
+                                                        if (validateMethod.isNumeric(_form[validateItem].value) != true) {
+                                                            errorsForm[validateItem] = options.validate.items[validateItem][validateType];
+                                                        }    
+                                                        break;
+                                                    case "str":
+                                                        if (validateMethod.isString(_form[validateItem].value) != true) {
+                                                            errorsForm[validateItem] = options.validate.items[validateItem][validateType];
+                                                        }    
+                                                        break;
+                                                    case "stringAndNumeric":
+                                                        if (validateMethod.isAnyText(_form[validateItem].value) != true) {
+                                                            errorsForm[validateItem] = options.validate.items[validateItem][validateType];
+                                                        }    
+                                                        break;        
+                                                    case "mail":
+                                                        if (validateMethod.isEmail(_form[validateItem].value) != true) {
+                                                            errorsForm[validateItem] = options.validate.items[validateItem][validateType];
+                                                        }    
+                                                        break;
+                                                    case "siteURL":
+                                                        if (validateMethod.isSiteURL(_form[validateItem].value) != true) {
+                                                            errorsForm[validateItem] = options.validate.items[validateItem][validateType];
+                                                        }    
+                                                        break;        
+                                                }
+                                            }
+                                            
+                                        }    
+                                    }
+                                    var isError = 0;
+                                    for(var key in errorsForm) {
+                                        if (_form[key] != undefined) {
+                                            var labelText = errorsForm[key];
+                                            var formElement = $(_form[key]);
+                                            var wrapper = formElement.parents('.jClever-element');
+                                            var error = wrapper.find('.'+options.errorClassTemplate);
+                                            wrapper.addClass('error');
+                                            error.text(labelText);
+                                            isError++;
+                                        }
+                                    }
+                                    if (isError)
+                                        return false;
+                                    else    
+                                        return true;
+                                });
+                            }
                             
+                            
+                            //placeholder INPUT[type=text], textarea init
+                            $(element).find('input[type=text], textarea').each(function(){
+                                var _this = $(this);
+                                var holderText = $(this).data('placeholder');
+                                if(_this.val() == '')
+                                     _this.val(holderText);
+                                     
+                                _this.focusin(function(){
+                                    if(_this.val() == holderText)
+                                     _this.val('');
+                                });
+                                _this.focusout(function(){
+                                    if(_this.val() == '')
+                                     _this.val(holderText);
+                                });
+                            });
                             //Select init
                             if (options.applyTo.select)
                                 $(element).find('select').each(function(){
@@ -80,7 +196,19 @@
                                 $(element).find('input[type=submit], input[type=reset], input[type=button]').each(function(){
                                     methods.submitActivate(this, tabindex);
                                     tabindex++;
-                                });
+                            });
+                            //Input [type=text]
+                            if (options.applyTo.input)
+                                $(element).find('input[type=text], input[type=password]').each(function(){
+                                    methods.inputActivate(this, tabindex);
+                                    tabindex++;
+                            });
+                            //Textarea
+                            if (options.applyTo.textarea)
+                                $(element).find('textarea').each(function(){
+                                    methods.textareaActivate(this, tabindex);
+                                    tabindex++;
+                            });
                             //Hook reset event
                             $('button[type=reset]').click(function(){
                                 methods.reset();
@@ -178,6 +306,8 @@
                             var selectListWrapper = selectObject.find('.jClever-element-select-list-wrapper');
                             var selectLabel = $('label[for='+$(select).attr('id')+']');
 
+                            //Add error label
+                            selectObject.append(options.errorTemplate);
                             $(select).find('option').each(function(){
                                 selectObject.find('.jClever-element-select-list')
                                             .append($('<li data-value="'+$(this).val()+'"><span><i>'+$(this).text()+'</i></span></li>'));
@@ -269,7 +399,8 @@
                             });
                         },
                         checkboxActivate: function(checkbox, tabindex) {
-                            $(checkbox).wrap('<div class="jClever-element" tabindex="'+tabindex+'">').addClass('hidden').after('<span class="jClever-element-checkbox-twins"></span>');
+                            var _checkbox = $(checkbox).wrap('<div class="jClever-element" tabindex="'+tabindex+'">').addClass('hidden').after('<span class="jClever-element-checkbox-twins"></span>');
+                            $(checkbox).parents('.jClever-element').append(options.errorTemplate);
                             if ($(checkbox).is(':checked'))
                                 $(checkbox).next('.jClever-element-checkbox-twins').addClass('checked');
                             $(checkbox).on('change', function(){
@@ -306,6 +437,7 @@
                         },
                         radioActivate: function(radio, tabindex) {
                             $(radio).wrap('<div class="jClever-element" tabindex="'+tabindex+'">').addClass('hidden').after('<span class="jClever-element-radio-twins"></span>');
+                            $(radio).parents('.jClever-element').append(options.errorTemplate);
                             if ($(radio).is(':checked'))
                                 $(radio).next('.jClever-element-radio-twins').addClass('checked');
                             $(radio).on('change', function(){
@@ -352,6 +484,7 @@
                         },
                         fileActivate: function(file, tabindex) {
                             $(file).wrap('<div class="jClever-element" tabindex="'+tabindex+'"><div class="jClever-element-file">').addClass('hidden-file').after('<span class="jClever-element-file-name"></span><span class="jClever-element-file-button"></span>').wrap('<div class="input-file-helper">');
+                            $(file).parents('.jClever-element').append(options.errorTemplate);
                             
                             var jCleverElementFileName = $(file).parents('.jClever-element').find('.jClever-element-file-name');
                             $(file).change(function(){
@@ -375,6 +508,14 @@
                             });
                             
                             $(file).parents('.jClever-element').focus(function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
+                        },
+                        inputActivate: function(input, tabindex) {
+                            $(input).wrap('<div class="jClever-element" tabindex="'+tabindex+'"><div class="jClever-element-input"><div class="jClever-element-input"><div class="jClever-element-input">');
+                            $(input).parents('.jClever-element').append(options.errorTemplate);
+                        },
+                        textareaActivate: function(textarea, tabindex) {
+                            $(textarea).wrap('<div class="jClever-element" tabindex="'+tabindex+'"><div class="jClever-element-textarea"><div class="jClever-element-textarea"><div class="jClever-element-textarea">');
+                            $(textarea).parents('.jClever-element').append(options.errorTemplate);
                         }
         };
         var publicApi = {
