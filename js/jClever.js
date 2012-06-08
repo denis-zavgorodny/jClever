@@ -59,7 +59,7 @@
             isSiteURL: function(data) {
                 var pattern = /^((https?|ftp)\:\/\/)?([a-z0-9]{1,})([a-z0-9-.]*)\.([a-z]{2,4})$/;
                 return pattern.test(data);
-            },
+            }
             
         };
                           
