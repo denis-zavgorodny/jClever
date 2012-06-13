@@ -309,11 +309,18 @@
                             //Add error label
                             selectObject.append(options.errorTemplate);
                             $(select).find('option').each(function(){
-                                selectObject.find('.jClever-element-select-list')
-                                            .append($('<li data-value="'+$(this).val()+'"><span><i>'+$(this).text()+'</i></span></li>'));
+                                if ($(this).is(':selected'))
+                                    selectObject.find('.jClever-element-select-list')
+                                                .append($('<li class="active" data-value="'+$(this).val()+'"><span><i>'+$(this).text()+'</i></span></li>'));
+                                else
+                                    selectObject.find('.jClever-element-select-list')
+                                                .append($('<li data-value="'+$(this).val()+'"><span><i>'+$(this).text()+'</i></span></li>'));
                                 
                             });
-                            selectText.text($(select).find('option:eq(0)').text());
+                            if ($(select).find(':selected'))
+                                selectText.text($(select).find('option:selected').text());
+                            else
+                                selectText.text($(select).find('option:eq(0)').text());
                             selectObject.on('click', '.jClever-element-select-center, .jClever-element-select-right',function(){
                                 if (selectListWrapper.is(':visible')) {
                                     $('.jClever-element-select-list-wrapper').hide();
