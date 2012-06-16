@@ -263,6 +263,17 @@
                             select.find('option[value='+value+']').attr('selected','selected');
                             select.trigger('change');
                         },
+                        selectAdd: function(selector) {
+                                $(element).find(selector).each(function(){
+                                    formState[$(this).attr('name')] = {
+                                                                            type: "select",
+                                                                            value: $(this).attr('value')
+                                                                        };
+                                    methods.selectActivate(this,innerCounter, tabindex);
+                                    innerCounter--;
+                                    tabindex++;
+                                });    
+                        },
                         checkboxSetState: function(checkbox, value) {
                             if (value == 1)
                                 checkbox.attr('checked', 'checked');
@@ -530,6 +541,7 @@
                             destroy: function() {methods.destroy()},
                             reset: function() {methods.reset()},
                             selectSetPosition: function(select, value) {methods.selectSetPosition(select, value);},
+                            selectAdd: function(select) {methods.selectAdd(select);},
                             checkboxSetState: function(checkbox, value) {methods.checkboxSetState(checkbox, value);},                            
                             radioSetState: function(radio, value) {methods.radioSetState(radio, value);},                            
                             scrollingAPI: jScrollApi
