@@ -1,5 +1,5 @@
 /*
-*   jClever HEAD:v 0.4 :)
+*   jClever HEAD:v 1.0 :)
 *
 *   by Denis Zavgorodny
 *   zavgorodny@alterego.biz.ua
@@ -309,7 +309,7 @@
                                 }
                             };
 
-                            $(select).wrap('<div class="jClever-element"><div class="jClever-element-select-wrapper"><div class="jClever-element-select-wrapper-design"><div class="jClever-element-select-wrapper-design">').after('<span class="jClever-element-select-center"></span><span class="jClever-element-select-right">v</span><div class="jClever-element-select-list-wrapper" style="z-index:'+innerCounter+';"><ul class="jClever-element-select-list"></ul></div>');
+                            $(select).wrap('<div class="jClever-element"><div class="jClever-element-select-wrapper"><div class="jClever-element-select-wrapper-design"><div class="jClever-element-select-wrapper-design">').after('<span class="jClever-element-select-center"></span><span class="jClever-element-select-right"><span>v</span></span><div class="jClever-element-select-list-wrapper" style="z-index:'+innerCounter+';"><ul class="jClever-element-select-list"></ul></div>');
                             var selectObject = $(select).parents('.jClever-element').attr('tabindex',tabindex);
                             var selectText = selectObject.find('.jClever-element-select-center');
                             var selectRight = selectObject.find('.jClever-element-select-right');
