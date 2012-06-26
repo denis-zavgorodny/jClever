@@ -1,18 +1,18 @@
-.jClever {
+.jClever.default {
     margin: 0px;
     padding: 0px;
     font-family: Arial;
 }
-.jClever label {
+.jClever.default label {
     color: grey;
 }
-.jClever .hidden {
+.jClever.default .hidden {
     opacity: 0;
     filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     position: absolute;
     
 }
-.jClever-element {
+.jClever.default .jClever-element {
     outline: none;
     margin: 10px;
     font-family: Arial;
@@ -20,35 +20,35 @@
     color: #ccc;
     position: relative;
 }
-.jClever-element.error {
+.jClever.default .jClever-element.error {
 }
-.jClever-element * {
+.jClever.default .jClever-element * {
     outline: none;
 }
-.focused .jClever-element-select-center {
+.jClever.default .focused .jClever-element-select-center {
     background: #EFEEEC;
     color: #000;
 }
-.focused .jClever-element-checkbox-twins {
+.jClever.default .focused .jClever-element-checkbox-twins {
     -moz-box-shadow: inset 0 0 5px #000; /* Для Firefox */
     -webkit-box-shadow: inset 0 0 5px #000; /* Для Safari и Chrome */
     box-shadow: inset 0 0 5px #000; /* Параметры тени */
 }
-.focused .jClever-element-radio-twins {
+.jClever.default .focused .jClever-element-radio-twins {
     -moz-box-shadow: inset 0 0 5px #000; /* Для Firefox */
     -webkit-box-shadow: inset 0 0 5px #000; /* Для Safari и Chrome */
     box-shadow: inset 0 0 5px #000; /* Параметры тени */
 }
 
 
-.row {
+.jClever.default .row {
     vertical-align: middle;
 }
-.row>label {
+.jClever.default .row>label {
     display:-moz-inline-box; display:inline-block; *zoom: 1; *display:inline;
     vertical-align: middle;
 }
-.row>.jClever-element {
+.jClever.default .row>.jClever-element {
     display:-moz-inline-box; display:inline-block; *zoom: 1; *display:inline;
     vertical-align: middle;    
 }
@@ -58,24 +58,24 @@
  *   SELECT
  *
  */ 
-.jClever-element-select-wrapper {
+.jClever.default .jClever-element-select-wrapper {
     position: relative;
     width: 300px;
     border: 1px solid #c0c0c0;
     cursor: pointer;
     height: 20px;
 }
-.jClever-element-select-wrapper select {
+.jClever.default .jClever-element-select-wrapper select {
     display: none;
 }
-.jClever-element-select-center {
+.jClever.default .jClever-element-select-center {
     white-space: nowrap;
     overflow: hidden;
     display: block;
     line-height: 20px;
     padding: 0 4px;
 }
-.jClever-element-select-right {
+.jClever.default .jClever-element-select-right {
     position: absolute;
     right: 0px;
     top: 0px;
@@ -91,7 +91,7 @@
     font-weight: bold;
     line-height: 20px;
 }
-.jClever-element-select-list-wrapper {
+.jClever.default .jClever-element-select-list-wrapper {
     position: absolute;
     border: 1px solid #c0c0c0;
     border-top: 0px;
@@ -107,23 +107,23 @@
 
     height: 100px;
 }
-.jClever-element-select-list {
+.jClever.default .jClever-element-select-list {
     white-space: nowrap;
     padding: 0px;
     margin: 0px;
 }
-.jClever-element-select-list>li {
+.jClever.default .jClever-element-select-list>li {
     padding: 0 10px;
     margin: 3px 0;
 }
-.jClever-element-select-list>li.active {
+.jClever.default .jClever-element-select-list>li.active {
     font-weight: bold;
 }
-.jClever-element-select-list>li:hover, .jClever-element-select-list>li.selected {
+.jClever.default .jClever-element-select-list>li:hover, .jClever.default .jClever-element-select-list>li.selected {
     background: #c0c0c0;
     color: #fff;
 }
-.jClever-element-select-list>li>span {
+.jClever.default .jClever-element-select-list>li>span {
     overflow: hidden;
     width: 100%;
     display: block;
@@ -131,7 +131,7 @@
     height: 100%;
     white-space: normal;
 }
-.jClever-element-select-list>li>span>i {
+.jClever.default .jClever-element-select-list>li>span>i {
     font-style: normal;
 }
 
@@ -142,13 +142,13 @@
  *
  */
 
-.jClever-element-checkbox-twins {
+.jClever.default .jClever-element-checkbox-twins {
     display: block;
     width: 15px;
     height: 15px;
     background: url(../images/checkbox.png) no-repeat left bottom;
 }
-.jClever-element-checkbox-twins.checked {
+.jClever.default .jClever-element-checkbox-twins.checked {
     background-position: left top;
 }
 
@@ -159,13 +159,13 @@
  *
  */
 
-.jClever-element-radio-twins {
+.jClever.default .jClever-element-radio-twins {
     display: block;
     width: 15px;
     height: 15px;
     background: url(../images/radio.png) no-repeat left bottom;
 }
-.jClever-element-radio-twins.checked {
+.jClever.default .jClever-element-radio-twins.checked {
     background-position: left top;
 }
 
@@ -174,22 +174,22 @@
  *   BUTTON
  *
  */
-button.styled {
+.jClever.default button.styled {
     background: none;
     border: 0px;
     padding: 0px;
     margin: 0px;
     cursor: pointer;
 }
-button.styled>span {
+.jClever.default button.styled>span {
     display:-moz-inline-box; display:inline-block; *zoom: 1; *display:inline;
     border: 1px solid #c0c0c0;    
 }
-button.styled:hover>span {
+.jClever.default button.styled:hover>span {
     background: #c0c0c0;
     color: #fff;
 }
-button.styled>span>span {
+.jClever.default button.styled>span>span {
     display:-moz-inline-box; display:inline-block; *zoom: 1; *display:inline;
     padding: 5px 15px;
 }
@@ -198,7 +198,7 @@ button.styled>span>span {
  *   input`s
  *
  */
-.input-type-text {
+.jClever.default .input-type-text {
     border: 1px solid #c0c0c0;
     line-height: 20px;
     padding: 0 4px;
@@ -210,7 +210,7 @@ button.styled>span>span {
  *   textarea`s
  *
  */
-form.jClever textarea {
+.jClever.default form.jClever textarea {
     border: 1px solid #c0c0c0;
     padding: 0 4px;
     color: #c0c0c0;
@@ -223,12 +223,12 @@ form.jClever textarea {
  *   file input
  *
  */
-.jClever-element-file {
+.jClever.default .jClever-element-file {
     width: 300px;
     height: 27px;
     overflow: hidden;
 } 
-.jClever-element .hidden-file {
+.jClever.default .jClever-element .hidden-file {
     opacity: 0;
     filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     position: absolute;
@@ -241,7 +241,7 @@ form.jClever textarea {
     margin-left: -218px;
     font-size: 20px;
 }
-.jClever-element .jClever-element-file-name {
+.jClever.default .jClever-element .jClever-element-file-name {
     display: block;
     width: 198px;
     height: 25px;
@@ -252,7 +252,7 @@ form.jClever textarea {
     background: url(../images/file-input.png) repeat-y right top;
 }
 
-.jClever-element .jClever-element-file-button {
+.jClever.default .jClever-element .jClever-element-file-button {
     display: block;
     width: 100px;
     height: 25px;
@@ -260,7 +260,7 @@ form.jClever textarea {
     background: url(../images/file.png) no-repeat left top;
     margin: 3px 0 0 0;
 }
-.input-file-helper {
+.jClever.default .input-file-helper {
     width: 100px;
     height: 25px;
     position: absolute;
@@ -269,13 +269,13 @@ form.jClever textarea {
     overflow: hidden;
 }
 
-.jClever-element.focused .jClever-element-file-name {
+.jClever.default .jClever-element.focused .jClever-element-file-name {
     -moz-box-shadow: inset 0 0 5px #000; /* Для Firefox */
     -webkit-box-shadow: inset 0 0 5px #000; /* Для Safari и Chrome */
     box-shadow: inset 0 0 5px #000; /* Параметры тени */
 }
 
-.jClever-error-label {
+.jClever.default .jClever-error-label {
     position: absolute;
     left: 0px;
     top: 0px;
@@ -286,6 +286,6 @@ form.jClever textarea {
     background: #EA1010;
     display: none;
 }
-.jClever-element.error .jClever-error-label {
+.jClever.default .jClever-element.error .jClever-error-label {
     display:-moz-inline-box; display:inline-block; *zoom: 1; *display:inline;
 }

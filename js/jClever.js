@@ -30,7 +30,8 @@
                                         }
                                     },
                                     errorTemplate: '<span class="jClever-error-label"></span>',
-                                    errorClassTemplate: 'jClever-error-label'
+                                    errorClassTemplate: 'jClever-error-label',
+                                    selfClass: 'default'
                                                 
                                 },
                                 options
@@ -549,7 +550,7 @@
                         };
         this.publicMethods = publicApi;    
         return this.each(function(){
-            $(this).addClass('clevered');
+            $(this).addClass('clevered').addClass(options.selfClass);
             methods.init(this);
         });
     };
