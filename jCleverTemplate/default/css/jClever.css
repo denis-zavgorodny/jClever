@@ -68,6 +68,9 @@
 .jClever.default .jClever-element-select-wrapper select {
     display: none;
 }
+.jClever.default .jClever-element select {
+    display: none;
+}
 .jClever.default .jClever-element-select-center {
     white-space: nowrap;
     overflow: hidden;
