@@ -555,6 +555,7 @@
         });
     };
     /**************************Helpers********************/
+    jQuery.jClever = true;
     //Thanks jNiсe for idea
         $(document).mousedown(function(event){
             if ($(event.target).parents('.jClever-element-select-wrapper').length === 0) { $('.jClever-element-select-list-wrapper:visible').hide(); }

@@ -19,19 +19,20 @@
     <script type="text/javascript">
         var api = {};
         jQuery(document).ready(function(){
-            api = jQuery('.jClever').jClever({
-                validate: {
-                    state: true,
-                    items: {
-                        text: {
-                            required: "Поле обязательное для заполнения"
-                        },
-                        textarea: {
-                            required: "Поле обязательное для заполнения"
-                        }
-                    }    
-                }
-            });
+            if (jQuery.jClever)
+                api = jQuery('.jClever').jClever({
+                    validate: {
+                        state: true,
+                        items: {
+                            text: {
+                                required: "Поле обязательное для заполнения"
+                            },
+                            textarea: {
+                                required: "Поле обязательное для заполнения"
+                            }
+                        }    
+                    }
+                });
             //api.publicMethods.selectCollection.select1.updateFromHTML('<option value="1">1</option><option value="2">2</option><option value="3">3</option>');
         });
     </script>
