@@ -1,5 +1,5 @@
 /*
-*   jClever HEAD:v 0.4 :)
+*   jClever HEAD:v 1.0 :)
 *
 *   by Denis Zavgorodny
 *   zavgorodny@alterego.biz.ua
@@ -30,7 +30,8 @@
                                         }
                                     },
                                     errorTemplate: '<span class="jClever-error-label"></span>',
-                                    errorClassTemplate: 'jClever-error-label'
+                                    errorClassTemplate: 'jClever-error-label',
+                                    selfClass: 'default'
                                                 
                                 },
                                 options
@@ -263,6 +264,17 @@
                             select.find('option[value='+value+']').attr('selected','selected');
                             select.trigger('change');
                         },
+                        selectAdd: function(selector) {
+                                $(element).find(selector).each(function(){
+                                    formState[$(this).attr('name')] = {
+                                                                            type: "select",
+                                                                            value: $(this).attr('value')
+                                                                        };
+                                    methods.selectActivate(this,innerCounter, tabindex);
+                                    innerCounter--;
+                                    tabindex++;
+                                });    
+                        },
                         checkboxSetState: function(checkbox, value) {
                             if (value == 1)
                                 checkbox.attr('checked', 'checked');
@@ -297,8 +309,8 @@
                                     return false;
                                 }
                             };
-
-                            $(select).wrap('<div class="jClever-element"><div class="jClever-element-select-wrapper"><div class="jClever-element-select-wrapper-design"><div class="jClever-element-select-wrapper-design">').after('<span class="jClever-element-select-center"></span><span class="jClever-element-select-right">v</span><div class="jClever-element-select-list-wrapper" style="z-index:'+innerCounter+';"><ul class="jClever-element-select-list"></ul></div>');
+                            var self_width = $(select).width();
+                            $(select).wrap('<div class="jClever-element"><div class="jClever-element-select-wrapper" style="width:'+self_width+'px;"><div class="jClever-element-select-wrapper-design"><div class="jClever-element-select-wrapper-design">').after('<span class="jClever-element-select-center"></span><span class="jClever-element-select-right"><span>v</span></span><div class="jClever-element-select-list-wrapper" style="z-index:'+innerCounter+';"><ul class="jClever-element-select-list"></ul></div>');
                             var selectObject = $(select).parents('.jClever-element').attr('tabindex',tabindex);
                             var selectText = selectObject.find('.jClever-element-select-center');
                             var selectRight = selectObject.find('.jClever-element-select-right');
@@ -530,18 +542,20 @@
                             destroy: function() {methods.destroy()},
                             reset: function() {methods.reset()},
                             selectSetPosition: function(select, value) {methods.selectSetPosition(select, value);},
-                            checkboxSetState: function(checkbox, value) {methods.checkboxSetState(checkbox, value);},                            
-                            radioSetState: function(radio, value) {methods.radioSetState(radio, value);},                            
+                            selectAdd: function(select) {methods.selectAdd(select);},
+                            checkboxSetState: function(checkbox, value) {if ($(checkbox).length) methods.checkboxSetState($(checkbox), value); else return false},                            
+                            radioSetState: function(radio, value) {if ($(radio).length) methods.radioSetState($(radio), value); else return false;},                            
                             scrollingAPI: jScrollApi
                             
                         };
         this.publicMethods = publicApi;    
         return this.each(function(){
-            $(this).addClass('clevered');
+            $(this).addClass('clevered').addClass(options.selfClass);
             methods.init(this);
         });
     };
     /**************************Helpers********************/
+    jQuery.jClever = true;
     //Thanks jNiсe for idea
         $(document).mousedown(function(event){
             if ($(event.target).parents('.jClever-element-select-wrapper').length === 0) { $('.jClever-element-select-list-wrapper:visible').hide(); }
