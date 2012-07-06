@@ -543,8 +543,8 @@
                             reset: function() {methods.reset()},
                             selectSetPosition: function(select, value) {methods.selectSetPosition(select, value);},
                             selectAdd: function(select) {methods.selectAdd(select);},
-                            checkboxSetState: function(checkbox, value) {methods.checkboxSetState(checkbox, value);},                            
-                            radioSetState: function(radio, value) {methods.radioSetState(radio, value);},                            
+                            checkboxSetState: function(checkbox, value) {if ($(checkbox).length) methods.checkboxSetState($(checkbox), value); else return false},                            
+                            radioSetState: function(radio, value) {if ($(radio).length) methods.radioSetState($(radio), value); else return false;},                            
                             scrollingAPI: jScrollApi
                             
                         };
