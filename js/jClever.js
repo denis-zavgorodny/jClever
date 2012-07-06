@@ -310,7 +310,7 @@
                                 }
                             };
                             var self_width = $(select).width();
-                            $(select).wrap('<div class="jClever-element"><div class="jClever-element-select-wrapper" style="width:'+self_width+'px;"><div class="jClever-element-select-wrapper-design"><div class="jClever-element-select-wrapper-design">').after('<span class="jClever-element-select-center"></span><span class="jClever-element-select-right"><span>v</span></span><div class="jClever-element-select-list-wrapper" style="z-index:'+innerCounter+';"><ul class="jClever-element-select-list"></ul></div>');
+                            $(select).wrap('<div class="jClever-element" style="z-index:'+innerCounter+';"><div class="jClever-element-select-wrapper" style="width:'+self_width+'px; z-index:'+innerCounter+';"><div class="jClever-element-select-wrapper-design"><div class="jClever-element-select-wrapper-design">').after('<span class="jClever-element-select-center"></span><span class="jClever-element-select-right"><span>v</span></span><div class="jClever-element-select-list-wrapper" style="z-index:'+innerCounter+';"><ul class="jClever-element-select-list"></ul></div>');
                             var selectObject = $(select).parents('.jClever-element').attr('tabindex',tabindex);
                             var selectText = selectObject.find('.jClever-element-select-center');
                             var selectRight = selectObject.find('.jClever-element-select-right');
