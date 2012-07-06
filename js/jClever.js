@@ -550,8 +550,11 @@
                         };
         this.publicMethods = publicApi;    
         return this.each(function(){
-            $(this).addClass('clevered').addClass(options.selfClass);
-            methods.init(this);
+            console.log($(this));
+            if (!$(this).hasClass('clevered')) {
+                $(this).addClass('clevered').addClass(options.selfClass);
+                methods.init(this);
+            }
         });
     };
     /**************************Helpers********************/
