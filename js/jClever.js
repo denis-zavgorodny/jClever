@@ -138,15 +138,15 @@
                                 var _this = $(this);
                                 var holderText = $(this).data('placeholder');
                                 if(_this.val() == '')
-                                     _this.val(holderText);
+                                     _this.val(holderText).addClass('placeholdered');
                                      
                                 _this.focusin(function(){
                                     if(_this.val() == holderText)
-                                     _this.val('');
+                                     _this.val('').removeClass('placeholdered');
                                 });
                                 _this.focusout(function(){
                                     if(_this.val() == '')
-                                     _this.val(holderText);
+                                     _this.val(holderText).addClass('placeholdered');
                                 });
                             });
                             //Select init
