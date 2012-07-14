@@ -405,8 +405,9 @@
                                             return true;
                                            
                                     default: /* Key select */
-                                        tmpIndex = 0;
-                                        for (var key in $(select)[0].options) {
+                                        var tmpIndex = 0;
+                                        var count = $(select)[0].options.length;
+                                        for (var key  = 0; key < count; key ++) {
                                             if (typeof $(select)[0].options[key].text == 'string') {
                                                 var localString = $(select)[0].options[key].text.toUpperCase();
                                                 if (String.fromCharCode(e.keyCode) == localString[0]) {
@@ -416,7 +417,7 @@
                                             }
                                         }
                                         break;
-                                        return true;
+                                        return false;
                                 }
                                 $(select)[0].selectedIndex = selectedIndex;
                                 selectObject.find('li.selected').removeClass('selected');
