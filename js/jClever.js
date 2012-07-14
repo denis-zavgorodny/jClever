@@ -400,11 +400,23 @@
                                             jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
                                         }    
                                         break;
-                                    case 9:
+                                    case 9: /* Tab */
                                             selectListWrapper.hide();
-                                    default:
-                                        return;
+                                            return true;
+                                           
+                                    default: /* Key select */
+                                        tmpIndex = 0;
+                                        for (var key in $(select)[0].options) {
+                                            if (typeof $(select)[0].options[key].text == 'string') {
+                                                var localString = $(select)[0].options[key].text.toUpperCase();
+                                                if (String.fromCharCode(e.keyCode) == localString[0]) {
+                                                    selectedIndex = tmpIndex;
+                                                }    
+                                                tmpIndex++;
+                                            }
+                                        }
                                         break;
+                                        return true;
                                 }
                                 $(select)[0].selectedIndex = selectedIndex;
                                 selectObject.find('li.selected').removeClass('selected');
