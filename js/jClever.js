@@ -347,7 +347,7 @@
                                 $(this).hide();
                             });
                             selectObject.on('click','li' ,function(event){
-                                var value = $(this).data('value');
+                                var value = $(this).attr('data-value');
                                 selectList.find('li.active').removeClass('active');
                                 $(this).addClass('active');
                                 $(select).find('option').removeAttr('selected');
