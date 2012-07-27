@@ -544,10 +544,22 @@
                         inputActivate: function(input, tabindex) {
                             $(input).wrap('<div class="jClever-element" tabindex="'+tabindex+'"><div class="jClever-element-input"><div class="jClever-element-input"><div class="jClever-element-input">');
                             $(input).parents('.jClever-element').append(options.errorTemplate);
+                            $(input).on('focusin', function(){
+                                $(this).parents('.jClever-element').addClass('focused');
+                            });
+                            $(input).on('focusout', function(){
+                                $(this).parents('.jClever-element').removeClass('focused');
+                            });
                         },
                         textareaActivate: function(textarea, tabindex) {
                             $(textarea).wrap('<div class="jClever-element" tabindex="'+tabindex+'"><div class="jClever-element-textarea"><div class="jClever-element-textarea"><div class="jClever-element-textarea">');
                             $(textarea).parents('.jClever-element').append(options.errorTemplate);
+                            $(textarea).on('focusin', function(){
+                                $(this).parents('.jClever-element').addClass('focused');
+                            });
+                            $(textarea).on('focusout', function(){
+                                $(this).parents('.jClever-element').removeClass('focused');
+                            });
                         }
         };
         var publicApi = {
