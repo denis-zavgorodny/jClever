@@ -1,0 +1,488 @@
+.clevered.alice {
+    margin: 0px;
+    padding: 0px;
+    font-family: "Trebuchet MS", Arial, sans-serif;
+}
+.clevered.alice label {
+    color: #000000;
+    font-size: 18px;
+}
+.clevered.alice .hidden {
+    opacity: 0;
+    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    position: absolute;
+    
+}
+.clevered.alice .jClever-element {
+    outline: none;
+    margin: 0px;
+    position: relative;
+}
+.clevered.alice .jClever-element.error {
+}
+.clevered.alice .jClever-element * {
+    outline: none;
+}
+.clevered.alice .focused .jClever-element-select-center {
+    background: #EFEEEC;
+    color: #000;
+}
+.clevered.alice .focused .jClever-element-checkbox-twins {
+    -moz-box-shadow: inset 0 0 5px #000; /* Для Firefox */
+    -webkit-box-shadow: inset 0 0 5px #000; /* Для Safari и Chrome */
+    box-shadow: inset 0 0 5px #000; /* Параметры тени */
+}
+.clevered.alice .focused .jClever-element-radio-twins {
+    -moz-box-shadow: inset 0 0 5px #000; /* Для Firefox */
+    -webkit-box-shadow: inset 0 0 5px #000; /* Для Safari и Chrome */
+    box-shadow: inset 0 0 5px #000; /* Параметры тени */
+}
+
+
+.clevered.alice .row {
+    vertical-align: middle;
+    padding: 10px 0;
+}
+.clevered.alice .row>label {
+    display:-moz-inline-box; display:inline-block; *zoom: 1; *display:inline;
+    vertical-align: middle;
+}
+.clevered.alice .row>.jClever-element {
+    display:-moz-inline-box; display:inline-block; *zoom: 1; *display:inline;
+    vertical-align: middle;    
+}
+
+/*
+ *
+ *   SELECT
+ *
+ */ 
+.clevered.alice .jClever-element-select-wrapper {
+    position: relative;
+    border: 1px solid #c8c8c8;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    behavior: url(jCleverTemplate/alice/css/PIE.htc);
+    position: relative;
+    cursor: pointer;
+    height: 30px;
+}
+.clevered.alice  .jClever-element.focused .jClever-element-select-wrapper {
+    border: 1px solid #7eb3ce;
+}
+.clevered.alice .jClever-element-select-wrapper select {
+    display: none;
+}
+.clevered.alice .jClever-element select {
+    display: none;
+    font-size: 14px;
+}
+.clevered.alice .jClever-element-select-center {
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+    line-height: 30px;
+    padding: 0 10px;
+    font-size: 14px;
+    color: #000;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    behavior: url(jCleverTemplate/alice/css/PIE.htc);
+    position: relative;
+}
+.clevered.alice .jClever-element.focused .jClever-element-select-center {
+    background: #f2f6f7;
+}
+.clevered.alice .jClever-element-select-right {
+    position: absolute;
+    right: -1px;
+    top: -1px;
+
+    border: 1px solid #80b4cf;
+    -webkit-border-radius: 0 4px 4px 0;
+    -moz-border-radius: 0 4px 4px 0;
+    border-radius: 0 4px 4px 0;
+    behavior: url(jCleverTemplate/alice/css/PIE.htc);
+
+    background: -moz-linear-gradient(top, #66d1f8, #3bb6f3);
+    /* Chrome 1-9, Safari 4-5 */
+    background: -webkit-gradient(linear, left top, left bottom, 
+                color-stop(0%,#66d1f8), color-stop(100%,#3bb6f3));
+    /* Chrome 10+, Safari 5.1+ */
+    background: -webkit-linear-gradient(top, #66d1f8, #3bb6f3);
+    background: -o-linear-gradient(top, #66d1f8, #3bb6f3); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #66d1f8, #3bb6f3); /* IE10 */
+    background: linear-gradient(top, #66d1f8, #3bb6f3); /* CSS3 */
+        
+    height: 100%;
+    width: 35px;
+    cursor: pointer;
+    display:-moz-inline-stack; display:inline-block; zoom:1; *display:inline;
+
+    text-align: center;
+    font-family: Arial;
+    color: white;
+    font-weight: bold;
+    line-height: 20px;
+}
+
+.clevered.alice .jClever-element-select-right>span {
+    background: #53c5f6;
+    border: 1px solid #81ddfa;
+    border-bottom: 0px;
+    border-right: 0px;
+
+    -webkit-border-radius: 0 4px 4px 0;
+    -moz-border-radius: 0 4px 4px 0;
+    border-radius: 0 4px 4px 0;
+    behavior: url(jCleverTemplate/alice/css/PIE.htc);
+    position: relative;
+    
+    
+    height: 30px;
+    display: block;
+    width: 34px;
+    background-image: url(../images/arrow.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    text-indent: -100px;
+    overflow: hidden;
+}
+
+.clevered.alice .jClever-element-select-list-wrapper {
+    position: absolute;
+    border: 1px solid #bfd9e7;
+    border-top: 0px;
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+
+    -webkit-border-radius: 0px 0px 4px 4px;
+    -moz-border-radius: 0px 0px 4px 4px;
+    border-radius: 0px 0px 4px 4px;
+    behavior: url(jCleverTemplate/alice/css/PIE.htc);
+    
+    top: 31px;
+    left: -1px;
+    background: #fff;
+
+    display: none;
+
+    max-height: 200px;
+    font-size: 14px;
+}
+.clevered.alice .jClever-element-select-list {
+    white-space: nowrap;
+    padding: 0px;
+    margin: 0px;
+}
+.clevered.alice .jClever-element-select-list>li {
+    padding: 7px 10px;
+    margin: 0px 0;
+    color: #000;
+}
+.clevered.alice .jClever-element-select-list>li.active  {
+    background: #f2f6f7;
+}
+.clevered.alice .jClever-element-select-list>li:hover, .clevered.alice .jClever-element-select-list>li.selected {
+    background: #64d0f8;
+    color: #fff;
+}
+.clevered.alice .jClever-element-select-list>li>span {
+    overflow: hidden;
+    width: 100%;
+    display: block;
+    position: relative;
+    height: 100%;
+    white-space: normal;
+}
+.clevered.alice .jClever-element-select-list>li>span>i {
+    font-style: normal;
+}
+
+
+/*
+ *
+ *   CHECKBOX
+ *
+ */
+
+.clevered.alice .jClever-element-checkbox-twins {
+    display: block;
+    width: 15px;
+    height: 15px;
+    background: url(../images/checkbox.png) no-repeat left bottom;
+}
+.clevered.alice .jClever-element-checkbox-twins.checked {
+    background-position: left top;
+}
+
+
+/*
+ *
+ *   RADIO
+ *
+ */
+
+.clevered.alice .jClever-element-radio-twins {
+    display: block;
+    width: 15px;
+    height: 15px;
+    background: url(../images/radio.png) no-repeat left bottom;
+}
+.clevered.alice .jClever-element-radio-twins.checked {
+    background-position: left top;
+}
+
+/*
+ *
+ *   BUTTON
+ *
+ */
+.clevered.alice button.styled {
+    background: none;
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+    cursor: pointer;
+
+    font-size: 14px;
+    color: #fff;
+    
+}
+
+.clevered.alice button.styled>span {
+    display:-moz-inline-box; display:inline-block; *zoom: 1; *display:inline;
+    border: 1px solid #508db1;
+
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    behavior: url(jCleverTemplate/alice/css/PIE.htc);
+    position: relative;
+    background: -moz-linear-gradient(top, #66d1f8, #3bb6f3);
+    /* Chrome 1-9, Safari 4-5 */
+    background: -webkit-gradient(linear, left top, left bottom, 
+                color-stop(0%,#66d1f8), color-stop(100%,#3bb6f3));
+    /* Chrome 10+, Safari 5.1+ */
+    background: -webkit-linear-gradient(top, #66d1f8, #3bb6f3);
+    background: -o-linear-gradient(top, #66d1f8, #3bb6f3); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #66d1f8, #3bb6f3); /* IE10 */
+    background: linear-gradient(top, #66d1f8, #3bb6f3); /* CSS3 */
+
+    height: 30px;
+}
+.clevered.alice button.styled:hover>span {
+    background: -moz-linear-gradient(top, #1eb5ed, #0c90e1);
+    /* Chrome 1-9, Safari 4-5 */
+    background: -webkit-gradient(linear, left top, left bottom, 
+                color-stop(0%,#1eb5ed), color-stop(100%,#0c90e1));
+    /* Chrome 10+, Safari 5.1+ */
+    background: -webkit-linear-gradient(top, #1eb5ed, #0c90e1);
+    background: -o-linear-gradient(top, #1eb5ed, #0c90e1); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #1eb5ed, #0c90e1); /* IE10 */
+    background: linear-gradient(top, #1eb5ed, #0c90e1); /* CSS3 */
+    
+
+    
+    color: #fff;
+}
+.clevered.alice button.styled>span>span {
+    display:-moz-inline-box; display:inline-block; *zoom: 1; *display:inline;
+    border: 1px solid #6cd4f8;
+    border-bottom: 0px;
+    border-right: 0px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    behavior: url(jCleverTemplate/alice/css/PIE.htc);
+    position: relative;
+}
+.clevered.alice button.styled>span>span>span {
+    line-height: 30px;
+    font-size: 14px;
+    padding: 0 15px;
+    margin: 0px;
+    min-width: 110px;
+}
+/*
+ *
+ *   input`s
+ *
+ */
+ 
+.clevered.alice .jClever-element-input {
+    border: 1px solid #c8c8c8;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    behavior: url(jCleverTemplate/alice/css/PIE.htc);
+    position: relative;
+    font-size: 14px;
+    color: #a3a3a3;
+    background: #fff;
+}
+.clevered.alice .jClever-element.focused .jClever-element-input {
+    border: 1px solid #7eb3ce;
+    background: #f2f6f7;
+}
+
+.clevered.alice .jClever-element-input>.jClever-element-input {
+    border: 0px;
+    background: none;
+}
+.clevered.alice .jClever-element.focused .jClever-element-input>.jClever-element-input {
+    border: 0px;
+    background: none;
+}
+.clevered.alice .jClever-element-input>.jClever-element-input>.jClever-element-input {
+    border: 0px;
+}
+.clevered.alice .input-type-text {
+    line-height: 30px;
+    padding: 0 10px;
+    font-size: 14px;
+    color: #a3a3a3;
+    border: 0px;
+    width: 220px;
+}
+.clevered.alice .jClever-element.focused .input-type-text {
+    color: #000;
+    background: #f2f6f7;
+}
+
+
+
+/*
+ *
+ *   textarea`s
+ *
+ */
+
+
+.clevered.alice .jClever-element-textarea {
+    border: 1px solid #c8c8c8;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    behavior: url(jCleverTemplate/alice/css/PIE.htc);
+    position: relative;
+    font-size: 14px;
+    color: #a3a3a3;
+    background: #fff;
+
+    padding: 10px;
+}
+
+.clevered.alice  .jClever-element.focused .jClever-element-textarea {
+    border-color: #7eb3ce;
+    background: #f2f6f7;
+}
+
+
+.clevered.alice .jClever-element-textarea>.jClever-element-textarea {
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    behavior: url(jCleverTemplate/alice/css/PIE.htc);
+    position: relative;
+    
+}
+.clevered.alice .jClever-element-textarea>.jClever-element-textarea>.jClever-element-textarea {
+    padding: 0px;
+    margin: 0px;
+} 
+.clevered.alice textarea {
+    border: 0px solid #fff;
+    padding: 0;
+    color: #c0c0c0;
+    resize: none;
+    margin: 0px;
+    font-family: "Trebuchet MS", Arial, sans-serif;
+    font-size: 14px;
+    color: #b0b0b0;
+}
+
+.clevered.alice  .jClever-element.focused textarea {
+    color: #000;
+    background: #f2f6f7;
+}
+
+
+/*
+ *
+ *   file input
+ *
+ */
+.clevered.alice .jClever-element-file {
+    width: 300px;
+    height: 27px;
+    overflow: hidden;
+} 
+.clevered.alice .jClever-element .hidden-file {
+    opacity: 0;
+    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    position: absolute;
+    left: 0px;
+    width: 300px;
+    padding: 0px;
+    line-height: 20px;
+    height: 25px;
+    line-height: 25px;
+    margin-left: -218px;
+    font-size: 20px;
+}
+.clevered.alice .jClever-element .jClever-element-file-name {
+    display: block;
+    width: 198px;
+    height: 25px;
+    float: left;
+    border-bottom: 1px solid #c0c0c0;
+    line-height: 25px;
+    overflow: hidden;
+    background: url(../images/file-input.png) repeat-y right top;
+}
+
+.clevered.alice .jClever-element .jClever-element-file-button {
+    display: block;
+    width: 100px;
+    height: 25px;
+    float: left;
+    background: url(../images/file.png) no-repeat left top;
+    margin: 3px 0 0 0;
+}
+.clevered.alice .input-file-helper {
+    width: 100px;
+    height: 25px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    overflow: hidden;
+}
+
+.clevered.alice .jClever-element.focused .jClever-element-file-name {
+    -moz-box-shadow: inset 0 0 5px #000; /* Для Firefox */
+    -webkit-box-shadow: inset 0 0 5px #000; /* Для Safari и Chrome */
+    box-shadow: inset 0 0 5px #000; /* Параметры тени */
+}
+
+.clevered.alice .jClever-error-label {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    margin-left: 100%;
+    color: #fff;
+    width: 100%;
+    padding: 5px;
+    background: #EA1010;
+    display: none;
+}
+.clevered.alice .jClever-element.error .jClever-error-label {
+    display:-moz-inline-box; display:inline-block; *zoom: 1; *display:inline;
+}
