@@ -4,9 +4,7 @@
 *   by Denis Zavgorodny
 *   zavgorodny@alterego.biz.ua
 *
-*   UPD:    up to v 0.1.1
-*           + scroll by scrollPane (https://github.com/vitch/jScrollPane/archives/master)
-* 
+*   
 *
 *
 */ 
@@ -31,7 +29,8 @@
                                     },
                                     errorTemplate: '<span class="jClever-error-label"></span>',
                                     errorClassTemplate: 'jClever-error-label',
-                                    selfClass: 'default'
+                                    selfClass: 'default',
+                                    fileUploadText: 'Загрузить'
                                                 
                                 },
                                 options
@@ -515,10 +514,10 @@
                             $(button).replaceWith('<button type="'+ button.type +'" name="'+ button.name +'" id="'+ button.id +'"  class="styled '+ button.className +'" value="'+ value +'"><span><span><span>'+ value +'</span></span></span>');
                         },
                         fileActivate: function(file, tabindex) {
-                            $(file).wrap('<div class="jClever-element" tabindex="'+tabindex+'"><div class="jClever-element-file">').addClass('hidden-file').after('<span class="jClever-element-file-name"></span><span class="jClever-element-file-button"></span>').wrap('<div class="input-file-helper">');
+                            $(file).wrap('<div class="jClever-element" tabindex="'+tabindex+'"><div class="jClever-element-file">').addClass('hidden-file').after('<span class="jClever-element-file-name"><span><span></span></span></span><span class="jClever-element-file-button"><span><span>'+options.fileUploadText+'</span></span></span>').wrap('<div class="input-file-helper">');
                             $(file).parents('.jClever-element').append(options.errorTemplate);
                             
-                            var jCleverElementFileName = $(file).parents('.jClever-element').find('.jClever-element-file-name');
+                            var jCleverElementFileName = $(file).parents('.jClever-element').find('.jClever-element-file-name>span>span');
                             $(file).change(function(){
                                 var _name = $(this).val();
                                 _name = _name.split("\\");

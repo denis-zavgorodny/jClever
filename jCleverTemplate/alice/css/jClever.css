@@ -263,6 +263,7 @@
     border-radius: 4px;
     behavior: url(jCleverTemplate/alice/css/PIE.htc);
     position: relative;
+    background: #1eb5ed;
     background: -moz-linear-gradient(top, #66d1f8, #3bb6f3);
     /* Chrome 1-9, Safari 4-5 */
     background: -webkit-gradient(linear, left top, left bottom, 
@@ -276,6 +277,7 @@
     height: 30px;
 }
 .clevered.alice button.styled:hover>span {
+    background: #1eb5ed;
     background: -moz-linear-gradient(top, #1eb5ed, #0c90e1);
     /* Chrome 1-9, Safari 4-5 */
     background: -webkit-gradient(linear, left top, left bottom, 
@@ -285,7 +287,7 @@
     background: -o-linear-gradient(top, #1eb5ed, #0c90e1); /* Opera 11.10+ */
     background: -ms-linear-gradient(top, #1eb5ed, #0c90e1); /* IE10 */
     background: linear-gradient(top, #1eb5ed, #0c90e1); /* CSS3 */
-    
+    position: relative;
 
     
     color: #fff;
@@ -422,7 +424,7 @@
  */
 .clevered.alice .jClever-element-file {
     width: 300px;
-    height: 27px;
+    height: 32px;
     overflow: hidden;
 } 
 .clevered.alice .jClever-element .hidden-file {
@@ -430,36 +432,99 @@
     filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     position: absolute;
     left: 0px;
-    width: 300px;
+    width: 330px;
     padding: 0px;
     line-height: 20px;
-    height: 25px;
-    line-height: 25px;
+    height: 30px;
+    line-height: 30px;
     margin-left: -218px;
     font-size: 20px;
+    z-index:10;
+    cursor: pointer;
 }
 .clevered.alice .jClever-element .jClever-element-file-name {
     display: block;
     width: 198px;
-    height: 25px;
+    height: 30px;
     float: left;
-    border-bottom: 1px solid #c0c0c0;
-    line-height: 25px;
+    border: 1px solid #c8c8c8;
+    border-right: 0px;
+    -webkit-border-radius: 4px 0px 0px 4px;
+    -moz-border-radius: 4px 0px 0px 4px;
+    border-radius: 4px 0px 0px 4px;
+    behavior: url(jCleverTemplate/alice/css/PIE.htc);
+    position: relative;
+    
+    line-height: 30px;
     overflow: hidden;
     background: url(../images/file-input.png) repeat-y right top;
 }
 
+.clevered.alice .jClever-element.focused .jClever-element-file-name {
+    border-color: #7eb3ce;
+    background: #f2f6f7;
+}
+
 .clevered.alice .jClever-element .jClever-element-file-button {
     display: block;
-    width: 100px;
-    height: 25px;
+    width: 99px;
+    height: 30px;
     float: left;
-    background: url(../images/file.png) no-repeat left top;
-    margin: 3px 0 0 0;
+    background: none;
+    margin: 0px 0 0 0;
+    line-height: 30px;
+    font-size: 14px;
+    border: 1px solid #5591b5;
+    cursor: pointer;
+
+    
+    -webkit-border-radius: 0px 4px 4px 0px;
+    -moz-border-radius: 0px 4px 4px 0px;
+    border-radius: 0px 4px 4px 0px;
+    behavior: url(jCleverTemplate/alice/css/PIE.htc);
+    position: relative;
+
+    background: #66d1f8;
+    background: -moz-linear-gradient(top, #66d1f8, #3bb6f3);
+    /* Chrome 1-9, Safari 4-5 */
+    background: -webkit-gradient(linear, left top, left bottom, 
+                color-stop(0%,#66d1f8), color-stop(100%,#3bb6f3));
+    /* Chrome 10+, Safari 5.1+ */
+    background: -webkit-linear-gradient(top, #66d1f8, #3bb6f3);
+    background: -o-linear-gradient(top, #66d1f8, #3bb6f3); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #66d1f8, #3bb6f3); /* IE10 */
+    background: linear-gradient(top, #66d1f8, #3bb6f3); /* CSS3 */
 }
+.clevered.alice .jClever-element .jClever-element-file-button:hover {
+    background: #1eb5ed;
+    background: -moz-linear-gradient(top, #1eb5ed, #0c90e1);
+    /* Chrome 1-9, Safari 4-5 */
+    background: -webkit-gradient(linear, left top, left bottom, 
+                color-stop(0%,#1eb5ed), color-stop(100%,#0c90e1));
+    /* Chrome 10+, Safari 5.1+ */
+    background: -webkit-linear-gradient(top, #1eb5ed, #0c90e1);
+    background: -o-linear-gradient(top, #1eb5ed, #0c90e1); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #1eb5ed, #0c90e1); /* IE10 */
+    background: linear-gradient(top, #1eb5ed, #0c90e1); /* CSS3 */
+}
+.clevered.alice .jClever-element .jClever-element-file-button>span {
+    display: block;
+    border: 1px solid #63d0f7;
+    border-right: 0px;
+    border-bottom: 0px;
+    text-align: center;
+}
+.clevered.alice .jClever-element .jClever-element-file-button>span>span {
+    line-height: 29px;
+    color: #fff;
+    text-align: center;
+    display:-moz-inline-box; display:inline-block; *zoom: 1; *display:inline;
+    vertical-align: middle;
+}
+
 .clevered.alice .input-file-helper {
     width: 100px;
-    height: 25px;
+    height: 32px;
     position: absolute;
     top: 0px;
     right: 0px;
@@ -467,9 +532,7 @@
 }
 
 .clevered.alice .jClever-element.focused .jClever-element-file-name {
-    -moz-box-shadow: inset 0 0 5px #000; /* Для Firefox */
-    -webkit-box-shadow: inset 0 0 5px #000; /* Для Safari и Chrome */
-    box-shadow: inset 0 0 5px #000; /* Параметры тени */
+    
 }
 
 .clevered.alice .jClever-error-label {
