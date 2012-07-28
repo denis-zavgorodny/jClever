@@ -28,14 +28,10 @@
     color: #000;
 }
 .clevered.alice .focused .jClever-element-checkbox-twins {
-    -moz-box-shadow: inset 0 0 5px #000; /* Для Firefox */
-    -webkit-box-shadow: inset 0 0 5px #000; /* Для Safari и Chrome */
-    box-shadow: inset 0 0 5px #000; /* Параметры тени */
+    
 }
 .clevered.alice .focused .jClever-element-radio-twins {
-    -moz-box-shadow: inset 0 0 5px #000; /* Для Firefox */
-    -webkit-box-shadow: inset 0 0 5px #000; /* Для Safari и Chrome */
-    box-shadow: inset 0 0 5px #000; /* Параметры тени */
+    
 }
 
 
@@ -212,12 +208,38 @@
 
 .clevered.alice .jClever-element-checkbox-twins {
     display: block;
-    width: 15px;
-    height: 15px;
-    background: url(../images/checkbox.png) no-repeat left bottom;
+    width: 18px;
+    height: 18px;
+    position: relative;
 }
-.clevered.alice .jClever-element-checkbox-twins.checked {
+.clevered.alice .jClever-element-checkbox-twins .jClever-element-checkbox-twins-element {
+    background: url(../images/checkbox.png) no-repeat left bottom;
+    display: block;
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 4;
+}
+.clevered.alice .jClever-element.focused .jClever-element-checkbox-twins .jClever-element-checkbox-twins-element {
+    background-position: right bottom;
+}
+.clevered.alice .jClever-element-checkbox-twins .jClever-element-checkbox-twins-color {
+    background: #64D0F8;
+    display: block;
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 3;
+}
+.clevered.alice .jClever-element-checkbox-twins.checked  .jClever-element-checkbox-twins-element {
     background-position: left top;
+}
+.clevered.alice .jClever-element.focused .jClever-element-checkbox-twins.checked  .jClever-element-checkbox-twins-element {
+    background-position: right top;
 }
 
 
@@ -229,12 +251,39 @@
 
 .clevered.alice .jClever-element-radio-twins {
     display: block;
-    width: 15px;
-    height: 15px;
-    background: url(../images/radio.png) no-repeat left bottom;
+    width: 18px;
+    height: 18px;
+    position: relative;
+    overflow: hidden;
 }
-.clevered.alice .jClever-element-radio-twins.checked {
+.clevered.alice .jClever-element-radio-twins-element {
+    display: block;
+    width: 18px;
+    height: 18px;
+    background: url(../images/radio.png) no-repeat left bottom;
+    position: absolute;
+    z-index: 4;
+}
+.clevered.alice .jClever-element-radio-twins-color {
+    display:-moz-inline-box; display:inline-block; *zoom: 1; *display:inline;
+    vertical-align: middle;
+    width: 8px;
+    height: 8px;
+    background: #64d0f8;
+    position: absolute;
+    z-index: 3;
+    top:5px;
+    left: 5px;
+}
+.clevered.alice .jClever-element-radio-twins.checked .jClever-element-radio-twins-element {
     background-position: left top;
+}
+
+.clevered.alice .jClever-element.focused .jClever-element-radio-twins-element {
+    background-position: right bottom;
+}
+.clevered.alice .jClever-element.focused .jClever-element-radio-twins.checked .jClever-element-radio-twins-element {
+    background-position: right top;
 }
 
 /*
@@ -326,6 +375,7 @@
     font-size: 14px;
     color: #a3a3a3;
     background: #fff;
+    line-height: 30px;
 }
 .clevered.alice .jClever-element.focused .jClever-element-input {
     border: 1px solid #7eb3ce;
@@ -336,13 +386,14 @@
     border: 0px;
     background: none;
 }
+.clevered.alice .jClever-element-input>.jClever-element-input>.jClever-element-input {
+    border: 0px;
+}
 .clevered.alice .jClever-element.focused .jClever-element-input>.jClever-element-input {
     border: 0px;
     background: none;
 }
-.clevered.alice .jClever-element-input>.jClever-element-input>.jClever-element-input {
-    border: 0px;
-}
+
 .clevered.alice .input-type-text {
     line-height: 30px;
     padding: 0 10px;
@@ -350,6 +401,13 @@
     color: #a3a3a3;
     border: 0px;
     width: 220px;
+    height: 30px;
+
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    behavior: url(jCleverTemplate/alice/css/PIE.htc);
+    position: relative;
 }
 .clevered.alice .jClever-element.focused .input-type-text {
     color: #000;
@@ -423,7 +481,7 @@
  *
  */
 .clevered.alice .jClever-element-file {
-    width: 300px;
+    width: 311px;
     height: 32px;
     overflow: hidden;
 } 
@@ -467,12 +525,12 @@
 
 .clevered.alice .jClever-element .jClever-element-file-button {
     display: block;
-    width: 99px;
+    width: 110px;
     height: 30px;
     float: left;
     background: none;
     margin: 0px 0 0 0;
-    line-height: 30px;
+    line-height: 29px;
     font-size: 14px;
     border: 1px solid #5591b5;
     cursor: pointer;
@@ -495,7 +553,7 @@
     background: -ms-linear-gradient(top, #66d1f8, #3bb6f3); /* IE10 */
     background: linear-gradient(top, #66d1f8, #3bb6f3); /* CSS3 */
 }
-.clevered.alice .jClever-element .jClever-element-file-button:hover {
+.clevered.alice .jClever-element .jClever-element-file:hover .jClever-element-file-button {
     background: #1eb5ed;
     background: -moz-linear-gradient(top, #1eb5ed, #0c90e1);
     /* Chrome 1-9, Safari 4-5 */
@@ -523,12 +581,13 @@
 }
 
 .clevered.alice .input-file-helper {
-    width: 100px;
+    width: 111px;
     height: 32px;
     position: absolute;
     top: 0px;
     right: 0px;
     overflow: hidden;
+    z-index: 10;
 }
 
 .clevered.alice .jClever-element.focused .jClever-element-file-name {

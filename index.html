@@ -16,6 +16,13 @@
 
     
     <script src="js/jClever.js" type="text/javascript" charset="utf-8"></script>
+
+    <style type="text/css">
+        .form-wrapper {
+            width: 900px;
+            margin: 0px auto;
+        }
+    </style>
     <script type="text/javascript">
         var api = {};
         jQuery(document).ready(function(){
@@ -39,87 +46,88 @@
     </script>
 </head>
 <body>
-    <h1>jClever Forms example</h1>
-    <form action="#" method="get" class="jClever">
-        <div class="row">
-            <label for="select1">Label 1</label>
-            <select name="select1" class="test" id="select1">
-                <option value="1">Trebuchet MS</option>
-                <option value="2">Text two</option>
-                <option value="3">Text three</option>
-                <option value="4">Text four</option>
-            </select>
-        </div>
-        <div class="row">
-            <label for="select2">Label 2</label>
-            <select name="select2" class="test" id="select2">
-                <option value="1">A Text one</option>
-                <option value="2">B Text two</option>
-                <option value="3">c Text three</option>
-                <option selected="selected" value="4">Text four</option>
-                <option value="5">D Text very very long long text text Text very very long long text text Text very very long long text text</option>
-                <option value="6">1 Text two</option>
-                <option value="7">2 Text three</option>
-                <option value="8">3Text four</option>
-                <option value="9">4Text one</option>
-                <option value="10">Б Text two</option>
-                <option value="11">Text three</option>
-                <option value="12">Text four</option>
-            </select>
-        </div>
+    <div class="form-wrapper">
+        <h1>jClever Forms example</h1>
+        <form action="#" method="get" class="jClever">
+            <div class="row">
+                <label for="select1">Label 1</label>
+                <select name="select1" class="test" id="select1">
+                    <option value="1">Trebuchet MS</option>
+                    <option value="2">Text two</option>
+                    <option value="3">Text three</option>
+                    <option value="4">Text four</option>
+                </select>
+            </div>
+            <div class="row">
+                <label for="select2">Label 2</label>
+                <select name="select2" class="test" id="select2">
+                    <option value="1">A Text one</option>
+                    <option value="2">B Text two</option>
+                    <option value="3">c Text three</option>
+                    <option selected="selected" value="4">Text four</option>
+                    <option value="5">D Text very very long long text text Text very very long long text text Text very very long long text text</option>
+                    <option value="6">1 Text two</option>
+                    <option value="7">2 Text three</option>
+                    <option value="8">3Text four</option>
+                    <option value="9">4Text one</option>
+                    <option value="10">Б Text two</option>
+                    <option value="11">Text three</option>
+                    <option value="12">Text four</option>
+                </select>
+            </div>
 
-        <div class="row">
-            <input type="checkbox" name="checkbox1" value="1" id="checkbox1" checked="checked" />
-            <label for="checkbox1">Label 3</label>
-        </div>
-        <div class="row">        
-            <input type="checkbox" name="checkbox2" value="1" id="checkbox2" />
-            <label for="checkbox2">Label 3.1</label>            
-        </div>
-        <div class="row">        
-            <input type="checkbox" name="checkbox3" value="1" id="checkbox3" />
-            <label for="checkbox3">Label 3.2</label>            
-        </div>
-        <div class="row">        
-            <input type="radio" name="radio1" value="1" id="radio1" />
-            <label for="radio1">Label 4</label>            
-        </div>
-        <div class="row">        
-            <input type="radio" name="radio1" value="2" id="radio2" />
-            <label for="radio2">Label 4.1</label>            
-        </div>
-        <div class="row">        
-            <input type="radio" name="radio1" value="3" id="radio3"  checked="checked" />
-            <label for="radio3">Label 4.2</label>            
-        </div>
-        <div class="row">        
-            <input type="radio" name="radio2" value="3" id="radio4" />
-            <label for="radio4">Label 4.2-1</label>            
-        </div>
-        <div class="row">                
-            <input type="radio" name="radio2" value="3" id="radio5" />
-            <label for="radio5">Label 4.2-2</label>            
-        </div>
-        <div class="row">
-            <label for="file">File Input</label><br />
-            <input type="file" name="file" class="input-type-text" value="" id="file" />
-        </div>
-        <div class="row">
-            <label for="file2">File Input2</label><br />
-            <input type="file" name="file2" class="input-type-text" value="" id="file2" />
-        </div>
-        <div class="row">
-            <label for="text">Input</label><br />
-            <input tabindex="13" data-placeholder="Введите текст" type="text" name="text" class="input-type-text" value="text" id="text" />
-        </div>
-        <div class="row">
-            <label for="textarea">textarea</label><br />
-            <textarea  data-placeholder="Введите в поле текст" tabindex="13" name="textarea" cols="50" rows="10" id="textarea" ></textarea>
-        </div>
-        
-        <input  tabindex="14" type="submit" value="Отправить" />
-        <input tabindex="15" type="reset" value="Сбросить" />
-    </form>
-
+            <div class="row">
+                <input type="checkbox" name="checkbox1" value="1" id="checkbox1" checked="checked" />
+                <label for="checkbox1">Label 3</label>
+            </div>
+            <div class="row">        
+                <input type="checkbox" name="checkbox2" value="1" id="checkbox2" />
+                <label for="checkbox2">Label 3.1</label>            
+            </div>
+            <div class="row">        
+                <input type="checkbox" name="checkbox3" value="1" id="checkbox3" />
+                <label for="checkbox3">Label 3.2</label>            
+            </div>
+            <div class="row">        
+                <input type="radio" name="radio1" value="1" id="radio1" />
+                <label for="radio1">Label 4</label>            
+            </div>
+            <div class="row">        
+                <input type="radio" name="radio1" value="2" id="radio2" />
+                <label for="radio2">Label 4.1</label>            
+            </div>
+            <div class="row">        
+                <input type="radio" name="radio1" value="3" id="radio3"  checked="checked" />
+                <label for="radio3">Label 4.2</label>            
+            </div>
+            <div class="row">        
+                <input type="radio" name="radio2" value="3" id="radio4" />
+                <label for="radio4">Label 4.2-1</label>            
+            </div>
+            <div class="row">                
+                <input type="radio" name="radio2" value="3" id="radio5" />
+                <label for="radio5">Label 4.2-2</label>            
+            </div>
+            <div class="row">
+                <label for="file">File Input</label><br />
+                <input type="file" name="file" class="" value="" id="file" />
+            </div>
+            <div class="row">
+                <label for="file2">File Input2</label><br />
+                <input type="file" name="file2" class="" value="" id="file2" />
+            </div>
+            <div class="row">
+                <label for="text">Input</label><br />
+                <input tabindex="13" data-placeholder="Введите текст" type="text" name="text" class="input-type-text" value="text" id="text" />
+            </div>
+            <div class="row">
+                <label for="textarea">textarea</label><br />
+                <textarea  data-placeholder="Введите в поле текст" tabindex="13" name="textarea" cols="50" rows="10" id="textarea" ></textarea>
+            </div>
+            
+            <input  tabindex="14" type="submit" value="Отправить" />
+            <input tabindex="15" type="reset" value="Сбросить" />
+        </form>
+    </div>
 </body>
 </html>

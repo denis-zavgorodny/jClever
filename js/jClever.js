@@ -430,7 +430,7 @@
                             });
                         },
                         checkboxActivate: function(checkbox, tabindex) {
-                            var _checkbox = $(checkbox).wrap('<div class="jClever-element" tabindex="'+tabindex+'">').addClass('hidden').after('<span class="jClever-element-checkbox-twins"></span>');
+                            var _checkbox = $(checkbox).wrap('<div class="jClever-element" tabindex="'+tabindex+'">').addClass('hidden').after('<span class="jClever-element-checkbox-twins"><span class="jClever-element-checkbox-twins-element"></span><span class="jClever-element-checkbox-twins-color"></span></span>');
                             $(checkbox).parents('.jClever-element').append(options.errorTemplate);
                             if ($(checkbox).is(':checked'))
                                 $(checkbox).next('.jClever-element-checkbox-twins').addClass('checked');
@@ -467,7 +467,7 @@
                             $(checkbox).parent('.jClever-element').focus(function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
                         },
                         radioActivate: function(radio, tabindex) {
-                            $(radio).wrap('<div class="jClever-element" tabindex="'+tabindex+'">').addClass('hidden').after('<span class="jClever-element-radio-twins"></span>');
+                            $(radio).wrap('<div class="jClever-element" tabindex="'+tabindex+'">').addClass('hidden').after('<span class="jClever-element-radio-twins"><span class="jClever-element-radio-twins-element"></span><span class="jClever-element-radio-twins-color"></span></span>');
                             $(radio).parents('.jClever-element').append(options.errorTemplate);
                             if ($(radio).is(':checked'))
                                 $(radio).next('.jClever-element-radio-twins').addClass('checked');
