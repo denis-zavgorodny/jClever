@@ -572,14 +572,29 @@
                             scrollingAPI: jScrollApi
                             
                         };
-        this.publicMethods = publicApi;    
+        this.publicMethods = publicApi;
+        
         return this.each(function(){
             if (!$(this).hasClass('clevered')) {
                 $(this).addClass('clevered').addClass(options.selfClass);
                 methods.init(this);
+                $.data($(this).get(0), 'publicApi', publicApi);
             }
         });
     };
+    $.fn.jCleverAPI = function(methodName) {
+        if (this.length>1) return false;
+        var publicApi = $.data($(this).get(0), 'publicApi');
+        var params = [];
+        for(var i = 1; i< arguments.length; i++) {
+            params[i-1] = arguments[i];
+        }
+        if (typeof publicApi[methodName] == 'function')
+            return publicApi[methodName].apply(arguments.callee, params);
+        else
+            return publicApi[methodName];
+    };
+    
     /**************************Helpers********************/
     jQuery.jClever = true;
     //Thanks jNiсe for idea
