@@ -332,7 +332,7 @@
                                 selectText.text($(select).find('option:selected').text());
                             else
                                 selectText.text($(select).find('option:eq(0)').text());
-                            selectObject.on('click', '.jClever-element-select-center, .jClever-element-select-right',function(){
+                            selectObject.on('click.jClever', '.jClever-element-select-center, .jClever-element-select-right',function(){
                                 if (selectListWrapper.is(':visible')) {
                                     $('.jClever-element-select-list-wrapper').hide();
                                 } else {
@@ -342,10 +342,10 @@
                                 }
                             });
 
-                            selectListWrapper.blur(function(){
+                            selectListWrapper.on('blur.jClever', function(){
                                 $(this).hide();
                             });
-                            selectObject.on('click','li' ,function(event){
+                            selectObject.on('click.jClever','li' ,function(event){
                                 var value = $(this).attr('data-value');
                                 selectList.find('li.active').removeClass('active');
                                 $(this).addClass('active');
@@ -355,10 +355,10 @@
                                 selectListWrapper.hide();
                                 return false;
                             });
-                            $(select).change(function(){
+                            $(select).on('change.jClever', function(){
                                 selectText.text($(this).find(':selected').text());
                             });
-                            $(select).bind('update',function(){
+                            $(select).on('update.jClever',function(){
                                 var ul = $(this).parents('.jClever-element-select-wrapper')
                                         .find('.jClever-element-select-list')
                                         .empty();
@@ -367,14 +367,14 @@
                                 });
                                 $(this).parents('.jClever-element-select-wrapper').find('.jClever-element-select-center').text($(select).find('option:eq(0)').text());    
                             });
-                            selectObject.focus(function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
-                            selectLabel.click(function(){
+                            selectObject.on('focus.jClever', function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
+                            selectLabel.on('click.jClever', function(){
                                 selectObject.trigger('focus');
                                 selectListWrapper.show();
                                 jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
                             });
                             // Hook keydown
-                            selectObject.keydown(function(e){
+                            selectObject.on('keydown.jClever', function(e){
                                 var selectedIndex = $(select)[0].selectedIndex;
                                 switch(e.keyCode){
                                     case 40: /* Down */
@@ -434,7 +434,7 @@
                             $(checkbox).parents('.jClever-element').append(options.errorTemplate);
                             if ($(checkbox).is(':checked'))
                                 $(checkbox).next('.jClever-element-checkbox-twins').addClass('checked');
-                            $(checkbox).on('change', function(){
+                            $(checkbox).on('change.jClever', function(){
                                 if ($(this).is(':checked'))
                                     $(checkbox).next('.jClever-element-checkbox-twins').addClass('checked');
                                 else
@@ -448,7 +448,7 @@
                                 $(this).prev('input[type=checkbox]').trigger('change');    
                             });
                             // Hook keydown
-                            $(checkbox).parent('.jClever-element').keydown(function(e){
+                            $(checkbox).parent('.jClever-element').on('keydown.jClever', function(e){
                                 var _checkbox = $(this).find('input[type=checkbox]');
                                 switch(e.keyCode){
                                     case 32: /* Space */
@@ -471,7 +471,7 @@
                             $(radio).parents('.jClever-element').append(options.errorTemplate);
                             if ($(radio).is(':checked'))
                                 $(radio).next('.jClever-element-radio-twins').addClass('checked');
-                            $(radio).on('change', function(){
+                            $(radio).on('change.jClever', function(){
                                 if ($(this).is(':checked'))
                                     $(radio).next('.jClever-element-radio-twins').addClass('checked');
                                 else
@@ -489,7 +489,7 @@
                             });
 
                             // Hook keydown
-                            $(radio).parent('.jClever-element').keydown(function(e){
+                            $(radio).parent('.jClever-element').on('keydown.jClever', function(e){
                                 var _radio = $(this).find('input[type=radio]');
                                 switch(e.keyCode){
                                     case 32: /* Space */
@@ -518,7 +518,7 @@
                             $(file).parents('.jClever-element').append(options.errorTemplate);
                             
                             var jCleverElementFileName = $(file).parents('.jClever-element').find('.jClever-element-file-name>span>span');
-                            $(file).change(function(){
+                            $(file).on('change.jClever', function(){
                                 var _name = $(this).val();
                                 _name = _name.split("\\");
                                 _name = _name[_name.length-1];
@@ -526,7 +526,7 @@
                             });
 
                             // Hook keydown
-                            $(file).parents('.jClever-element').keydown(function(e){
+                            $(file).parents('.jClever-element').on('keydown.jClever', function(e){
                                 switch(e.keyCode){
                                     case 32: /* Space */
                                         $(file).trigger('click');
@@ -543,20 +543,20 @@
                         inputActivate: function(input, tabindex) {
                             $(input).wrap('<div class="jClever-element" tabindex="'+tabindex+'"><div class="jClever-element-input"><div class="jClever-element-input"><div class="jClever-element-input">');
                             $(input).parents('.jClever-element').append(options.errorTemplate);
-                            $(input).on('focusin', function(){
+                            $(input).on('focusin.jClever', function(){
                                 $(this).parents('.jClever-element').addClass('focused');
                             });
-                            $(input).on('focusout', function(){
+                            $(input).on('focusout.jClever', function(){
                                 $(this).parents('.jClever-element').removeClass('focused');
                             });
                         },
                         textareaActivate: function(textarea, tabindex) {
                             $(textarea).wrap('<div class="jClever-element" tabindex="'+tabindex+'"><div class="jClever-element-textarea"><div class="jClever-element-textarea"><div class="jClever-element-textarea">');
                             $(textarea).parents('.jClever-element').append(options.errorTemplate);
-                            $(textarea).on('focusin', function(){
+                            $(textarea).on('focusin.jClever', function(){
                                 $(this).parents('.jClever-element').addClass('focused');
                             });
-                            $(textarea).on('focusout', function(){
+                            $(textarea).on('focusout.jClever', function(){
                                 $(this).parents('.jClever-element').removeClass('focused');
                             });
                         }
