@@ -62,11 +62,10 @@
             }
             
         };
-                          
+        var innerCounter = 9999;
+        var tabindex = 1;
         var methods = {
                         init: function(element) {
-                            var innerCounter = 9999;
-                            var tabindex = 1;
                             //validate form
                             if (options.validate.state === true) {
                                 
@@ -559,6 +558,22 @@
                             $(textarea).on('focusout.jClever', function(){
                                 $(this).parents('.jClever-element').removeClass('focused');
                             });
+                        },
+                        elementAdd: function(selector, type) {
+                            switch(type) {
+                                case "input":
+                                            break;
+                                case "select":
+                                            methods.selectActivate(selector, innerCounter, tabindex);
+                                            break;
+                                case "checkbox":
+                                            break;
+                                case "radio":
+                                            break;
+                                case "textarea":
+                                            break;
+                                default:             
+                            }
                         }
         };
         var publicApi = {
@@ -569,7 +584,8 @@
                             selectAdd: function(select) {methods.selectAdd(select);},
                             checkboxSetState: function(checkbox, value) {if ($(checkbox).length) methods.checkboxSetState($(checkbox), value); else return false},                            
                             radioSetState: function(radio, value) {if ($(radio).length) methods.radioSetState($(radio), value); else return false;},                            
-                            scrollingAPI: jScrollApi
+                            scrollingAPI: jScrollApi,
+                            elementAdd: function(selector, type) {methods.elementAdd(selector, type)}
                             
                         };
         this.publicMethods = publicApi;
