@@ -213,28 +213,28 @@
                                 methods.reset();
                             });
                         },
-                        destroy: function() {
+                        destroy: function(form) {
                             //select strip
-                            $('form.clevered').find('select').each(function(){
+                            form.find('select').each(function(){
                                 var tmp = $(this).clone();
                                 $(this).parents('.jClever-element').empty().after(tmp);
                             });
                             //checkbox strip
-                            $('form.clevered').find('input[type=checkbox]').each(function(){
+                            form.find('input[type=checkbox]').each(function(){
                                 var tmp = $(this).removeClass('hidden').clone();
                                 $(this).parents('.jClever-element').empty().after(tmp);
                             });
                             //radio strip
-                            $('form.clevered').find('input[type=radio]').each(function(){
+                            form.find('input[type=radio]').each(function(){
                                 var tmp = $(this).removeClass('hidden').clone();
                                 $(this).parents('.jClever-element').empty().after(tmp);
                             });
                             
-                            $('.jClever-element').remove();
-                            $('form.clevered').removeClass('clevered');
+                            form.find('.jClever-element').remove();
+                            form.removeClass('clevered');
                         },
-                        reset: function() {
-                            $('form.clevered').find('input[type=radio], input[type=checkbox], select, input[type=file]').each(function(){
+                        reset: function(form) {
+                            form.find('input[type=radio], input[type=checkbox], select, input[type=file]').each(function(){
                                 if (formState[$(this).attr('name')])
                                     switch(formState[$(this).attr('name')].type) {
                                         case "select":
@@ -593,8 +593,8 @@
                 methods.init(this);
                 publicApi = {
                             selectCollection: selects,
-                            destroy: function() {methods.destroy()},
-                            reset: function() {methods.reset()},
+                            destroy: function(form) {methods.destroy(form)},
+                            reset: function(form) {methods.reset(form)},
                             selectSetPosition: function(select, value) {methods.selectSetPosition(select, value);},
                             selectAdd: function(select) {methods.selectAdd(select);},
                             checkboxSetState: function(checkbox, value) {if ($(checkbox).length) methods.checkboxSetState($(checkbox), value); else return false},                            
@@ -611,14 +611,19 @@
     $.fn.jCleverAPI = function(methodName) {
         if (this.length>1) return false;
         var publicApi = $.data($(this).get(0), 'publicApi');
-        console.log(publicApi);
         var params = [];
         for(var i = 1; i< arguments.length; i++) {
             params[i-1] = arguments[i];
         }
-        params[arguments.length-1] = publicApi;
+        
         if (typeof publicApi[methodName] == 'function') {
+            if (arguments.length == 1)
+                params = new Array($(this));
+            else
+                params[arguments.length-1] = publicApi;
+
             var newAPI = publicApi[methodName].apply(arguments.callee, params);
+            
             if (typeof newAPI == 'object')
                 $.data($(this).get(0), 'publicApi', newAPI);
             else
