@@ -35,7 +35,7 @@
                                 },
                                 options
                                 );
-        var selects = [];                        
+        var selects = {};                        
         var jScrollApi = [];
         var formState = {};
 
@@ -290,10 +290,9 @@
                         fileSetState: function(file, value) {
                             file.parents('.jClever-element-file').find('.jClever-element-file-name').text(value);
                         },
-                        selectActivate: function(select, innerCounter, tabindex) {
-                            jScrollApi[$(select).attr('name')] = {};
-                            selects[$(select).attr('name')] = {
-                                object: $(select),
+                        selectCollectionExtend: function(collection, element) {
+                            collection[element.attr('name')] = {
+                                object: element,
                                 updateFromHTML: function(data){
                                     $('select[name='+this.object[0].name+']').html(data).trigger('update');
                                     return false;
@@ -307,6 +306,11 @@
                                     return false;
                                 }
                             };
+                            return collection;
+                        },
+                        selectActivate: function(select, innerCounter, tabindex) {
+                            jScrollApi[$(select).attr('name')] = {};
+                            selects = methods.selectCollectionExtend(selects, $(select));
                             var self_width = $(select).width();
                             $(select).wrap('<div class="jClever-element" style="z-index:'+innerCounter+';"><div class="jClever-element-select-wrapper" style="width:'+self_width+'px; z-index:'+innerCounter+';"><div class="jClever-element-select-wrapper-design"><div class="jClever-element-select-wrapper-design">').after('<span class="jClever-element-select-center"></span><span class="jClever-element-select-right"><span>v</span></span><div class="jClever-element-select-list-wrapper" style="z-index:'+innerCounter+';"><ul class="jClever-element-select-list"></ul></div>');
                             var selectObject = $(select).parents('.jClever-element').attr('tabindex',tabindex);
@@ -559,12 +563,14 @@
                                 $(this).parents('.jClever-element').removeClass('focused');
                             });
                         },
-                        elementAdd: function(selector, type) {
+                        elementAdd: function(selector, type, selfAPIObject) {
                             switch(type) {
                                 case "input":
                                             break;
                                 case "select":
                                             methods.selectActivate(selector, innerCounter, tabindex);
+                                            var result = $.extend(selects, selfAPIObject.selectCollection);
+                                            selfAPIObject.selectCollection = result;
                                             break;
                                 case "checkbox":
                                             break;
@@ -574,9 +580,18 @@
                                             break;
                                 default:             
                             }
+                            return selfAPIObject;
                         }
         };
-        var publicApi = {
+        
+        var publicApi = {};
+        this.publicMethods = publicApi;
+        
+        return this.each(function(){
+            if (!$(this).hasClass('clevered')) {
+                $(this).addClass('clevered').addClass(options.selfClass);
+                methods.init(this);
+                publicApi = {
                             selectCollection: selects,
                             destroy: function() {methods.destroy()},
                             reset: function() {methods.reset()},
@@ -585,15 +600,10 @@
                             checkboxSetState: function(checkbox, value) {if ($(checkbox).length) methods.checkboxSetState($(checkbox), value); else return false},                            
                             radioSetState: function(radio, value) {if ($(radio).length) methods.radioSetState($(radio), value); else return false;},                            
                             scrollingAPI: jScrollApi,
-                            elementAdd: function(selector, type) {methods.elementAdd(selector, type)}
+                            elementAdd: function(selector, type, selfAPIObject) {return methods.elementAdd(selector, type, selfAPIObject)}
                             
                         };
-        this.publicMethods = publicApi;
-        
-        return this.each(function(){
-            if (!$(this).hasClass('clevered')) {
-                $(this).addClass('clevered').addClass(options.selfClass);
-                methods.init(this);
+                selects = {};        
                 $.data($(this).get(0), 'publicApi', publicApi);
             }
         });
@@ -601,13 +611,20 @@
     $.fn.jCleverAPI = function(methodName) {
         if (this.length>1) return false;
         var publicApi = $.data($(this).get(0), 'publicApi');
+        console.log(publicApi);
         var params = [];
         for(var i = 1; i< arguments.length; i++) {
             params[i-1] = arguments[i];
         }
-        if (typeof publicApi[methodName] == 'function')
-            return publicApi[methodName].apply(arguments.callee, params);
-        else
+        params[arguments.length-1] = publicApi;
+        if (typeof publicApi[methodName] == 'function') {
+            var newAPI = publicApi[methodName].apply(arguments.callee, params);
+            if (typeof newAPI == 'object')
+                $.data($(this).get(0), 'publicApi', newAPI);
+            else
+                newAPI = publicApi;
+            return newAPI;
+        } else
             return publicApi[methodName];
     };
     
