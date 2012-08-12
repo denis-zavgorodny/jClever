@@ -1,5 +1,5 @@
 /*
-*   jClever HEAD:v 1.0 :)
+*   jClever HEAD:v 1.2 :)
 *
 *   by Denis Zavgorodny
 *   zavgorodny@alterego.biz.ua
@@ -585,7 +585,7 @@
         };
         
         var publicApi = {};
-        this.publicMethods = publicApi;
+        //this.publicMethods = publicApi;
         
         return this.each(function(){
             if (!$(this).hasClass('clevered')) {
@@ -595,16 +595,17 @@
                             selectCollection: selects,
                             destroy: function(form) {methods.destroy(form)},
                             reset: function(form) {methods.reset(form)},
-                            selectSetPosition: function(select, value) {methods.selectSetPosition(select, value);},
+                            selectSetPosition: function(select, value) {if ($(select).length) methods.selectSetPosition($(select), value);},
                             selectAdd: function(select) {methods.selectAdd(select);},
                             checkboxSetState: function(checkbox, value) {if ($(checkbox).length) methods.checkboxSetState($(checkbox), value); else return false},                            
                             radioSetState: function(radio, value) {if ($(radio).length) methods.radioSetState($(radio), value); else return false;},                            
-                            scrollingAPI: jScrollApi,
+                            //scrollingAPI: jScrollApi,
                             elementAdd: function(selector, type, selfAPIObject) {return methods.elementAdd(selector, type, selfAPIObject)}
                             
                         };
                 selects = {};        
                 $.data($(this).get(0), 'publicApi', publicApi);
+                return true;
             }
         });
     };
