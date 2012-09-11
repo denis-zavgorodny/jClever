@@ -209,8 +209,8 @@
                                     tabindex++;
                             });
                             //Hook reset event
-                            $('button[type=reset]').click(function(){
-                                methods.reset();
+                            $(element).find('button[type=reset]').click(function(){
+                                methods.reset($(element));
                             });
                         },
                         destroy: function(form) {
