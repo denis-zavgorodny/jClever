@@ -1,5 +1,5 @@
 /*
-*   jClever HEAD:v 1.2 :)
+*   jClever HEAD:v 1.2.1 :)
 *
 *   by Denis Zavgorodny
 *   zavgorodny@alterego.biz.ua
@@ -377,6 +377,8 @@
                                 jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
                             });
                             // Hook keydown
+                            var charText = '';
+                            var queTime = null;
                             selectObject.on('keydown.jClever', function(e){
                                 var selectedIndex = $(select)[0].selectedIndex;
                                 switch(e.keyCode){
@@ -407,17 +409,37 @@
                                             return true;
                                            
                                     default: /* Key select */
-                                        var tmpIndex = 0;
-                                        var count = $(select)[0].options.length;
-                                        for (var key  = 0; key < count; key ++) {
-                                            if (typeof $(select)[0].options[key].text == 'string') {
-                                                var localString = $(select)[0].options[key].text.toUpperCase();
-                                                if (String.fromCharCode(e.keyCode) == localString[0]) {
-                                                    selectedIndex = tmpIndex;
-                                                }    
-                                                tmpIndex++;
+                                        //$(select).focus();
+                                        charText += String.fromCharCode(e.keyCode);
+                                        clearTimeout(queTime);
+                                        queTime = setTimeout(function(){
+                                            var tmpIndex = 0;
+                                            var count = $(select)[0].options.length;
+                                            for (var key  = 0; key < count; key ++) {
+                                                if (typeof $(select)[0].options[key].text == 'string') {
+                                                    var localString = $(select)[0].options[key].text.toUpperCase();
+                                                    var reg = new RegExp("^"+charText, "i")
+                                                    //console.log(reg.test(localString), localString, charText);
+                                                    if (reg.test(localString)) {
+                                                        selectedIndex = tmpIndex;
+
+                                                        $(select)[0].selectedIndex = selectedIndex;
+                                                        selectObject.find('li.selected').removeClass('selected');
+                                                        selectObject.find('li:eq('+selectedIndex+')').addClass('selected');
+                                                        selectObject.find('option').removeAttr('selected');
+                                                        selectObject.find('option:eq('+selectedIndex+')').attr('selected','selected');
+                                                        $(select).trigger('change');
+                                                        if (selectListWrapper.is(':visible'))
+                                                            jScrollApi[$(select).attr('name')].scrollToElement(selectObject.find('li:eq('+selectedIndex+')'));
+
+                                                        break;    
+                                                    }
+                                                    tmpIndex++;
+                                                }
                                             }
-                                        }
+                                            charText = '';
+                                        }, 500);
+                                            
                                         break;
                                         return false;
                                 }
