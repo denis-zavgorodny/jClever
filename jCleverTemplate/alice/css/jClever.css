@@ -6,6 +6,12 @@
 .clevered.alice label {
     color: #000000;
     font-size: 18px;
+    padding: 0 0 0 0;
+    border-bottom: 1px dashed #fff;
+}
+.clevered.alice label.active {
+    border-bottom: 1px dashed #7eb3ce;
+    
 }
 .clevered.alice .hidden {
     opacity: 0;

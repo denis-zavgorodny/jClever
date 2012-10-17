@@ -456,24 +456,31 @@
                         },
                         checkboxActivate: function(checkbox, tabindex) {
                             var _checkbox = $(checkbox).wrap('<div class="jClever-element" tabindex="'+tabindex+'">').addClass('hidden').after('<span class="jClever-element-checkbox-twins"><span class="jClever-element-checkbox-twins-element"></span><span class="jClever-element-checkbox-twins-color"></span></span>');
-                            $(checkbox).parents('.jClever-element').append(options.errorTemplate);
-                            if ($(checkbox).is(':checked'))
-                                $(checkbox).next('.jClever-element-checkbox-twins').addClass('checked');
-                            $(checkbox).on('change.jClever', function(){
-                                if ($(this).is(':checked'))
-                                    $(checkbox).next('.jClever-element-checkbox-twins').addClass('checked');
-                                else
-                                    $(checkbox).next('.jClever-element-checkbox-twins').removeClass('checked');
+                            var checkboxId = _checkbox.attr('id');
+                            _checkbox.parents('.jClever-element').append(options.errorTemplate);
+                            if (_checkbox.is(':checked')) {
+                                _checkbox.next('.jClever-element-checkbox-twins').addClass('checked');
+                                $('label[for='+checkboxId+']').addClass('active');
+                            }    
+                            _checkbox.on('change.jClever', function(){
+                                if ($(this).is(':checked')) {
+                                    _checkbox.next('.jClever-element-checkbox-twins').addClass('checked');
+                                    $('label[for='+checkboxId+']').addClass('active');
+                                } else {
+                                    _checkbox.next('.jClever-element-checkbox-twins').removeClass('checked');
+                                    $('label[for='+checkboxId+']').removeClass('active');
+                                }    
                             });
-                            $(checkbox).next('.jClever-element-checkbox-twins').on('click', function(){
-                                if ($(this).prev('input[type=checkbox]').is(':checked'))
-                                    $(this).prev('input[type=checkbox]').removeAttr('checked');
+                            _checkbox.next('.jClever-element-checkbox-twins').on('click', function(){
+                                var _self = $(this);
+                                if (_self.prev('input[type=checkbox]').is(':checked'))
+                                    _self.prev('input[type=checkbox]').removeAttr('checked');
                                 else
-                                    $(this).prev('input[type=checkbox]').attr('checked', 'checked');
-                                $(this).prev('input[type=checkbox]').trigger('change');    
+                                    _self.prev('input[type=checkbox]').attr('checked', 'checked');
+                                _self.prev('input[type=checkbox]').trigger('change');    
                             });
                             // Hook keydown
-                            $(checkbox).parent('.jClever-element').on('keydown.jClever', function(e){
+                            _checkbox.parent('.jClever-element').on('keydown.jClever', function(e){
                                 var _checkbox = $(this).find('input[type=checkbox]');
                                 switch(e.keyCode){
                                     case 32: /* Space */
@@ -489,32 +496,42 @@
                                 }
                                 return false;
                             });
-                            $(checkbox).parent('.jClever-element').focus(function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
+                            _checkbox.parent('.jClever-element').focus(function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
                         },
                         radioActivate: function(radio, tabindex) {
-                            $(radio).wrap('<div class="jClever-element" tabindex="'+tabindex+'">').addClass('hidden').after('<span class="jClever-element-radio-twins"><span class="jClever-element-radio-twins-element"></span><span class="jClever-element-radio-twins-color"></span></span>');
-                            $(radio).parents('.jClever-element').append(options.errorTemplate);
-                            if ($(radio).is(':checked'))
-                                $(radio).next('.jClever-element-radio-twins').addClass('checked');
-                            $(radio).on('change.jClever', function(){
-                                if ($(this).is(':checked'))
-                                    $(radio).next('.jClever-element-radio-twins').addClass('checked');
-                                else
-                                    $(radio).next('.jClever-element-radio-twins').removeClass('checked');
+                            var _radio = $(radio).wrap('<div class="jClever-element" tabindex="'+tabindex+'">').addClass('hidden').after('<span class="jClever-element-radio-twins"><span class="jClever-element-radio-twins-element"></span><span class="jClever-element-radio-twins-color"></span></span>');
+                            var radioId = _radio.attr('id');
+                            _radio.parents('.jClever-element').append(options.errorTemplate);
+                            if (_radio.is(':checked')) {
+                                _radio.next('.jClever-element-radio-twins').addClass('checked');
+                                $('label[for='+radioId+']').addClass('active');
+                            }    
+                            _radio.on('change.jClever', function(){
+                                var _self = $(this);
+                                if (_self.is(':checked')) {
+                                    _self.next('.jClever-element-radio-twins').addClass('checked');
+                                    $('label[for='+radioId+']').addClass('active');
+                                } else {
+                                    _self.next('.jClever-element-radio-twins').removeClass('checked');
+                                    $('label[for='+radioId+']').removeClass('active');
+                                }    
                                 $('input:radio[name="'+ $(radio).attr('name') +'"]').not($(radio)).each(function(){
-                                    $(this).attr('checked',false).next('.jClever-element-radio-twins').removeClass('checked');
+                                    var _self = $(this);
+                                    _self.attr('checked',false).next('.jClever-element-radio-twins').removeClass('checked');
+                                    $('label[for='+$(this).attr('id')+']').removeClass('active');
                                 });    
                             });
-                            $(radio).next('.jClever-element-radio-twins').on('click', function(){
-                                if ($(this).prev('input[type=radio]').is(':checked'))
-                                    $(this).prev('input[type=radio]').attr('checked');
+                            _radio.next('.jClever-element-radio-twins').on('click', function(){
+                                var _self = $(this);
+                                if (_self.prev('input[type=radio]').is(':checked'))
+                                    _self.prev('input[type=radio]').attr('checked');
                                 else
-                                    $(this).prev('input[type=radio]').attr('checked', 'checked');
-                                $(this).prev('input[type=radio]').trigger('change');    
+                                    _self.prev('input[type=radio]').attr('checked', 'checked');
+                                _self.prev('input[type=radio]').trigger('change');    
                             });
 
                             // Hook keydown
-                            $(radio).parent('.jClever-element').on('keydown.jClever', function(e){
+                            _radio.parent('.jClever-element').on('keydown.jClever', function(e){
                                 var _radio = $(this).find('input[type=radio]');
                                 switch(e.keyCode){
                                     case 32: /* Space */
@@ -532,7 +549,7 @@
                             });
 
                             
-                            $(radio).parent('.jClever-element').focus(function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
+                            _radio.parent('.jClever-element').focus(function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
                         },
                         submitActivate: function(button, tabindex) {
                             var value = $(button).attr('value');
