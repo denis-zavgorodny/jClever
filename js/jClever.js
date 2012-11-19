@@ -462,6 +462,11 @@
                                 _checkbox.next('.jClever-element-checkbox-twins').addClass('checked');
                                 $('label[for='+checkboxId+']').addClass('active');
                             }    
+                            if ($(checkbox).attr('disabled')) {
+                                _checkbox.parents('.jClever-element').addClass('disabled')
+                                return;
+                            }
+                                
                             _checkbox.on('change.jClever', function(){
                                 if ($(this).is(':checked')) {
                                     _checkbox.next('.jClever-element-checkbox-twins').addClass('checked');
@@ -506,6 +511,11 @@
                                 _radio.next('.jClever-element-radio-twins').addClass('checked');
                                 $('label[for='+radioId+']').addClass('active');
                             }    
+                            if ($(radio).attr('disabled')) {
+                                _radio.parents('.jClever-element').addClass('disabled')
+                                return;
+                            }
+                                
                             _radio.on('change.jClever', function(){
                                 var _self = $(this);
                                 if (_self.is(':checked')) {

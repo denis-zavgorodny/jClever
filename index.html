@@ -15,7 +15,7 @@
     <script type="text/javascript" src="js/jquery.jscrollpane.min.js"></script>
 
     
-    <script src="js/jClever.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jClever.min.js" type="text/javascript" charset="utf-8"></script>
 
     <style type="text/css">
         .form-wrapper {
@@ -31,7 +31,7 @@
         var api = {};
         jQuery(document).ready(function(){
             if (jQuery.jClever)
-                api = jQuery('.jClever').jClever({
+                jQuery('.jClever').jClever({
                     validate: {
                         state: true,
                         items: {
@@ -97,7 +97,7 @@
                             <div class="row" id="target-row">
                             </div>
                             <div class="row">
-                                <input type="checkbox" name="checkbox1" value="1" id="checkbox1" checked="checked" />
+                                <input type="checkbox" disabled="disabled" name="checkbox1" value="1" id="checkbox1" checked="checked" />
                                 <label for="checkbox1">Label 3</label>
                             </div>
                             <div class="row">        
@@ -186,7 +186,7 @@
                                 <label for="radio4-f2">Label 4.2-1</label>            
                             </div>
                             <div class="row">                
-                                <input type="radio" name="radio2" value="3" id="radio5-f2" />
+                                <input type="radio" disabled="disabled" name="radio2" value="3" id="radio5-f2" />
                                 <label for="radio5-f2">Label 4.2-2</label>            
                             </div>
                             <div class="row">
