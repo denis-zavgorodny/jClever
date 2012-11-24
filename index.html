@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
@@ -15,7 +15,7 @@
     <script type="text/javascript" src="js/jquery.jscrollpane.min.js"></script>
 
     
-    <script src="js/jClever.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jClever.js" type="text/javascript" charset="utf-8"></script>
 
     <style type="text/css">
         .form-wrapper {
@@ -47,10 +47,14 @@
                 });
 
             var _new = '<select name="select_new" class="test" id="select-new" style="width: 200px;"><option value="1">Trebuchet MS</option><option value="2">Text two</option><option value="3">Text three</option><option value="4">Text four</option></select>';
+            _new += '<input type="checkbox" name="ch11" id="checkbox-new" /><label for="checkbox-new">New checkbox</label>';
+            _new += '<input type="radio" name="r11" id="radio-new" /><label for="radio-new">New radiobox</label>';
             jQuery('#target-row').html(_new);
             jQuery('#form-1').jCleverAPI("elementAdd","#select-new", "select");
+            jQuery('#form-1').jCleverAPI("elementAdd","#checkbox-new", "checkbox");
+            jQuery('#form-1').jCleverAPI("elementAdd","#radio-new", "radio");
             jQuery('#form-2').jCleverAPI();
-            jQuery('#form-1').jCleverAPI("selectCollection").select_new.updateFromHTML("<option value='1'>1</option>");
+            //jQuery('#form-1').jCleverAPI("selectCollection").select_new.updateFromHTML("<option value='1'>1</option>");
             //api.publicMethods.selectCollection.select1.updateFromHTML('<option value="1">1</option><option value="2">2</option><option value="3">3</option>');
         });
     </script>

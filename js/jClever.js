@@ -622,8 +622,10 @@
                                             selfAPIObject.selectCollection = result;
                                             break;
                                 case "checkbox":
+                                            methods.checkboxActivate(selector, tabindex);
                                             break;
                                 case "radio":
+                                            methods.radioActivate(selector, tabindex);
                                             break;
                                 case "textarea":
                                             break;
