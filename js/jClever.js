@@ -320,6 +320,9 @@
                             var selectListWrapper = selectObject.find('.jClever-element-select-list-wrapper');
                             var selectLabel = $('label[for='+$(select).attr('id')+']');
 
+                            if ($(select).attr('disabled'))
+                                selectObject.addClass('disabled');
+
                             //Add error label
                             selectObject.append(options.errorTemplate);
                             $(select).find('option').each(function(){
@@ -336,6 +339,8 @@
                             else
                                 selectText.text($(select).find('option:eq(0)').text());
                             selectObject.on('click.jClever', '.jClever-element-select-center, .jClever-element-select-right',function(){
+                                if ($(select).attr('disabled'))
+                                    return false;
                                 if (selectListWrapper.is(':visible')) {
                                     $('.jClever-element-select-list-wrapper').hide();
                                 } else {
@@ -359,6 +364,8 @@
                                 return false;
                             });
                             $(select).on('change.jClever', function(){
+                                if ($(this).attr('disabled'))
+                                    return false;
                                 selectText.text($(this).find(':selected').text());
                             });
                             $(select).on('update.jClever',function(){
@@ -383,15 +390,21 @@
                                 var selectedIndex = $(select)[0].selectedIndex;
                                 switch(e.keyCode){
                                     case 40: /* Down */
+                                        if ($(select).attr('disabled'))
+                                            return false;
                                         if (selectedIndex < $(select).find('option').length-1){ selectedIndex++; }
                                         break;
                                     case 38: /* Up */
+                                        if ($(select).attr('disabled'))
+                                            return false;
                                         if (selectedIndex > 0){ selectedIndex--; }
                                         break;
                                     case 13: /* Enter */
                                         if (selectListWrapper.is(':visible'))
                                             selectListWrapper.hide();
                                         else {
+                                            if ($(select).attr('disabled'))
+                                                return false;
                                             selectListWrapper.show();
                                             jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
                                         }    
@@ -400,6 +413,8 @@
                                         if (selectListWrapper.is(':visible'))
                                             selectListWrapper.hide();
                                         else {
+                                            if ($(select).attr('disabled'))
+                                                return false;
                                             selectListWrapper.show();
                                             jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
                                         }    
@@ -462,12 +477,12 @@
                                 _checkbox.next('.jClever-element-checkbox-twins').addClass('checked');
                                 $('label[for='+checkboxId+']').addClass('active');
                             }    
-                            if ($(checkbox).attr('disabled')) {
+                            if ($(checkbox).attr('disabled'))
                                 _checkbox.parents('.jClever-element').addClass('disabled')
-                                return;
-                            }
                                 
                             _checkbox.on('change.jClever', function(){
+                                if ($(this).attr('disabled'))
+                                    return false;
                                 if ($(this).is(':checked')) {
                                     _checkbox.next('.jClever-element-checkbox-twins').addClass('checked');
                                     $('label[for='+checkboxId+']').addClass('active');
@@ -517,6 +532,8 @@
                             }
                                 
                             _radio.on('change.jClever', function(){
+                                if ($(this).attr('disabled'))
+                                    return false;
                                 var _self = $(this);
                                 if (_self.is(':checked')) {
                                     _self.next('.jClever-element-radio-twins').addClass('checked');
@@ -632,6 +649,16 @@
                                 default:             
                             }
                             return selfAPIObject;
+                        },
+                        elementDisable: function(selector) {
+                            if (typeof selector == 'string')
+                                selector = $(selector);
+                            selector.attr('disabled','disabled').closest('.jClever-element').addClass('disabled');
+                        },
+                        elementEnable: function(selector) {
+                            if (typeof selector == 'string')
+                                selector = $(selector);
+                            selector.removeAttr('disabled').closest('.jClever-element').removeClass('disabled');
                         }
         };
         
@@ -651,7 +678,9 @@
                             checkboxSetState: function(checkbox, value) {if ($(checkbox).length) methods.checkboxSetState($(checkbox), value); else return false},                            
                             radioSetState: function(radio, value) {if ($(radio).length) methods.radioSetState($(radio), value); else return false;},                            
                             //scrollingAPI: jScrollApi,
-                            elementAdd: function(selector, type, selfAPIObject) {return methods.elementAdd(selector, type, selfAPIObject)}
+                            elementAdd: function(selector, type, selfAPIObject) {return methods.elementAdd(selector, type, selfAPIObject)},
+                            elementDisable: function(selector) {return methods.elementDisable(selector)},
+                            elementEnable: function(selector) {return methods.elementEnable(selector)}
                             
                         };
                 selects = {};        
