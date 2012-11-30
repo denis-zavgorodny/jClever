@@ -62,7 +62,7 @@
             }
             
         };
-        var innerCounter = 9999;
+        var innerCounter = 999;
         var tabindex = 1;
         var methods = {
                         init: function(element) {
@@ -346,6 +346,7 @@
                                 } else {
                                     $('.jClever-element-select-list-wrapper').hide();
                                     selectListWrapper.show();
+                                    selectObject.trigger('focus');
                                     jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
                                 }
                             });

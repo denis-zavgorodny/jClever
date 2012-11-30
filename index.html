@@ -58,6 +58,10 @@
             jQuery('#form-2').jCleverAPI();
             //jQuery('#form-1').jCleverAPI("selectCollection").select_new.updateFromHTML("<option value='1'>1</option>");
             //api.publicMethods.selectCollection.select1.updateFromHTML('<option value="1">1</option><option value="2">2</option><option value="3">3</option>');
+
+            jQuery('#select2').change(function(){
+                console.log(jQuery(this).val());
+            });
         });
     </script>
 </head>
@@ -86,10 +90,10 @@
                             <div class="row">
                                 <label for="select2">Label 2</label>
                                 <select name="select2" class="test" id="select2">
-                                    <option value="1">A Text one</option>
+                                    <option selected="selected" value="1">A Text one</option>
                                     <option value="2">B Text two</option>
                                     <option value="3">c Text three</option>
-                                    <option selected="selected" value="4">Text four</option>
+                                    <option value="4">Text four</option>
                                     <option value="5">D Text very very long  long long text text</option>
                                     <option value="6">1 Text two</option>
                                     <option value="7">2 Text three</option>
