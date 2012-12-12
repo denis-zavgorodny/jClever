@@ -135,17 +135,19 @@
                             $(element).find('input[type=text], textarea').each(function(){
                                 var _this = $(this);
                                 var holderText = $(this).data('placeholder');
-                                if(_this.val() == '')
-                                     _this.val(holderText).addClass('placeholdered');
-                                     
-                                _this.focusin(function(){
-                                    if(_this.val() == holderText)
-                                     _this.val('').removeClass('placeholdered');
-                                });
-                                _this.focusout(function(){
+                                if (undefined != holderText && typeof holderText === 'string') {
                                     if(_this.val() == '')
-                                     _this.val(holderText).addClass('placeholdered');
-                                });
+                                         _this.val(holderText).addClass('placeholdered');
+                                         
+                                    _this.focusin(function(){
+                                        if(_this.val() == holderText)
+                                         _this.val('').removeClass('placeholdered');
+                                    });
+                                    _this.focusout(function(){
+                                        if(_this.val() == '')
+                                         _this.val(holderText).addClass('placeholdered');
+                                    });
+                                }
                             });
                             //Select init
                             if (options.applyTo.select)
