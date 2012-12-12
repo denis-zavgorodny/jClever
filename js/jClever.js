@@ -135,7 +135,7 @@
                             $(element).find('input[type=text], textarea').each(function(){
                                 var _this = $(this);
                                 var holderText = $(this).data('placeholder');
-                                if (undefined != holderText && typeof holderText === 'string') {
+                                if (typeof holderText === 'string') {
                                     if(_this.val() == '')
                                          _this.val(holderText).addClass('placeholdered');
                                          
