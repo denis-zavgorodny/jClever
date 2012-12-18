@@ -152,11 +152,16 @@
                             //Select init
                             if (options.applyTo.select)
                                 $(element).find('select').each(function(){
-                                    formState[$(this).attr('name')] = {
-                                                                            type: "select",
-                                                                            value: $(this).attr('value')
-                                                                        };
-                                    methods.selectActivate(this,innerCounter, tabindex);
+                                    var self = $(this);
+                                    if (typeof self.attr('multiple') == 'undefined') {
+                                        methods.selectActivate(this,innerCounter, tabindex);
+                                    } else {
+                                        methods.multiSelectActivate(this,innerCounter, tabindex);
+                                    }    
+                                    formState[self.attr('name')] = {
+                                                                        type: "select",
+                                                                        value: self.attr('value')
+                                                                    };
                                     innerCounter--;
                                     tabindex++;
                                 });
@@ -309,6 +314,177 @@
                                 }
                             };
                             return collection;
+                        },
+                        multiSelectActivate: function(select, innerCounter, tabindex) {
+                            jScrollApi[$(select).attr('name')] = {};
+                            selects = methods.selectCollectionExtend(selects, $(select));
+                            var self_width = $(select).width();
+                            $(select).wrap('<div class="jClever-element" style="z-index:'+innerCounter+';"><div class="jClever-element-select-wrapper multiselect" style="width:'+self_width+'px; z-index:'+innerCounter+';"><div class="jClever-element-select-wrapper-design"><div class="jClever-element-select-wrapper-design">').after('<span class="jClever-element-select-center"></span><span class="jClever-element-select-right"><span>v</span></span><div class="jClever-element-select-list-wrapper" style="z-index:'+innerCounter+';"><ul class="jClever-element-select-list"></ul></div>');
+                            var selectObject = $(select).parents('.jClever-element').attr('tabindex',tabindex);
+                            var selectText = selectObject.find('.jClever-element-select-center');
+                            var selectRight = selectObject.find('.jClever-element-select-right');
+                            var selectList = selectObject.find('.jClever-element-select-list');
+                            var selectListWrapper = selectObject.find('.jClever-element-select-list-wrapper');
+                            var selectLabel = $('label[for='+$(select).attr('id')+']');
+
+                            if ($(select).attr('disabled'))
+                                selectObject.addClass('disabled');
+
+                            //Add error label
+                            selectObject.append(options.errorTemplate);
+                            $(select).find('option').each(function(){
+                                if ($(this).is(':selected'))
+                                    selectObject.find('.jClever-element-select-list')
+                                                .append($('<li class="active" data-value="'+$(this).val()+'"><span><i>'+$(this).text()+'</i></span></li>'));
+                                else
+                                    selectObject.find('.jClever-element-select-list')
+                                                .append($('<li data-value="'+$(this).val()+'"><span><i>'+$(this).text()+'</i></span></li>'));
+                                
+                            });
+                            if ($(select).find(':selected')) {
+                                var _text = '';
+                                $(select).find('option:selected').each(function(){
+                                    _text += $(this).text()+', ';
+                                });
+                                selectText.text(_text.substring(0,_text.length-2));
+                            } else {
+                                selectText.text($(select).find('option:eq(0)').text());
+                            }    
+                            selectObject.on('click.jClever', '.jClever-element-select-center, .jClever-element-select-right',function(){
+                                if ($(select).attr('disabled'))
+                                    return false;
+                                if (selectListWrapper.is(':visible')) {
+                                    $('.jClever-element-select-list-wrapper').hide();
+                                } else {
+                                    $('.jClever-element-select-list-wrapper').hide();
+                                    selectListWrapper.show();
+                                    selectObject.trigger('focus');
+                                    jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
+                                }
+                            });
+
+                            selectListWrapper.on('blur.jClever', function(){
+                                $(this).hide();
+                            });
+                            selectObject.on('click.jClever','li' ,function(event){
+                                var value = $(this).attr('data-value');
+                                $(this).toggleClass('active');
+                                if ($(this).is('.active'))
+                                    $(select).find('option[value="'+value+'"]').attr('selected','selected');
+                                else
+                                    $(select).find('option[value="'+value+'"]').removeAttr('selected');
+                                $(select).trigger('change');
+                                return false;
+                            });
+                            $(select).on('change.jClever', function(){
+                                if ($(this).attr('disabled'))
+                                    return false;
+                                var _text = '';
+                                $(select).find('option:selected').each(function(){
+                                    _text += $(this).text()+', ';
+                                });
+                                selectText.text(_text.substring(0,_text.length-2));
+                            });
+                            $(select).on('update.jClever',function(){
+                                var ul = $(this).parents('.jClever-element-select-wrapper')
+                                        .find('.jClever-element-select-list')
+                                        .empty();
+                                $(this).find('option').each(function(){
+                                    ul.append($('<li data-value="'+$(this).val()+'"><span><i>'+$(this).text()+'</i></span></li>'));
+                                });
+                                $(this).parents('.jClever-element-select-wrapper').find('.jClever-element-select-center').text($(select).find('option:eq(0)').text());    
+                            });
+                            selectObject.on('focus.jClever', function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
+                            selectLabel.on('click.jClever', function(){
+                                selectObject.trigger('focus');
+                                selectListWrapper.show();
+                                jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
+                            });
+                            // Hook keydown
+                            var charText = '';
+                            var queTime = null;
+                            selectObject.on('keydown.jClever', function(e){
+                                var selectedIndex = $(select)[0].selectedIndex;
+                                switch(e.keyCode){
+                                    case 40: /* Down */
+                                        if ($(select).attr('disabled'))
+                                            return false;
+                                        if (selectedIndex < $(select).find('option').length-1){ selectedIndex++; }
+                                        break;
+                                    case 38: /* Up */
+                                        if ($(select).attr('disabled'))
+                                            return false;
+                                        if (selectedIndex > 0){ selectedIndex--; }
+                                        break;
+                                    case 13: /* Enter */
+                                        if (selectListWrapper.is(':visible'))
+                                            selectListWrapper.hide();
+                                        else {
+                                            if ($(select).attr('disabled'))
+                                                return false;
+                                            selectListWrapper.show();
+                                            jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
+                                        }    
+                                        break;
+                                    case 32: /* Space */
+                                        if (selectListWrapper.is(':visible'))
+                                            selectListWrapper.hide();
+                                        else {
+                                            if ($(select).attr('disabled'))
+                                                return false;
+                                            selectListWrapper.show();
+                                            jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
+                                        }    
+                                        break;
+                                    case 9: /* Tab */
+                                            selectListWrapper.hide();
+                                            return true;
+                                           
+                                    default: /* Key select */
+                                        //$(select).focus();
+                                        charText += String.fromCharCode(e.keyCode);
+                                        clearTimeout(queTime);
+                                        queTime = setTimeout(function(){
+                                            var tmpIndex = 0;
+                                            var count = $(select)[0].options.length;
+                                            for (var key  = 0; key < count; key ++) {
+                                                if (typeof $(select)[0].options[key].text == 'string') {
+                                                    var localString = $(select)[0].options[key].text.toUpperCase();
+                                                    var reg = new RegExp("^"+charText, "i")
+                                                    //console.log(reg.test(localString), localString, charText);
+                                                    if (reg.test(localString)) {
+                                                        selectedIndex = tmpIndex;
+
+                                                        $(select)[0].selectedIndex = selectedIndex;
+                                                        selectObject.find('li.selected').removeClass('selected');
+                                                        selectObject.find('li:eq('+selectedIndex+')').addClass('selected');
+                                                        selectObject.find('option').removeAttr('selected');
+                                                        selectObject.find('option:eq('+selectedIndex+')').attr('selected','selected');
+                                                        $(select).trigger('change');
+                                                        if (selectListWrapper.is(':visible'))
+                                                            jScrollApi[$(select).attr('name')].scrollToElement(selectObject.find('li:eq('+selectedIndex+')'));
+
+                                                        break;    
+                                                    }
+                                                    tmpIndex++;
+                                                }
+                                            }
+                                            charText = '';
+                                        }, 500);
+                                            
+                                        break;
+                                        return false;
+                                }
+                                $(select)[0].selectedIndex = selectedIndex;
+                                selectObject.find('li.selected').removeClass('selected');
+                                selectObject.find('li:eq('+selectedIndex+')').addClass('selected');
+                                selectObject.find('option').removeAttr('selected');
+                                selectObject.find('option:eq('+selectedIndex+')').attr('selected','selected');
+                                $(select).trigger('change');
+                                if (selectListWrapper.is(':visible'))
+                                    jScrollApi[$(select).attr('name')].scrollToElement(selectObject.find('li:eq('+selectedIndex+')'));
+                                return false;
+                            });
                         },
                         selectActivate: function(select, innerCounter, tabindex) {
                             jScrollApi[$(select).attr('name')] = {};
