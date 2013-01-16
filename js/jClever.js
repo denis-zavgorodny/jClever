@@ -132,7 +132,7 @@
                             
                             
                             //placeholder INPUT[type=text], textarea init
-                            $(element).find('input[type=text], textarea').each(function(){
+                            $(element).find('input[type=text], input[type=password], textarea').each(function(){
                                 var _this = $(this);
                                 var holderText = $(this).data('placeholder');
                                 if (typeof holderText === 'string') {
