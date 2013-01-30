@@ -149,72 +149,85 @@
                                     });
                                 }
                             });
-                            //Select init
-                            if (options.applyTo.select)
-                                $(element).find('select').each(function(){
-                                    var self = $(this);
-                                    if (typeof self.attr('multiple') == 'undefined') {
-                                        methods.selectActivate(this,innerCounter, tabindex);
-                                    } else {
-                                        methods.multiSelectActivate(this,innerCounter, tabindex);
-                                    }    
-                                    formState[self.attr('name')] = {
-                                                                        type: "select",
-                                                                        value: self.attr('value')
-                                                                    };
-                                    innerCounter--;
-                                    tabindex++;
-                                });
+                            //
+                            var formElements = $(element).get(0).elements;
+                            for (key = 0; key < formElements.length; key++) {
+                                switch (formElements[key].nodeName) {
+                                    case "SELECT":  
+                                                //Select init
+                                                if (options.applyTo.select) {
+                                                    var self = $(formElements[key]);
+                                                    if (typeof self.attr('multiple') == 'undefined') {
+                                                        methods.selectActivate(formElements[key],innerCounter, tabindex);
+                                                    } else {
+                                                        methods.multiSelectActivate(formElements[key],innerCounter, tabindex);
+                                                    }
+                                                    formState[self.attr('name')] = {
+                                                                                        type: "select",
+                                                                                        value: self.attr('value')
+                                                                                    };
+                                                    innerCounter--;
+                                                    tabindex++;
+                                                }    
+                                                break;    
+                                    case "TEXTAREA":
+                                                //Textarea
+                                                if (options.applyTo.textarea) {
+                                                    var self = $(formElements[key]);
+                                                    methods.textareaActivate(formElements[key], tabindex);
+                                                    tabindex++;
+                                                }        
+                                                break;     
+                                    case "INPUT":
+                                                //Checkbox init
+                                                var self = $(formElements[key]);
+                                                if (options.applyTo.checkbox && self.attr('type') == 'checkbox') {
 
-                            //Checkbox init
-                            if (options.applyTo.checkbox)
-                                $(element).find('input[type=checkbox]').each(function(){
-                                    formState[$(this).attr('name')] = {
-                                                                            type: "checkbox",
-                                                                            value: ($(this).is(':checked')?1:0)
-                                                                        };
-                                    methods.checkboxActivate(this, tabindex);
-                                    tabindex++;
-                                });
-                            //Radio Button init
-                            if (options.applyTo.radio)
-                                $(element).find('input[type=radio]').each(function(){
-                                    formState[$(this).attr('name')] = {
-                                                                            type: "radio",
-                                                                            value: ($(this).is(':checked')?1:0)
-                                                                        };
-                                    methods.radioActivate(this, tabindex);
-                                    tabindex++;
-                                });
-                            //Input File
-                            if (options.applyTo.file)
-                                $(element).find('input[type=file]').each(function(){
-                                    formState[$(this).attr('name')] = {
-                                                                            type: "file",
-                                                                            value: ''
-                                                                        };
-                                    methods.fileActivate(this, tabindex);
-                                    tabindex++;
-                                });
+                                                        formState[self.attr('name')] = {
+                                                                                                type: "checkbox",
+                                                                                                value: (self.is(':checked')?1:0)
+                                                                                            };
+                                                        methods.checkboxActivate(formElements[key], tabindex);
+                                                        tabindex++;
+                                                }    
+                                                //Radio Button init
+                                                if (options.applyTo.radio && self.attr('type') == 'radio') {
+                                                    formState[self.attr('name')] = {
+                                                                                            type: "radio",
+                                                                                            value: (self.is(':checked')?1:0)
+                                                                                        };
+                                                    methods.radioActivate(formElements[key], tabindex);
+                                                    tabindex++;
+                                                }                                                       
+                                                //Input File
+                                                
+                                                if (options.applyTo.file && self.attr('type') == 'file') {
+                                                    formState[self.attr('name')] = {
+                                                                                            type: "file",
+                                                                                            value: ''
+                                                                                        };
+                                                    methods.fileActivate(formElements[key], tabindex);
+                                                    tabindex++;
+                                                }    
+                                                
+                                                //Input [type=submit, reset, button] (input)
+                                                if (options.applyTo.button && (self.attr('type') == 'submit' || self.attr('type') == 'reset' || self.attr('type') == 'button')) {
+                                                    methods.submitActivate(formElements[key], tabindex);
+                                                    tabindex++;
+                                                }
+                                                
+                                                //Input [type=text]
+                                                if (options.applyTo.input && (self.attr('type') == 'text' || self.attr('type') == 'password')) {
+                                                    methods.inputActivate(formElements[key], tabindex);
+                                                    tabindex++;
+                                                }        
+                                                break;                                                          
+                                }
+                            }
                             
-                            //Input [type=submit, reset, button] (input)
-                            if (options.applyTo.button)
-                                $(element).find('input[type=submit], input[type=reset], input[type=button]').each(function(){
-                                    methods.submitActivate(this, tabindex);
-                                    tabindex++;
-                            });
-                            //Input [type=text]
-                            if (options.applyTo.input)
-                                $(element).find('input[type=text], input[type=password]').each(function(){
-                                    methods.inputActivate(this, tabindex);
-                                    tabindex++;
-                            });
-                            //Textarea
-                            if (options.applyTo.textarea)
-                                $(element).find('textarea').each(function(){
-                                    methods.textareaActivate(this, tabindex);
-                                    tabindex++;
-                            });
+
+                            
+                            
                             //Hook reset event
                             $(element).find('button[type=reset]').click(function(){
                                 methods.reset($(element));
@@ -822,7 +835,12 @@
                                             selfAPIObject.selectCollection = result;
                                             break;
                                 case "checkbox":
-                                            methods.checkboxActivate(selector, tabindex);
+                                            if (typeof selector != 'string')
+                                                selector.each(function(){
+                                                    methods.checkboxActivate($(this), tabindex);    
+                                                });
+                                            else
+                                                methods.checkboxActivate(selector, tabindex);    
                                             break;
                                 case "radio":
                                             methods.radioActivate(selector, tabindex);
