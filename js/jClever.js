@@ -152,20 +152,21 @@
                             //
                             var formElements = $(element).get(0).elements;
                             for (key = 0; key < formElements.length; key++) {
+                                var self = $(formElements[key]);
                                 switch (formElements[key].nodeName) {
                                     case "SELECT":  
                                                 //Select init
                                                 if (options.applyTo.select) {
-                                                    var self = $(formElements[key]);
                                                     if (typeof self.attr('multiple') == 'undefined') {
                                                         methods.selectActivate(formElements[key],innerCounter, tabindex);
                                                     } else {
                                                         methods.multiSelectActivate(formElements[key],innerCounter, tabindex);
                                                     }
                                                     formState[self.attr('name')] = {
-                                                                                        type: "select",
-                                                                                        value: self.attr('value')
-                                                                                    };
+                                                        type: "select",
+                                                        value: self.attr('value')
+                                                    };
+                                                    self.data('jclevered',true);
                                                     innerCounter--;
                                                     tabindex++;
                                                 }    
@@ -173,65 +174,82 @@
                                     case "TEXTAREA":
                                                 //Textarea
                                                 if (options.applyTo.textarea) {
-                                                    var self = $(formElements[key]);
                                                     methods.textareaActivate(formElements[key], tabindex);
+                                                    self.data('jclevered',true);
                                                     tabindex++;
                                                 }        
                                                 break;     
                                     case "INPUT":
                                                 //Checkbox init
-                                                var self = $(formElements[key]);
                                                 if (options.applyTo.checkbox && self.attr('type') == 'checkbox') {
-
-                                                        formState[self.attr('name')] = {
-                                                                                                type: "checkbox",
-                                                                                                value: (self.is(':checked')?1:0)
-                                                                                            };
-                                                        methods.checkboxActivate(formElements[key], tabindex);
-                                                        tabindex++;
+                                                    formState[self.attr('name')] = {
+                                                        type: "checkbox",
+                                                        value: (self.is(':checked')?1:0)
+                                                    };
+                                                    methods.checkboxActivate(formElements[key], tabindex);
+                                                    self.data('jclevered',true);
+                                                    tabindex++;
                                                 }    
                                                 //Radio Button init
                                                 if (options.applyTo.radio && self.attr('type') == 'radio') {
                                                     formState[self.attr('name')] = {
-                                                                                            type: "radio",
-                                                                                            value: (self.is(':checked')?1:0)
-                                                                                        };
+                                                        type: "radio",
+                                                        value: (self.is(':checked')?1:0)
+                                                    };
                                                     methods.radioActivate(formElements[key], tabindex);
+                                                    self.data('jclevered',true);
                                                     tabindex++;
                                                 }                                                       
-                                                //Input File
-                                                
+                                                //Input File                                                
                                                 if (options.applyTo.file && self.attr('type') == 'file') {
                                                     formState[self.attr('name')] = {
-                                                                                            type: "file",
-                                                                                            value: ''
-                                                                                        };
+                                                        type: "file",
+                                                        value: ''
+                                                    };
                                                     methods.fileActivate(formElements[key], tabindex);
+                                                    self.data('jclevered',true);
                                                     tabindex++;
-                                                }    
-                                                
+                                                }
                                                 //Input [type=submit, reset, button] (input)
                                                 if (options.applyTo.button && (self.attr('type') == 'submit' || self.attr('type') == 'reset' || self.attr('type') == 'button')) {
                                                     methods.submitActivate(formElements[key], tabindex);
+                                                    self.data('jclevered',true);
                                                     tabindex++;
                                                 }
-                                                
                                                 //Input [type=text]
                                                 if (options.applyTo.input && (self.attr('type') == 'text' || self.attr('type') == 'password')) {
                                                     methods.inputActivate(formElements[key], tabindex);
+                                                    self.data('jclevered',true);
                                                     tabindex++;
                                                 }        
                                                 break;                                                          
                                 }
                             }
-                            
-
-                            
-                            
                             //Hook reset event
                             $(element).find('button[type=reset]').click(function(){
                                 methods.reset($(element));
                             });
+                        },
+                        refresh: function(form) {
+                            var formElements = $(form).get(0).elements;
+                            for (key = 0; key < formElements.length; key++) {
+                                var self = $(formElements[key]),
+                                    jclevered = self.data('jclevered');
+                                
+                                if (typeof jclevered != 'undefined') {
+
+                                    switch (formElements[key].nodeName) {
+                                        case "SELECT":
+                                                    console.log(self.toString());
+                                                    self.trigger('update');
+                                                    break;
+                                        case "INPUT":     
+                                                    break;       
+                                    }
+                                }    
+
+                            }
+                            console.log('refreshed');
                         },
                         destroy: function(form) {
                             //select strip
@@ -289,6 +307,7 @@
                                                                             value: $(this).attr('value')
                                                                         };
                                     methods.selectActivate(this,innerCounter, tabindex);
+                                    self.data('jclevered',true);
                                     innerCounter--;
                                     tabindex++;
                                 });    
@@ -833,17 +852,22 @@
                                             methods.selectActivate(selector, innerCounter, tabindex);
                                             var result = $.extend(selects, selfAPIObject.selectCollection);
                                             selfAPIObject.selectCollection = result;
+                                            $(selector).data('jclevered',true);
                                             break;
                                 case "checkbox":
                                             if (typeof selector != 'string')
                                                 selector.each(function(){
                                                     methods.checkboxActivate($(this), tabindex);    
+                                                    $(this).data('jclevered',true);
                                                 });
-                                            else
-                                                methods.checkboxActivate(selector, tabindex);    
+                                            else {
+                                                methods.checkboxActivate(selector, tabindex);
+                                                $(selector).data('jclevered',true);
+                                            }        
                                             break;
                                 case "radio":
                                             methods.radioActivate(selector, tabindex);
+                                            $(selector).data('jclevered',true);
                                             break;
                                 case "textarea":
                                             break;
@@ -864,14 +888,21 @@
         };
         
         var publicApi = {};
-        //this.publicMethods = publicApi;
-        
+        var that = this;
+        $(document).on('onDomChange', function(e){
+
+            that.each(function(){
+                //methods.refresh(this);
+            });
+            e.stopPropagation()  
+        });
         return this.each(function(){
             if (!$(this).hasClass('clevered')) {
                 $(this).addClass('clevered').addClass(options.selfClass);
                 methods.init(this);
                 publicApi = {
                             selectCollection: selects,
+                            refresh: function(form) {methods.refresh(form)},
                             destroy: function(form) {methods.destroy(form)},
                             reset: function(form) {methods.reset(form)},
                             selectSetPosition: function(select, value) {if ($(select).length) methods.selectSetPosition($(select), value);},

@@ -11,11 +11,12 @@
    
     <script src="js/jquery-1.7.2.min.js" type="text/javascript" charset="utf-8"></script>
 
+    <script type="text/javascript" src="js/jquery.domchange.js"></script>
     <script type="text/javascript" src="js/jquery.mousewheel.js"></script>
     <script type="text/javascript" src="js/jquery.jscrollpane.min.js"></script>
 
     
-    <script src="js/jClever.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jClever.js" type="text/javascript" charset="utf-8"></script>
 
     <style type="text/css">
         .form-wrapper {
@@ -30,6 +31,10 @@
     <script type="text/javascript">
         var api = {};
         jQuery(document).ready(function(){
+            jQuery('form').submit(function(){
+                jQuery(this).remove();
+                return false;
+            });
             if (jQuery.jClever)
                 jQuery('.jClever').jClever({
                     validate: {
@@ -55,6 +60,7 @@
             jQuery('#form-1').jCleverAPI("elementAdd","#radio-new", "radio");
 
             jQuery('#form-1').jCleverAPI("elementDisable","#radio-new");
+
             jQuery('#form-2').jCleverAPI();
             //jQuery('#form-1').jCleverAPI("selectCollection").select_new.updateFromHTML("<option value='1'>1</option>");
             //api.publicMethods.selectCollection.select1.updateFromHTML('<option value="1">1</option><option value="2">2</option><option value="3">3</option>');
@@ -62,6 +68,10 @@
             jQuery('#select2').change(function(){
                 console.log(jQuery(this).val());
             });
+
+            
+
+            jQuery('#form-1').jCleverAPI("refresh");
         });
     </script>
 </head>
