@@ -30,8 +30,9 @@
                                     errorTemplate: '<span class="jClever-error-label"></span>',
                                     errorClassTemplate: 'jClever-error-label',
                                     selfClass: 'default',
-                                    fileUploadText: 'Загрузить'
-                                                
+                                    fileUploadText: 'Загрузить',
+                                    autoTracking: false,
+                                    autoInit: false
                                 },
                                 options
                                 );
@@ -942,43 +943,59 @@
         var that = this;
 
         var delayTime = 100,
-            timeLink = null;
+            timeLinkTraking = null,
+            timeLinkInit = null,
+            startFunction = function(){
+                if (!$(this).hasClass('clevered')) {
+                    $(this).addClass('clevered').addClass(options.selfClass);
+                    methods.init(this);
+                    publicApi = {
+                                selectCollection: selects,
+                                innerCounter: innerCounter,
+                                refresh: function(form) {methods.refresh(form)},
+                                destroy: function(form) {methods.destroy(form)},
+                                reset: function(form) {methods.reset(form)},
+                                selectSetPosition: function(select, value) {if ($(select).length) methods.selectSetPosition($(select), value);},
+                                selectAdd: function(select) {methods.selectAdd(select);},
+                                checkboxSetState: function(checkbox, value) {if ($(checkbox).length) methods.checkboxSetState($(checkbox), value); else return false},                            
+                                radioSetState: function(radio, value) {if ($(radio).length) methods.radioSetState($(radio), value); else return false;},                            
+                                //scrollingAPI: jScrollApi,
+                                elementAdd: function(selector, type, selfAPIObject) {return methods.elementAdd(selector, type, selfAPIObject)},
+                                elementDisable: function(selector) {return methods.elementDisable(selector)},
+                                elementEnable: function(selector) {return methods.elementEnable(selector)}
+                                
+                            };
+                    selects = {};        
+                    $.data($(this).get(0), 'publicApi', publicApi);
+                    
+                    return true;
+                }
+            };
 
         /**
         *   Add onDomChange custom event. Temporary limit for 100ms refresh frequency 
         */
-        $(document).on('onDomChange.jClever', function(e){
-            //$(element).data('jCleverHash', md5(formHash))
-            if (typeof timeLink != 'undefied' && timeLink != null)
-                clearTimeout(timeLink); 
-            timeLink = setTimeout(function(){methods.refresh(that);}, delayTime);
-            
-        });
+        if (options.autoTracking) {
+            $(document).on('onDomChange.jClever', function(e){
+                if (typeof timeLinkTraking != 'undefied' && timeLinkTraking != null)
+                    clearTimeout(timeLinkTraking); 
+                timeLinkTraking = setTimeout(function(){methods.refresh(that);}, delayTime);
+            });
+        }    
+        if (options.autoInit) {
+            $(document).on('onDomChange.jClever', function(e){
+                if (typeof timeLinkInit != 'undefied' && timeLinkInit != null)
+                    clearTimeout(timeLinkInit); 
+                timeLinkInit = setTimeout(function(){
+                    $('body').find('form').each(function(){
+                        startFunction.call(this);
+                    });    
+                }, delayTime);
+            });
+        }    
+
         return this.each(function(){
-            if (!$(this).hasClass('clevered')) {
-                $(this).addClass('clevered').addClass(options.selfClass);
-                methods.init(this);
-                publicApi = {
-                            selectCollection: selects,
-                            innerCounter: innerCounter,
-                            refresh: function(form) {methods.refresh(form)},
-                            destroy: function(form) {methods.destroy(form)},
-                            reset: function(form) {methods.reset(form)},
-                            selectSetPosition: function(select, value) {if ($(select).length) methods.selectSetPosition($(select), value);},
-                            selectAdd: function(select) {methods.selectAdd(select);},
-                            checkboxSetState: function(checkbox, value) {if ($(checkbox).length) methods.checkboxSetState($(checkbox), value); else return false},                            
-                            radioSetState: function(radio, value) {if ($(radio).length) methods.radioSetState($(radio), value); else return false;},                            
-                            //scrollingAPI: jScrollApi,
-                            elementAdd: function(selector, type, selfAPIObject) {return methods.elementAdd(selector, type, selfAPIObject)},
-                            elementDisable: function(selector) {return methods.elementDisable(selector)},
-                            elementEnable: function(selector) {return methods.elementEnable(selector)}
-                            
-                        };
-                selects = {};        
-                $.data($(this).get(0), 'publicApi', publicApi);
-                
-                return true;
-            }
+            startFunction.call(this);
         });
     };
     $.fn.jCleverAPI = function(methodName) {

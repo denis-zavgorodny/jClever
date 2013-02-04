@@ -36,6 +36,7 @@
                 jQuery('#select-new').html('<option value="1">dsfsdf</option><option value="2" selected="selected">dsfsdf23232</option>');
 
                 jQuery(this).append('<select name="d-select" id="d-select"><option value="1">1111111111111111</option><option value="2">22222222222222222222</option></select><input type="checkbox" name="dsds" value="2" checked="checked" /><input type="text" name="testtext" /><input type="password" name="testpassword" />');
+                jQuery('body').append('<form action="#" method="get" class="jClever" id="form-333"><select name="d-select" id="d-select"><option value="1">1111111111111111</option><option value="2">22222222222222222222</option></select><input type="checkbox" name="dsds" value="2" checked="checked" /><input type="text" name="testtext" /><input type="password" name="testpassword" /></form>');
                 return false;
             });
             if (jQuery.jClever)
@@ -51,7 +52,9 @@
                             }
                         }    
                     },
-                    selfClass: 'alice'
+                    selfClass: 'alice',
+                    autoTracking: true,
+                    autoInit: true
                 });
 
             var _new = '<select name="select_new" class="test" id="select-new" style="width: 200px;"><option value="1">Trebuchet MS</option><option value="2">Text two</option><option value="3">Text three</option><option value="4">Text four</option></select>';
