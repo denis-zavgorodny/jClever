@@ -151,8 +151,12 @@
                             });
                             //
                             var formElements = $(element).get(0).elements;
+                            var formHash = '';
                             for (key = 0; key < formElements.length; key++) {
-                                var self = $(formElements[key]);
+                                var self = $(formElements[key]),
+                                    elementHash = md5(methods.elementToString(self));
+                                formHash += elementHash;
+                                self.data('jCleverHash',elementHash);
                                 switch (formElements[key].nodeName) {
                                     case "SELECT":  
                                                 //Select init
@@ -167,6 +171,7 @@
                                                         value: self.attr('value')
                                                     };
                                                     self.data('jclevered',true);
+                                                    
                                                     innerCounter--;
                                                     tabindex++;
                                                 }    
@@ -225,6 +230,7 @@
                                                 break;                                                          
                                 }
                             }
+                            $(element).data('jCleverHash', md5(formHash));
                             //Hook reset event
                             $(element).find('button[type=reset]').click(function(){
                                 methods.reset($(element));
@@ -235,21 +241,23 @@
                             for (key = 0; key < formElements.length; key++) {
                                 var self = $(formElements[key]),
                                     jclevered = self.data('jclevered');
-                                
-                                if (typeof jclevered != 'undefined') {
+                                //console.log(self.attr('id'),self.data('jCleverHash'), md5(methods.elementToString(self)));    
+                                if (self.data('jCleverHash') != md5(methods.elementToString(self))) {
+                                    elementHash = md5(methods.elementToString(self));
+                                    self.data('jCleverHash',elementHash);
+                                    if (typeof jclevered != 'undefined') {
 
-                                    switch (formElements[key].nodeName) {
-                                        case "SELECT":
-                                                    console.log(self.toString());
-                                                    self.trigger('update');
-                                                    break;
-                                        case "INPUT":     
-                                                    break;       
+                                        switch (formElements[key].nodeName) {
+                                            case "SELECT":
+                                                        self.trigger('update');
+                                                        break;
+                                            case "INPUT":     
+                                                        break;       
+                                        }
                                     }
                                 }    
 
                             }
-                            console.log('refreshed');
                         },
                         destroy: function(form) {
                             //select strip
@@ -294,6 +302,27 @@
                                                         break;                
                                     }
                             });
+                        },
+                        elementToString: function(jObject) {
+                            var data = {};
+                            data.innerContent = '';
+                            if (jObject.get(0).nodeName == 'SELECT')
+                                jObject.find('option').each(function(){
+                                    data.innerContent += $(this).attr('value').toString()+$(this).text();
+                                });
+                            data.class = jObject.attr('class');
+                            data.name = jObject.attr('name');
+                            data.checked = jObject.attr('checked');
+                            data.selected = jObject.attr('selected');
+                            data.multiple = jObject.attr('multiple');
+                            data.readonly = jObject.attr('readonly');
+                            data.disabled = jObject.attr('disabled');
+                            data.id = jObject.attr('id');
+                            data.alt = jObject.attr('alt');
+                            data.title = jObject.attr('title');
+                            //data.value = jObject.attr('value');
+                            data.style = jObject.attr('style');
+                            return JSON.stringify(data);
                         },
                         selectSetPosition: function(select, value) {
                             select.find('option').removeAttr('selected');
@@ -889,12 +918,17 @@
         
         var publicApi = {};
         var that = this;
-        $(document).on('onDomChange', function(e){
 
-            that.each(function(){
-                //methods.refresh(this);
-            });
-            e.stopPropagation()  
+        var delayTime = 100,
+            timeLink = null;
+
+
+        $(document).on('onDomChange.jClever', function(e){
+            //$(element).data('jCleverHash', md5(formHash))
+            if (typeof timeLink != 'undefied' && timeLink != null)
+                clearTimeout(timeLink); 
+            timeLink = setTimeout(function(){methods.refresh(that);}, delayTime);
+            
         });
         return this.each(function(){
             if (!$(this).hasClass('clevered')) {
@@ -917,6 +951,7 @@
                         };
                 selects = {};        
                 $.data($(this).get(0), 'publicApi', publicApi);
+                
                 return true;
             }
         });
