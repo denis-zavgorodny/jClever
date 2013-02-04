@@ -922,7 +922,9 @@
         var delayTime = 100,
             timeLink = null;
 
-
+        /**
+        *   Add onDomChange custom event. Temporary limit for 100ms refresh frequency 
+        */
         $(document).on('onDomChange.jClever', function(e){
             //$(element).data('jCleverHash', md5(formHash))
             if (typeof timeLink != 'undefied' && timeLink != null)
