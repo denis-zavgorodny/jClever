@@ -158,6 +158,8 @@
                                     elementHash = md5(methods.elementToString(self));
                                 formHash += elementHash;
                                 self.data('jCleverHash',elementHash);
+                                if (typeof formElements[key].nodeName == 'undefined')
+                                    continue;
                                 switch (formElements[key].nodeName) {
                                     case "SELECT":  
                                                 //Select init
@@ -245,6 +247,8 @@
                                 if (self.data('jCleverHash') != md5(methods.elementToString(self))) {
                                     elementHash = md5(methods.elementToString(self));
                                     self.data('jCleverHash',elementHash);
+                                    if (typeof formElements[key].nodeName == 'undefined')
+                                        continue;
                                     if (typeof jclevered != 'undefined') {
 
                                         switch (formElements[key].nodeName) {
@@ -314,6 +318,8 @@
                         elementToString: function(jObject) {
                             var data = {};
                             data.innerContent = '';
+                            if (typeof jObject == 'undefined' && typeof jObject.get(0).nodeName == 'undefined')
+                                return false;
                             if (jObject.get(0).nodeName == 'SELECT')
                                 jObject.find('option').each(function(){
                                     data.innerContent += $(this).attr('value').toString()+$(this).text();
