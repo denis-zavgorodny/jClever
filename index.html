@@ -33,7 +33,9 @@
         var api = {};
         jQuery(document).ready(function(){
             jQuery('form').submit(function(){
-                jQuery(this).remove();
+                jQuery('#select-new').html('<option value="1">dsfsdf</option><option value="2" selected="selected">dsfsdf23232</option>');
+
+                jQuery(this).append('<select name="d-select" id="d-select"><option value="1">1111111111111111</option><option value="2">22222222222222222222</option></select><input type="checkbox" name="dsds" value="2" checked="checked" /><input type="text" name="testtext" /><input type="password" name="testpassword" />');
                 return false;
             });
             if (jQuery.jClever)
@@ -65,12 +67,6 @@
             jQuery('#form-2').jCleverAPI();
             //jQuery('#form-1').jCleverAPI("selectCollection").select_new.updateFromHTML("<option value='1'>1</option>");
             //api.publicMethods.selectCollection.select1.updateFromHTML('<option value="1">1</option><option value="2">2</option><option value="3">3</option>');
-
-            jQuery('#select2').change(function(){
-                console.log(jQuery(this).val());
-            });
-
-            
 
             //jQuery('#form-1').jCleverAPI("refresh");
         });

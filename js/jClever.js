@@ -241,7 +241,6 @@
                             for (key = 0; key < formElements.length; key++) {
                                 var self = $(formElements[key]),
                                     jclevered = self.data('jclevered');
-                                //console.log(self.attr('id'),self.data('jCleverHash'), md5(methods.elementToString(self)));    
                                 if (self.data('jCleverHash') != md5(methods.elementToString(self))) {
                                     elementHash = md5(methods.elementToString(self));
                                     self.data('jCleverHash',elementHash);
@@ -254,11 +253,19 @@
                                             case "INPUT":     
                                                         break;       
                                         }
-                                    }
-                                }    
+                                    } else {
+                                        var _elementName = formElements[key].nodeName.toLowerCase();
+                                        if (_elementName == 'input')
+                                            _elementName = self.attr('type');
+                                        
+                                        var res = methods.elementAdd(self, _elementName ,$(form).data('publicApi'));
 
+                                        $(form).data('publicApi', res);
+                                    }
+                                }
                             }
                         },
+
                         destroy: function(form) {
                             //select strip
                             form.find('select').each(function(){
@@ -310,7 +317,7 @@
                                 jObject.find('option').each(function(){
                                     data.innerContent += $(this).attr('value').toString()+$(this).text();
                                 });
-                            data.class = jObject.attr('class');
+                            data.className = jObject.attr('class');
                             data.name = jObject.attr('name');
                             data.checked = jObject.attr('checked');
                             data.selected = jObject.attr('selected');
@@ -875,12 +882,27 @@
                         },
                         elementAdd: function(selector, type, selfAPIObject) {
                             switch(type) {
-                                case "input":
+                                case "text":
+                                case "password":
+                                            if (typeof selector != 'string')
+                                                selector.each(function(){
+                                                    methods.inputActivate($(this), tabindex);    
+                                                    $(this).data('jclevered',true);
+                                                });
+                                            else {
+                                                methods.inputActivate(selector, tabindex);
+                                                $(selector).data('jclevered',true);
+                                            }        
+                                            break;
+                                            break;
+                                            break;
+                                case "file":
                                             break;
                                 case "select":
-                                            methods.selectActivate(selector, innerCounter, tabindex);
+                                            methods.selectActivate(selector, selfAPIObject.innerCounter, tabindex);
                                             var result = $.extend(selects, selfAPIObject.selectCollection);
                                             selfAPIObject.selectCollection = result;
+                                            selfAPIObject.innerCounter--;
                                             $(selector).data('jclevered',true);
                                             break;
                                 case "checkbox":
@@ -938,6 +960,7 @@
                 methods.init(this);
                 publicApi = {
                             selectCollection: selects,
+                            innerCounter: innerCounter,
                             refresh: function(form) {methods.refresh(form)},
                             destroy: function(form) {methods.destroy(form)},
                             reset: function(form) {methods.reset(form)},

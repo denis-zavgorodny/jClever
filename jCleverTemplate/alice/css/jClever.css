@@ -400,7 +400,8 @@
     background: none;
 }
 
-.clevered.alice .input-type-text {
+.clevered.alice input[type=text],
+.clevered.alice input[type=password] {
     line-height: 30px;
     padding: 0 10px;
     font-size: 14px;
@@ -415,7 +416,8 @@
     behavior: url(jCleverTemplate/alice/css/PIE.htc);
     position: relative;
 }
-.clevered.alice .jClever-element.focused .input-type-text {
+.clevered.alice .jClever-element.focused input[type=text],
+.clevered.alice .jClever-element.focused input[type=password] {
     color: #000;
     background: #f2f6f7;
 }
