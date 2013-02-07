@@ -7,6 +7,7 @@
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 
     <link rel="stylesheet" type="text/css" href="jCleverTemplate/alice/css/jClever.css" />
+    <link rel="stylesheet" type="text/css" href="jCleverTemplate/default/css/jClever.css" />
     <link type="text/css" href="jCleverTemplate/alice/css/jquery.jscrollpane.css" rel="stylesheet" media="all" />
    
     <script src="js/jquery-1.7.2.min.js" type="text/javascript" charset="utf-8"></script>
@@ -35,8 +36,8 @@
             jQuery('form').submit(function(){
                 jQuery('#select-new').html('<option value="1">dsfsdf</option><option value="2" selected="selected">dsfsdf23232</option>');
 
-                jQuery(this).append('<div>А я группа контролов, которые добавились к форме и автоматически были пойманы jClever<select name="d-select" id="d-select"><option value="1">1111111111111111</option><option value="2">22222222222222222222</option></select><input type="checkbox" name="dsds" value="2" checked="checked" /><input type="text" name="testtext" /><input type="password" name="testpassword" /></div>');
-                jQuery('body').append('<div>Я отдельная форма, которая добавилась на страницу и к ней автоматически применился jClever<form action="#" method="get" class="jClever" id="form-333"><select name="d-select" id="d-select"><option value="1">1111111111111111</option><option value="2">22222222222222222222</option></select><input type="checkbox" name="dsds" value="2" checked="checked" /><input type="text" name="testtext" /><input type="password" name="testpassword" /></form></div>');
+                jQuery(this).append('<div>А я группа контролов, которые добавились к форме и автоматически были пойманы jClever<select name="d-select" id="d-select"><option value="1">1111111111111111</option><option value="2">22222222222222222222</option></select><input type="checkbox" name="dsds" value="2" checked="checked" /><input type="text" name="testtext" /><input type="password" name="testpassword" /><input type="file" name="testfile" /></div><textarea>sds</textarea><input type="submit" value="Отправить 2" name="bbb" />');
+                jQuery('body').append('<div>Я отдельная форма, которая добавилась на страницу и к ней автоматически применился jClever<form action="#" method="get" class="jClever" id="form-333"><select name="d-select" id="d-select"><option value="1">1111111111111111</option><option value="2">22222222222222222222</option></select><input type="checkbox" name="dsds" value="2" checked="checked" /><input type="text" name="testtext" /><input type="password" name="testpassword" /><input type="file" name="testfile" /><textarea>sds</textarea></form></div>');
                 return false;
             });
             if (jQuery.jClever)
@@ -52,7 +53,8 @@
                             }
                         }    
                     },
-                    selfClass: 'alice',
+                    //selfClass: 'alice',
+                    selfClass: 'default',
                     autoTracking: true,
                     autoInit: true
                 });

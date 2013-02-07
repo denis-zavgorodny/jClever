@@ -1,5 +1,5 @@
 /*
-*   jClever HEAD:v 1.2.1 :)
+    *   jClever HEAD:v 1.2.1 :)
 *
 *   by Denis Zavgorodny
 *   zavgorodny@alterego.biz.ua
@@ -244,6 +244,7 @@
                             for (key = 0; key < formElements.length; key++) {
                                 var self = $(formElements[key]),
                                     jclevered = self.data('jclevered');
+                                console.log(formElements[key].nodeName,self.data('jCleverHash'), md5(methods.elementToString(self)));    
                                 if (self.data('jCleverHash') != md5(methods.elementToString(self))) {
                                     elementHash = md5(methods.elementToString(self));
                                     self.data('jCleverHash',elementHash);
@@ -255,8 +256,7 @@
                                             case "SELECT":
                                                         self.trigger('update');
                                                         break;
-                                            case "INPUT":     
-                                                        break;       
+   
                                         }
                                     } else {
                                         var _elementName = formElements[key].nodeName.toLowerCase();
@@ -316,7 +316,8 @@
                             });
                         },
                         elementToString: function(jObject) {
-                            var data = {};
+                            var data = {},
+                                dataString = '';
                             data.innerContent = '';
                             if (typeof jObject == 'undefined' && typeof jObject.get(0).nodeName == 'undefined')
                                 return false;
@@ -336,7 +337,14 @@
                             data.title = jObject.attr('title');
                             //data.value = jObject.attr('value');
                             data.style = jObject.attr('style');
-                            return JSON.stringify(data);
+                            for(var node in data) {
+                                if (!data.hasOwnProperty(node))
+                                    continue;
+                                dataString += node + ':' + data[node] + ';';    
+                            }
+                            //return JSON.stringify(data);
+                            //console.log(dataString);
+                            return dataString;
                         },
                         selectSetPosition: function(select, value) {
                             select.find('option').removeAttr('selected');
@@ -838,7 +846,10 @@
                         },
                         submitActivate: function(button, tabindex) {
                             var value = $(button).attr('value');
-                            $(button).replaceWith('<button type="'+ button.type +'" name="'+ button.name +'" id="'+ button.id +'"  class="styled '+ button.className +'" value="'+ value +'"><span><span><span>'+ value +'</span></span></span>');
+                            var newButton = $(button).replaceWith('<button type="'+ button.type +'" name="'+ button.name +'" id="'+ button.id +'"  class="styled '+ button.className +'" value="'+ value +'"><span><span><span>'+ value +'</span></span></span>');
+                            elementHash = md5(methods.elementToString(newButton));
+                            console.log(newButton);
+                            newButton.data('jCleverHash',elementHash);
                         },
                         fileActivate: function(file, tabindex) {
                             $(file).wrap('<div class="jClever-element" tabindex="'+tabindex+'"><div class="jClever-element-file">').addClass('hidden-file').after('<span class="jClever-element-file-name"><span><span></span></span></span><span class="jClever-element-file-button"><span><span>'+options.fileUploadText+'</span></span></span>').wrap('<div class="input-file-helper">');
@@ -891,6 +902,8 @@
                             switch(type) {
                                 case "text":
                                 case "password":
+                                            if (!options.applyTo.input)
+                                                break;
                                             if (typeof selector != 'string')
                                                 selector.each(function(){
                                                     methods.inputActivate($(this), tabindex);    
@@ -901,11 +914,22 @@
                                                 $(selector).data('jclevered',true);
                                             }        
                                             break;
-                                            break;
-                                            break;
                                 case "file":
+                                            if (!options.applyTo.file)
+                                                break;
+                                            if (typeof selector != 'string')
+                                                selector.each(function(){
+                                                    methods.fileActivate($(this), tabindex);    
+                                                    $(this).data('jclevered',true);
+                                                });
+                                            else {
+                                                methods.fileActivate(selector, tabindex);
+                                                $(selector).data('jclevered',true);
+                                            }        
                                             break;
                                 case "select":
+                                            if (!options.applyTo.select)
+                                                break;
                                             methods.selectActivate(selector, selfAPIObject.innerCounter, tabindex);
                                             var result = $.extend(selects, selfAPIObject.selectCollection);
                                             selfAPIObject.selectCollection = result;
@@ -913,6 +937,8 @@
                                             $(selector).data('jclevered',true);
                                             break;
                                 case "checkbox":
+                                            if (!options.applyTo.checkbox)
+                                                break;
                                             if (typeof selector != 'string')
                                                 selector.each(function(){
                                                     methods.checkboxActivate($(this), tabindex);    
@@ -924,11 +950,38 @@
                                             }        
                                             break;
                                 case "radio":
+                                            if (!options.applyTo.radio)
+                                                break;
                                             methods.radioActivate(selector, tabindex);
                                             $(selector).data('jclevered',true);
                                             break;
                                 case "textarea":
+                                            if (!options.applyTo.textarea)
+                                                break;
+                                            if (typeof selector != 'string')
+                                                selector.each(function(){
+                                                    methods.textareaActivate($(this), tabindex);    
+                                                    $(this).data('jclevered',true);
+                                                });
+                                            else {
+                                                methods.textareaActivate(selector, tabindex);
+                                                $(selector).data('jclevered',true);
+                                            }        
                                             break;
+                                case "submit":
+                                case "reset":
+                                            if (!options.applyTo.button)
+                                                break;
+                                            if (typeof selector != 'string')
+                                                selector.each(function(){
+                                                    methods.submitActivate(this, tabindex);    
+                                                    $(this).data('jclevered',true);
+                                                });
+                                            else {
+                                                methods.submitActivate(selector, tabindex);
+                                                $(selector).data('jclevered',true);
+                                            }      
+                                            break;            
                                 default:             
                             }
                             return selfAPIObject;
