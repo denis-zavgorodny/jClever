@@ -1,0 +1,113 @@
+.clevered.alice .jspContainer
+{
+	overflow: hidden;
+	position: relative;
+}
+
+.clevered.alice .jspPane
+{
+	position: absolute;
+}
+
+.clevered.alice .jspVerticalBar
+{
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 4px;
+	height: 100%;
+	background: red;
+}
+
+.clevered.alice .jspHorizontalBar
+{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 16px;
+	background: red;
+}
+
+.clevered.alice .jspVerticalBar *,
+.clevered.alice .jspHorizontalBar *
+{
+	margin: 0;
+	padding: 0;
+}
+
+.clevered.alice .jspCap
+{
+	display: none;
+}
+
+.clevered.alice .jspHorizontalBar .jspCap
+{
+	float: left;
+}
+
+.clevered.alice .jspTrack
+{
+	background: #f2f6f7;
+	position: relative;
+}
+
+.clevered.alice .jspDrag
+{
+	background: #64d0f8;
+	position: relative;
+	top: 0;
+	left: 0;
+	cursor: pointer;
+}
+
+.clevered.alice .jspHorizontalBar .jspTrack,
+.clevered.alice .jspHorizontalBar .jspDrag
+{
+	float: left;
+	height: 100%;
+}
+
+.clevered.alice .jspArrow
+{
+	background: #50506d;
+	text-indent: -20000px;
+	display: block;
+	cursor: pointer;
+}
+
+.clevered.alice .jspArrow.jspDisabled
+{
+	cursor: default;
+	background: #80808d;
+}
+
+.clevered.alice .jspVerticalBar .jspArrow
+{
+	height: 16px;
+}
+
+.clevered.alice .jspHorizontalBar .jspArrow
+{
+	width: 16px;
+	float: left;
+	height: 100%;
+}
+
+.clevered.alice .jspVerticalBar .jspArrow:focus
+{
+	outline: none;
+}
+
+.clevered.alice .jspCorner
+{
+	background: #eeeef4;
+	float: left;
+	height: 100%;
+}
+
+/* Yuk! CSS Hack for IE6 3 pixel bug :( */
+* html .jspCorner
+{
+	margin: 0 -3px 0 0;
+}
