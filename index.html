@@ -7,15 +7,18 @@
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 
     <link rel="stylesheet" type="text/css" href="jCleverTemplate/alice/css/jClever.css" />
+    <link rel="stylesheet" type="text/css" href="jCleverTemplate/default/css/jClever.css" />
     <link type="text/css" href="jCleverTemplate/alice/css/jquery.jscrollpane.css" rel="stylesheet" media="all" />
    
     <script src="js/jquery-1.7.2.min.js" type="text/javascript" charset="utf-8"></script>
 
+    
+    
     <script type="text/javascript" src="js/jquery.mousewheel.js"></script>
     <script type="text/javascript" src="js/jquery.jscrollpane.min.js"></script>
 
     
-    <script src="js/jClever.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="build/jClever.js" type="text/javascript" charset="utf-8"></script>
 
     <style type="text/css">
         .form-wrapper {
@@ -30,6 +33,13 @@
     <script type="text/javascript">
         var api = {};
         jQuery(document).ready(function(){
+            jQuery('form').submit(function(){
+                jQuery('#select-new').html('<option value="1">dsfsdf</option><option value="2" selected="selected">dsfsdf23232</option>');
+
+                jQuery(this).append('<div>А я группа контролов, которые добавились к форме и автоматически были пойманы jClever<select name="d-select" id="d-select"><option value="1">1111111111111111</option><option value="2">22222222222222222222</option></select><input type="checkbox" name="dsds" value="2" checked="checked" /><input type="text" name="testtext" /><input type="password" name="testpassword" /><input type="file" name="testfile" /></div><textarea>sds</textarea><input type="submit" value="Отправить 2" name="bbb" />');
+                jQuery('body').append('<div>Я отдельная форма, которая добавилась на страницу и к ней автоматически применился jClever<form action="#" method="get" class="jClever" id="form-333"><select name="d-select" id="d-select"><option value="1">1111111111111111</option><option value="2">22222222222222222222</option></select><input type="checkbox" name="dsds" value="2" checked="checked" /><input type="text" name="testtext" /><input type="password" name="testpassword" /><input type="file" name="testfile" /><textarea>sds</textarea></form></div>');
+                return false;
+            });
             if (jQuery.jClever)
                 jQuery('.jClever').jClever({
                     validate: {
@@ -43,7 +53,10 @@
                             }
                         }    
                     },
-                    selfClass: 'alice'
+                    //selfClass: 'alice',
+                    selfClass: 'default',
+                    autoTracking: true,
+                    autoInit: true
                 });
 
             var _new = '<select name="select_new" class="test" id="select-new" style="width: 200px;"><option value="1">Trebuchet MS</option><option value="2">Text two</option><option value="3">Text three</option><option value="4">Text four</option></select>';
@@ -55,13 +68,7 @@
             jQuery('#form-1').jCleverAPI("elementAdd","#radio-new", "radio");
 
             jQuery('#form-1').jCleverAPI("elementDisable","#radio-new");
-            jQuery('#form-2').jCleverAPI();
-            //jQuery('#form-1').jCleverAPI("selectCollection").select_new.updateFromHTML("<option value='1'>1</option>");
-            //api.publicMethods.selectCollection.select1.updateFromHTML('<option value="1">1</option><option value="2">2</option><option value="3">3</option>');
 
-            jQuery('#select2').change(function(){
-                console.log(jQuery(this).val());
-            });
         });
     </script>
 </head>
@@ -72,7 +79,6 @@
             <thead>
                 <tr>
                     <th>Форма 1</th>
-                    <th>Форма 2</th>
                 </tr>
             </thead>
             <tbody>
@@ -162,63 +168,6 @@
                             <div class="row">
                                 <label for="textarea">textarea</label><br />
                                 <textarea  data-placeholder="Введите в поле текст" tabindex="13" name="textarea" cols="50" rows="10" id="textarea" ></textarea>
-                            </div>
-                            
-                            <input  tabindex="14" type="submit" value="Отправить" />
-                            <input tabindex="15" type="reset" value="Сбросить" />
-                        </form>
-                    </td>
-                    <td>
-                        <form action="#" method="get" class="jClever" id="form-2">
-                            <div class="row">
-                                <label for="select2-f2">Label 2</label>
-                                <select name="select2_f2" class="test" id="select2-f2">
-                                    <option value="1">A Text one</option>
-                                    <option value="2">B Text two</option>
-                                    <option value="3">c Text three</option>
-                                    <option selected="selected" value="4">Text four</option>
-                                    <option value="5">D Text very very long long text text long text text</option>
-                                    <option value="6">1 Text two</option>
-                                    <option value="7">2 Text three</option>
-                                    <option value="8">3Text four</option>
-                                    <option value="9">4Text one</option>
-                                    <option value="10">Б Text two</option>
-                                    <option value="11">Text three</option>
-                                    <option value="12">Text four</option>
-                                </select>
-                            </div>
-                            </div>
-                            <div class="row">
-                                <input type="checkbox" name="checkbox1_f2" value="1" id="checkbox1-f2" checked="checked" />
-                                <label for="checkbox1-f2">Label 3</label>
-                            </div>
-                            <div class="row">        
-                                <input type="checkbox" name="checkbox2_f2" value="1" id="checkbox2-f2" />
-                                <label for="checkbox2-f2">Label 3.1</label>            
-                            </div>
-                            <div class="row">        
-                                <input type="checkbox" name="checkbox3_f2" value="1" id="checkbox3-f2" />
-                                <label for="checkbox3-f2">Label 3.2</label>            
-                            </div>
-                            <div class="row">        
-                                <input type="radio" name="radio2" value="3" id="radio4-f2" />
-                                <label for="radio4-f2">Label 4.2-1</label>            
-                            </div>
-                            <div class="row">                
-                                <input type="radio" disabled="disabled" name="radio2" value="3" id="radio5-f2" />
-                                <label for="radio5-f2">Label 4.2-2</label>            
-                            </div>
-                            <div class="row">
-                                <label for="file-f2">File Input</label><br />
-                                <input type="file" name="file" class="" value="" id="file-f2" />
-                            </div>
-                            <div class="row">
-                                <label for="text-f2">Input</label><br />
-                                <input tabindex="13" data-placeholder="Введите текст" type="text" name="text" class="input-type-text" value="" id="text-f2" />
-                            </div>
-                            <div class="row">
-                                <label for="textarea-f2">textarea</label><br />
-                                <textarea  data-placeholder="Введите в поле текст" tabindex="13" name="textarea" cols="50" rows="10" id="textarea-f2" ></textarea>
                             </div>
                             
                             <input  tabindex="14" type="submit" value="Отправить" />

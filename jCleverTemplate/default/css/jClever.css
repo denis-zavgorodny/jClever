@@ -230,6 +230,7 @@
     width: 300px;
     height: 27px;
     overflow: hidden;
+    position: relative;
 } 
 .jClever.default .jClever-element .hidden-file {
     opacity: 0;
