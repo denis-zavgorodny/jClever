@@ -734,12 +734,13 @@ window.onDomChange = onDomChange;
                             jScrollApi[$(select).attr('name')] = {};
                             selects = methods.selectCollectionExtend(selects, $(select));
                             var self_width = $(select).width();
-                            $(select).wrap('<div class="jClever-element" style="z-index:'+innerCounter+';"><div class="jClever-element-select-wrapper multiselect" style="width:'+self_width+'px; z-index:'+innerCounter+';"><div class="jClever-element-select-wrapper-design"><div class="jClever-element-select-wrapper-design">').after('<span class="jClever-element-select-center">&nbsp;</span><span class="jClever-element-select-right"><span>v</span></span><div class="jClever-element-select-list-wrapper" style="z-index:'+innerCounter+';"><ul class="jClever-element-select-list"></ul></div>');
+                            $(select).wrap('<div class="jClever-element" style="z-index:'+innerCounter+';"><div class="jClever-element-select-wrapper multiselect" style="width:'+self_width+'px; z-index:'+innerCounter+';"><div class="jClever-element-select-wrapper-design"><div class="jClever-element-select-wrapper-design">').after('<span class="jClever-element-select-center">&nbsp;</span><span class="jClever-element-select-right"><span>v</span></span><div class="jClever-element-select-list-wrapper" style="z-index:'+innerCounter+';"><div class="jClever-element-select-list-wrapper-"><div class="jClever-element-select-list-wrapper--"><ul class="jClever-element-select-list"></ul></div></div></div>');
                             var selectObject = $(select).parents('.jClever-element').attr('tabindex',tabindex);
                             var selectText = selectObject.find('.jClever-element-select-center');
                             var selectRight = selectObject.find('.jClever-element-select-right');
                             var selectList = selectObject.find('.jClever-element-select-list');
                             var selectListWrapper = selectObject.find('.jClever-element-select-list-wrapper');
+                            var selectListWrapperToScroll = selectObject.find('.jClever-element-select-list-wrapper--');
                             var selectLabel = $('label[for='+$(select).attr('id')+']');
 
                             if ($(select).attr('disabled'))
@@ -750,10 +751,10 @@ window.onDomChange = onDomChange;
                             $(select).find('option').each(function(){
                                 if ($(this).is(':selected'))
                                     selectObject.find('.jClever-element-select-list')
-                                                .append($('<li class="active" data-value="'+$(this).val()+'"><span><i>'+$(this).text()+'</i></span></li>'));
+                                                .append($('<li class="active '+($(this).is(':disabled') ? ' disabled' : '') +'" data-value="'+$(this).val()+'"><span><i>'+$(this).text()+'</i></span></li>'));
                                 else
                                     selectObject.find('.jClever-element-select-list')
-                                                .append($('<li data-value="'+$(this).val()+'"><span><i>'+$(this).text()+'</i></span></li>'));
+                                                .append($('<li class="'+($(this).is(':disabled') ? ' disabled' : '') +'" data-value="'+$(this).val()+'"><span><i>'+$(this).text()+'</i></span></li>'));
                                 
                             });
                             if ($(select).find(':selected')) {
@@ -778,7 +779,7 @@ window.onDomChange = onDomChange;
                                     $('.jClever-element-select-list-wrapper').hide();
                                     selectListWrapper.show();
                                     selectObject.trigger('focus');
-                                    jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
+                                    jScrollApi[$(select).attr('name')] = selectListWrapperToScroll.jScrollPane().data('jsp');
                                 }
                             });
 
@@ -786,6 +787,8 @@ window.onDomChange = onDomChange;
                                 $(this).hide();
                             });
                             selectObject.on('click.jClever','li' ,function(event){
+                                if ($(this).hasClass('disabled'))
+                                    return;
                                 var value = $(this).attr('data-value');
                                 $(this).toggleClass('active');
                                 if ($(this).is('.active'))
@@ -817,7 +820,7 @@ window.onDomChange = onDomChange;
                             selectLabel.on('click.jClever', function(){
                                 selectObject.trigger('focus');
                                 selectListWrapper.show();
-                                jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
+                                jScrollApi[$(select).attr('name')] = selectListWrapperToScroll.jScrollPane().data('jsp');
                             });
                             // Hook keydown
                             var charText = '';
@@ -842,7 +845,7 @@ window.onDomChange = onDomChange;
                                             if ($(select).attr('disabled'))
                                                 return false;
                                             selectListWrapper.show();
-                                            jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
+                                            jScrollApi[$(select).attr('name')] = selectListWrapperToScroll.jScrollPane().data('jsp');
                                         }    
                                         break;
                                     case 32: /* Space */
@@ -852,7 +855,7 @@ window.onDomChange = onDomChange;
                                             if ($(select).attr('disabled'))
                                                 return false;
                                             selectListWrapper.show();
-                                            jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
+                                            jScrollApi[$(select).attr('name')] = selectListWrapperToScroll.jScrollPane().data('jsp');
                                         }    
                                         break;
                                     case 9: /* Tab */
@@ -908,12 +911,13 @@ window.onDomChange = onDomChange;
                             jScrollApi[$(select).attr('name')] = {};
                             selects = methods.selectCollectionExtend(selects, $(select));
                             var self_width = $(select).width();
-                            $(select).wrap('<div class="jClever-element" style="z-index:'+innerCounter+';"><div class="jClever-element-select-wrapper" style="width:'+self_width+'px; z-index:'+innerCounter+';"><div class="jClever-element-select-wrapper-design"><div class="jClever-element-select-wrapper-design">').after('<span class="jClever-element-select-center">&nbsp;</span><span class="jClever-element-select-right"><span>v</span></span><div class="jClever-element-select-list-wrapper" style="z-index:'+innerCounter+';"><ul class="jClever-element-select-list"></ul></div>');
+                            $(select).wrap('<div class="jClever-element" style="z-index:'+innerCounter+';"><div class="jClever-element-select-wrapper" style="width:'+self_width+'px; z-index:'+innerCounter+';"><div class="jClever-element-select-wrapper-design"><div class="jClever-element-select-wrapper-design">').after('<span class="jClever-element-select-center">&nbsp;</span><span class="jClever-element-select-right"><span>v</span></span><div class="jClever-element-select-list-wrapper" style="z-index:'+innerCounter+';"><div class="jClever-element-select-list-wrapper-"><div class="jClever-element-select-list-wrapper--"><ul class="jClever-element-select-list"></ul></div></div></div>');
                             var selectObject = $(select).parents('.jClever-element').attr('tabindex',tabindex);
                             var selectText = selectObject.find('.jClever-element-select-center');
                             var selectRight = selectObject.find('.jClever-element-select-right');
                             var selectList = selectObject.find('.jClever-element-select-list');
                             var selectListWrapper = selectObject.find('.jClever-element-select-list-wrapper');
+                            var selectListWrapperToScroll = selectObject.find('.jClever-element-select-list-wrapper--');
                             var selectLabel = $('label[for='+$(select).attr('id')+']');
 
                             if ($(select).attr('disabled'))
@@ -924,10 +928,10 @@ window.onDomChange = onDomChange;
                             $(select).find('option').each(function(){
                                 if ($(this).is(':selected'))
                                     selectObject.find('.jClever-element-select-list')
-                                                .append($('<li class="active" data-value="'+$(this).val()+'"><span><i>'+$(this).text()+'</i></span></li>'));
+                                                .append($('<li class="active '+($(this).is(':disabled') ? ' disabled' : '') +'" data-value="'+$(this).val()+'"><span><i>'+$(this).text()+'</i></span></li>'));
                                 else
                                     selectObject.find('.jClever-element-select-list')
-                                                .append($('<li data-value="'+$(this).val()+'"><span><i>'+$(this).text()+'</i></span></li>'));
+                                                .append($('<li class=" '+($(this).is(':disabled') ? ' disabled' : '') +'" data-value="'+$(this).val()+'"><span><i>'+$(this).text()+'</i></span></li>'));
                                 
                             });
                             if ($(select).find(':selected'))
@@ -943,7 +947,7 @@ window.onDomChange = onDomChange;
                                     $('.jClever-element-select-list-wrapper').hide();
                                     selectListWrapper.show();
                                     selectObject.trigger('focus');
-                                    jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
+                                    jScrollApi[$(select).attr('name')] = selectListWrapperToScroll.jScrollPane().data('jsp');
                                 }
                             });
 
@@ -964,21 +968,23 @@ window.onDomChange = onDomChange;
                                 if ($(this).attr('disabled'))
                                     return false;
                                 selectText.text($(this).find(':selected').text());
+                                selectObject.removeClass('focused');
                             });
                             $(select).on('update.jClever',function(){
                                 var ul = $(this).parents('.jClever-element-select-wrapper')
                                         .find('.jClever-element-select-list')
                                         .empty();
                                 $(this).find('option').each(function(){
-                                    ul.append($('<li data-value="'+$(this).val()+'"><span><i>'+$(this).text()+'</i></span></li>'));
+                                    ul.append($('<li data-value="'+$(this).val()+'" class="'+($(this).is(':disabled') ? 'disabled' : '') +'"><span><i>'+$(this).text()+'</i></span></li>'));
                                 });
                                 $(this).parents('.jClever-element-select-wrapper').find('.jClever-element-select-center').text($(select).find('option:eq(0)').text());    
+                                $(this).parents('.jClever-element-select-wrapper').find('.jClever-element-select-center').text($(select).find('option:not(:disabled):first').text());    
                             });
                             selectObject.on('focus.jClever', function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
                             selectLabel.on('click.jClever', function(){
-                                selectObject.trigger('focus');
+                                selectObject.trigger('focus.jClever').addClass('focused');
                                 selectListWrapper.show();
-                                jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
+                                jScrollApi[$(select).attr('name')] = selectListWrapperToScroll.jScrollPane().data('jsp');
                             });
                             // Hook keydown
                             var charText = '';
@@ -1003,7 +1009,7 @@ window.onDomChange = onDomChange;
                                             if ($(select).attr('disabled'))
                                                 return false;
                                             selectListWrapper.show();
-                                            jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
+                                            jScrollApi[$(select).attr('name')] = selectListWrapperToScroll.jScrollPane().data('jsp');
                                         }    
                                         break;
                                     case 32: /* Space */
@@ -1013,7 +1019,7 @@ window.onDomChange = onDomChange;
                                             if ($(select).attr('disabled'))
                                                 return false;
                                             selectListWrapper.show();
-                                            jScrollApi[$(select).attr('name')] = selectListWrapper.jScrollPane().data('jsp');
+                                            jScrollApi[$(select).attr('name')] = selectListWrapperToScroll.jScrollPane().data('jsp');
                                         }    
                                         break;
                                     case 9: /* Tab */

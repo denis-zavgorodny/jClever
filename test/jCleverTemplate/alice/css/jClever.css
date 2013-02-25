@@ -70,6 +70,7 @@
     cursor: pointer;
     height: 30px;
 }
+
 .clevered.alice  .jClever-element.focused .jClever-element-select-wrapper {
     border: 1px solid #7eb3ce;
 }
@@ -173,8 +174,10 @@
 
     display: none;
 
-    max-height: 200px;
     font-size: 14px;
+}
+.clevered.alice .jClever-element-select-list-wrapper-- {
+    max-height: 200px;
 }
 .clevered.alice .jClever-element-select-list {
     white-space: nowrap;
@@ -186,12 +189,18 @@
     margin: 0px 0;
     color: #000;
 }
+
 .clevered.alice .jClever-element-select-list>li.active  {
     background: #f2f6f7;
 }
 .clevered.alice .jClever-element-select-list>li:hover, .clevered.alice .jClever-element-select-list>li.selected {
     background: #64d0f8;
     color: #fff;
+}
+.clevered.alice .jClever-element-select-list>li.disabled,
+.clevered.alice .jClever-element-select-list>li:hover.disabled {
+    color: #c0c0c0;
+    background: none;
 }
 .clevered.alice .jClever-element-select-list>li>span {
     overflow: hidden;

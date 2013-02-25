@@ -3,9 +3,9 @@ module.exports = function(grunt) {
         concat: {
         	main: {
                 src: [
-                        'js/md5.js',
-                        'js/jquery.domchange.js',
-        		        'js/jClever.js'
+                        'src/md5.js',
+                        'src/jquery.domchange.js',
+        		        'src/jClever.js'
                     ],
         		dest: 'build/jClever.js'
         	}
