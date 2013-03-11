@@ -609,9 +609,12 @@
                                     return false;
                                 if (selectListWrapper.is(':visible')) {
                                     $('.jClever-element-select-list-wrapper').hide();
+                                    selectObject.removeClass('opened');
                                 } else {
                                     $('.jClever-element-select-list-wrapper').hide();
+                                    $('.jClever-element').removeClass('opened');
                                     selectListWrapper.show();
+                                    selectObject.addClass('opened');
                                     selectObject.trigger('focus');
                                     jScrollApi[$(select).attr('name')] = selectListWrapperToScroll.jScrollPane().data('jsp');
                                 }
@@ -619,6 +622,7 @@
 
                             selectListWrapper.on('blur.jClever', function(){
                                 $(this).hide();
+                                selectObject.removeClass('opened');
                             });
                             selectObject.on('click.jClever','li' ,function(event){
                                 var value = $(this).attr('data-value');
@@ -628,6 +632,7 @@
                                 $(select).find('option[value="'+value+'"]').attr('selected','selected');
                                 $(select).trigger('change');
                                 selectListWrapper.hide();
+                                selectObject.removeClass('opened');
                                 return false;
                             });
                             $(select).on('change.jClever', function(){
@@ -646,10 +651,11 @@
                                 $(this).parents('.jClever-element-select-wrapper').find('.jClever-element-select-center').text($(select).find('option:eq(0)').text());    
                                 $(this).parents('.jClever-element-select-wrapper').find('.jClever-element-select-center').text($(select).find('option:not(:disabled):first').text());    
                             });
-                            selectObject.on('focus.jClever', function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
+                            selectObject.on('focus.jClever', function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused'); $(this).removeClass('opened');});
                             selectLabel.on('click.jClever', function(){
                                 selectObject.trigger('focus.jClever').addClass('focused');
                                 selectListWrapper.show();
+                                selectObject.addClass('opened');
                                 jScrollApi[$(select).attr('name')] = selectListWrapperToScroll.jScrollPane().data('jsp');
                             });
                             // Hook keydown
@@ -669,22 +675,29 @@
                                         if (selectedIndex > 0){ selectedIndex--; }
                                         break;
                                     case 13: /* Enter */
-                                        if (selectListWrapper.is(':visible'))
+                                        if (selectListWrapper.is(':visible')) {
                                             selectListWrapper.hide();
+                                            selectObject.removeClass('opened');
+                                        }
+                                            
                                         else {
                                             if ($(select).attr('disabled'))
                                                 return false;
                                             selectListWrapper.show();
+                                            selectObject.addClass('opened');
                                             jScrollApi[$(select).attr('name')] = selectListWrapperToScroll.jScrollPane().data('jsp');
                                         }    
                                         break;
                                     case 32: /* Space */
-                                        if (selectListWrapper.is(':visible'))
+                                        if (selectListWrapper.is(':visible')) {
                                             selectListWrapper.hide();
+                                            selectObject.removeClass('opened');
+                                        }    
                                         else {
                                             if ($(select).attr('disabled'))
                                                 return false;
                                             selectListWrapper.show();
+                                            selectObject.addClass('opened');
                                             jScrollApi[$(select).attr('name')] = selectListWrapperToScroll.jScrollPane().data('jsp');
                                         }    
                                         break;
@@ -880,7 +893,7 @@
                             $(file).parents('.jClever-element').focus(function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
                         },
                         inputActivate: function(input, tabindex) {
-                            $(input).wrap('<div class="jClever-element" tabindex="'+tabindex+'"><div class="jClever-element-input"><div class="jClever-element-input"><div class="jClever-element-input">');
+                            $(input).wrap('<div class="jClever-element"><div class="jClever-element-input"><div class="jClever-element-input"><div class="jClever-element-input">');
                             $(input).parents('.jClever-element').append(options.errorTemplate);
                             $(input).on('focusin.jClever', function(){
                                 $(this).parents('.jClever-element').addClass('focused');
@@ -890,7 +903,7 @@
                             });
                         },
                         textareaActivate: function(textarea, tabindex) {
-                            $(textarea).wrap('<div class="jClever-element" tabindex="'+tabindex+'"><div class="jClever-element-textarea"><div class="jClever-element-textarea"><div class="jClever-element-textarea">');
+                            $(textarea).wrap('<div class="jClever-element"><div class="jClever-element-textarea"><div class="jClever-element-textarea"><div class="jClever-element-textarea">');
                             $(textarea).parents('.jClever-element').append(options.errorTemplate);
                             $(textarea).on('focusin.jClever', function(){
                                 $(this).parents('.jClever-element').addClass('focused');
