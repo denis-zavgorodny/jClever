@@ -636,9 +636,11 @@
                                 return false;
                             });
                             $(select).on('change.jClever', function(){
-                                if ($(this).attr('disabled'))
+                                var self = $(this),
+                                    value = self.find('option[selected=selected]').text();
+                                if (self.attr('disabled'))
                                     return false;
-                                selectText.text($(this).find(':selected').text());
+                                selectText.text(value);
                                 selectObject.removeClass('focused');
                             });
                             $(select).on('update.jClever',function(){
