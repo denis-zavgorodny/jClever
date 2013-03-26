@@ -430,6 +430,11 @@
     color: #000;
     background: #f2f6f7;
 }
+.jClever-element-input-placeholder {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
 
 
 

@@ -233,6 +233,39 @@
                                                 break;                                                          
                                 }
                             }
+                            $(element).find('input[type=password]').each(function(){
+                                var _this = $(this);
+                                var holderText = $(this).data('placeholder-pass');
+                                var placeholder;
+                                if (typeof holderText === 'string') {
+                                    $('<span class="jClever-element-input-placeholder">'+holderText+'</span>').insertAfter(_this);
+                                    placeholder = _this.next('.jClever-element-input-placeholder');
+                                    console.log(placeholder);
+                                    if(_this.val() == '') {
+                                         _this.addClass('placeholdered');
+                                         placeholder.show();
+                                    } else {
+                                        placeholder.hide();
+                                    }
+                                         
+                                    _this.focusin(function(){
+                                        if(_this.val() == '') {
+                                            _this.removeClass('placeholdered');
+                                            placeholder.hide();
+                                        }
+                                    });
+                                    _this.focusout(function(){
+                                        if(_this.val() == '') {
+                                            _this.addClass('placeholdered');
+                                            placeholder.show();
+                                        }    
+                                    });
+                                    placeholder.click(function(){
+                                        _this.focus();
+                                    });
+                                }
+                            });
+
                             $(element).data('jCleverHash', md5(formHash));
                             //Hook reset event
                             $(element).find('button[type=reset]').click(function(){
