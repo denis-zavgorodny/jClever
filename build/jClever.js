@@ -574,7 +574,6 @@ window.onDomChange = onDomChange;
                                 if (typeof holderText === 'string') {
                                     $('<span class="jClever-element-input-placeholder">'+holderText+'</span>').insertAfter(_this);
                                     placeholder = _this.next('.jClever-element-input-placeholder');
-                                    console.log(placeholder);
                                     if(_this.val() == '') {
                                          _this.addClass('placeholdered');
                                          placeholder.show();
