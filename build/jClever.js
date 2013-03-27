@@ -1003,10 +1003,12 @@ window.onDomChange = onDomChange;
                             });
                             $(select).on('change.jClever', function(){
                                 var self = $(this),
-                                    value = self.find('option[selected=selected]').text();
+                                    selectedElement = self.find('option[selected=selected]'),
+                                    value = selectedElement.text();
                                 if (self.attr('disabled'))
                                     return false;
                                 selectText.text(value);
+                                self.get(0).selectedIndex = selectedElement.index();
                                 selectObject.removeClass('focused');
                             });
                             $(select).on('update.jClever',function(){
