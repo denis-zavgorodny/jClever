@@ -1120,6 +1120,29 @@ window.onDomChange = onDomChange;
                                 return false;
                             });
                         },
+                        selectOpen: function(select){
+                            if (typeof select == 'string')
+                                select = $(select);
+                            var wrapper = select.closest('.jClever-element'),
+                                selectListWrapper = wrapper.find('.jClever-element-select-list-wrapper'),
+                                selectListWrapperToScroll = wrapper.find('.jClever-element-select-list-wrapper--')
+
+                            select.addClass('focused');
+                            selectListWrapper.show();
+                            wrapper.addClass('opened');
+                            jScrollApi[$(select).attr('name')] = selectListWrapperToScroll.jScrollPane().data('jsp');
+                        },
+                        selectClose: function(select){
+                            if (typeof select == 'string')
+                                select = $(select);
+                            var wrapper = select.closest('.jClever-element'),
+                                selectListWrapper = wrapper.find('.jClever-element-select-list-wrapper'),
+                                selectListWrapperToScroll = wrapper.find('.jClever-element-select-list-wrapper--')
+
+                            select.removeClass('focused');
+                            selectListWrapper.hide();
+                            wrapper.removeClass('opened');
+                        },
                         checkboxActivate: function(checkbox, tabindex) {
                             var _checkbox = $(checkbox).wrap('<div class="jClever-element" tabindex="'+tabindex+'">').addClass('hidden').after('<span class="jClever-element-checkbox-twins"><span class="jClever-element-checkbox-twins-element"></span><span class="jClever-element-checkbox-twins-color"></span></span>');
                             var checkboxId = _checkbox.attr('id');
@@ -1398,6 +1421,8 @@ window.onDomChange = onDomChange;
                                 refresh: function(form) {methods.refresh(form)},
                                 destroy: function(form) {methods.destroy(form)},
                                 reset: function(form) {methods.reset(form)},
+                                selectOpen: function(select) {methods.selectOpen(select)},
+                                selectClose: function(select) {methods.selectClose(select)},
                                 selectSetPosition: function(select, value) {if ($(select).length) methods.selectSetPosition($(select), value);},
                                 selectAdd: function(select) {methods.selectAdd(select);},
                                 checkboxSetState: function(checkbox, value) {if ($(checkbox).length) methods.checkboxSetState($(checkbox), value); else return false},                            
