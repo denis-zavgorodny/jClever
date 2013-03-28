@@ -682,7 +682,7 @@
                                         .find('.jClever-element-select-list')
                                         .empty();
                                 $(this).find('option').each(function(){
-                                    ul.append($('<li data-value="'+$(this).val()+'" class="'+($(this).is(':disabled') ? 'disabled' : '') +'"><span><i>'+$(this).text()+'</i></span></li>'));
+                                    ul.append($('<li data-value="'+$(this).val()+'" class="'+($(this).attr('selected')?"active":"")+'  '+($(this).is(':disabled') ? 'disabled' : '') +'"><span><i>'+$(this).text()+'</i></span></li>'));
                                 });
                                 $(this).parents('.jClever-element-select-wrapper').find('.jClever-element-select-center').text($(select).find('option:eq(0)').text());    
                                 $(this).parents('.jClever-element-select-wrapper').find('.jClever-element-select-center').text($(select).find('option:not(:disabled):first').text());    
