@@ -32,7 +32,8 @@
                                     selfClass: 'default',
                                     fileUploadText: 'Загрузить',
                                     autoTracking: false,
-                                    autoInit: false
+                                    autoInit: false,
+                                    autoinitClass: ''
                                 },
                                 options
                                 );
@@ -661,7 +662,9 @@
                                 selectList.find('li.active').removeClass('active');
                                 $(this).addClass('active');
                                 $(select).find('option').removeAttr('selected');
+                                $(select).find('option').prop('selected', false);
                                 $(select).find('option[value="'+value+'"]').attr('selected','selected');
+                                $(select).find('option[value="'+value+'"]').prop('selected',true);
                                 $(select).trigger('change');
                                 selectListWrapper.hide();
                                 selectObject.removeClass('opened');
@@ -669,8 +672,11 @@
                             });
                             $(select).on('change.jClever', function(){
                                 var self = $(this),
-                                    selectedElement = self.find('option[selected=selected]'),
-                                    value = selectedElement.text();
+                                    selectedElement = self.find('option[selected=selected]')    
+                                if (self.find('option[selected=selected]').length > 1)
+                                    selectedElement = self.find('option:selected');
+                                
+                                var value = selectedElement.text();
                                 if (self.attr('disabled'))
                                     return false;
                                 selectText.text(value);
@@ -682,7 +688,7 @@
                                         .find('.jClever-element-select-list')
                                         .empty();
                                 $(this).find('option').each(function(){
-                                    ul.append($('<li data-value="'+$(this).val()+'" class="'+($(this).attr('selected')?"active":"")+'  '+($(this).is(':disabled') ? 'disabled' : '') +'"><span><i>'+$(this).text()+'</i></span></li>'));
+                                    ul.append($('<li data-value="'+$(this).val()+'" class="'+($(this).prop('selected')?"active":"")+'  '+($(this).is(':disabled') ? 'disabled' : '') +'"><span><i>'+$(this).text()+'</i></span></li>'));
                                 });
                                 $(this).parents('.jClever-element-select-wrapper').find('.jClever-element-select-center').text($(select).find('option:eq(0)').text());    
                                 $(this).parents('.jClever-element-select-wrapper').find('.jClever-element-select-center').text($(select).find('option:not(:disabled):first').text());    
@@ -1121,7 +1127,10 @@
                 if (typeof timeLinkInit != 'undefied' && timeLinkInit != null)
                     clearTimeout(timeLinkInit); 
                 timeLinkInit = setTimeout(function(){
-                    $('body').find('form').each(function(){
+                    var selector = 'form';
+                    if (options.autoinitClass != '')
+                        selector = options.autoinitClass;
+                    $('body').find(selector).each(function(){
                         startFunction.call(this);
                     });    
                 }, delayTime);
@@ -1129,6 +1138,7 @@
         }    
 
         return this.each(function(){
+            console.log($(this));
             startFunction.call(this);
         });
     };
