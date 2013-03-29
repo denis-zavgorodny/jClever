@@ -622,6 +622,9 @@ window.onDomChange = onDomChange;
                                             case "SELECT":
                                                         self.trigger('update');
                                                         break;
+                                            case "INPUT":
+                                                        self.trigger('change');
+                                                        break;            
    
                                         }
                                     } else {
@@ -691,6 +694,7 @@ window.onDomChange = onDomChange;
                                 jObject.find('option').each(function(){
                                     data.innerContent += $(this).attr('value').toString()+$(this).text();
                                 });
+
                             data.className = jObject.attr('class');
                             data.name = jObject.attr('name');
                             data.checked = jObject.attr('checked');
@@ -701,6 +705,7 @@ window.onDomChange = onDomChange;
                             data.id = jObject.attr('id');
                             data.alt = jObject.attr('alt');
                             data.title = jObject.attr('title');
+
                             //data.value = jObject.attr('value');
                             data.style = jObject.attr('style');
                             for(var node in data) {
@@ -730,16 +735,16 @@ window.onDomChange = onDomChange;
                         },
                         checkboxSetState: function(checkbox, value) {
                             if (value == 1)
-                                checkbox.attr('checked', 'checked');
+                                checkbox.attr('checked', 'checked').prop('checked', true);
                             else
-                                checkbox.removeAttr('checked');
+                                checkbox.removeAttr('checked').prop('checked', false);
                             checkbox.trigger('change');    
                         },
                         radioSetState: function(radio, value) {
                             if (value == 1)
-                                radio.attr('checked', 'checked');
+                                radio.attr('checked', 'checked').prop('checked', true);
                             else
-                                radio.removeAttr('checked');
+                                radio.removeAttr('checked').prop('checked', false);
                             radio.trigger('change');    
                         },
                         fileSetState: function(file, value) {
@@ -1163,6 +1168,7 @@ window.onDomChange = onDomChange;
                             _checkbox.on('change.jClever', function(){
                                 if ($(this).attr('disabled'))
                                     return false;
+
                                 if ($(this).is(':checked')) {
                                     _checkbox.next('.jClever-element-checkbox-twins').addClass('checked');
                                     $('label[for='+checkboxId+']').addClass('active');
@@ -1174,9 +1180,10 @@ window.onDomChange = onDomChange;
                             _checkbox.next('.jClever-element-checkbox-twins').on('click', function(){
                                 var _self = $(this);
                                 if (_self.prev('input[type=checkbox]').is(':checked'))
-                                    _self.prev('input[type=checkbox]').removeAttr('checked');
-                                else
-                                    _self.prev('input[type=checkbox]').attr('checked', 'checked');
+                                    _self.prev('input[type=checkbox]').removeAttr('checked').prop('checked', false);
+                                else {
+                                    _self.prev('input[type=checkbox]').attr('checked', 'checked').prop('checked', true);
+                                }    
                                 _self.prev('input[type=checkbox]').trigger('change');    
                             });
                             // Hook keydown
@@ -1185,9 +1192,9 @@ window.onDomChange = onDomChange;
                                 switch(e.keyCode){
                                     case 32: /* Space */
                                         if (_checkbox.is(':checked'))
-                                            _checkbox.removeAttr('checked');
+                                            _checkbox.removeAttr('checked').prop('checked', false);
                                         else
-                                            _checkbox.attr('checked', 'checked');
+                                            _checkbox.attr('checked', 'checked').prop('checked', true);
                                         _checkbox.trigger('change');    
                                         break;
                                     default:
@@ -1233,7 +1240,7 @@ window.onDomChange = onDomChange;
                                 if (_self.prev('input[type=radio]').is(':checked'))
                                     _self.prev('input[type=radio]').attr('checked');
                                 else
-                                    _self.prev('input[type=radio]').attr('checked', 'checked');
+                                    _self.prev('input[type=radio]').attr('checked', 'checked').prop('checked', true);
                                 _self.prev('input[type=radio]').trigger('change');    
                             });
 
@@ -1243,9 +1250,9 @@ window.onDomChange = onDomChange;
                                 switch(e.keyCode){
                                     case 32: /* Space */
                                         if (_radio.is(':checked'))
-                                            _radio.removeAttr('checked');
+                                            _radio.removeAttr('checked').prop('checked', false);
                                         else
-                                            _radio.attr('checked', 'checked');
+                                            _radio.attr('checked', 'checked').prop('checked', true);
                                         _radio.trigger('change');    
                                         break;
                                     default:
