@@ -1472,7 +1472,6 @@ window.onDomChange = onDomChange;
         }    
 
         return this.each(function(){
-            console.log($(this));
             startFunction.call(this);
         });
     };
