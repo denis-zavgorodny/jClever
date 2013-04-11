@@ -29,7 +29,7 @@
                                     },
                                     errorTemplate: '<span class="jClever-error-label"></span>',
                                     errorClassTemplate: 'jClever-error-label',
-                                    selfClass: 'default',
+                                    selfClass: 'alice',
                                     fileUploadText: 'Загрузить',
                                     autoTracking: false,
                                     autoInit: false,

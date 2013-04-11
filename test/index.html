@@ -16,6 +16,7 @@
     
     <script type="text/javascript" src="js/jquery.mousewheel.js"></script>
     <script type="text/javascript" src="js/jquery.jscrollpane.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.10.2.custom.min.js"></script>
 
     
     <script src="../src/md5.js" type="text/javascript" charset="utf-8"></script>
@@ -58,7 +59,7 @@
                             }
                         }    
                     },
-                    selfClass: 'alice',
+                    //selfClass: 'alice',
                     //selfClass: 'default',
                     autoTracking: true,
                     autoInit: true
@@ -73,6 +74,7 @@
             jQuery('#form-1').jCleverAPI("elementAdd","#radio-new", "radio");
 
             jQuery('#form-1').jCleverAPI("elementDisable","#radio-new");
+
 
         });
     </script>
@@ -101,7 +103,6 @@
                                     <option selected="selected" value="abcde">abcde</option>
                                 </select>
                             </div>
-                            
                             <div class="row">
                                 <label for="select1">Label 1</label>
                                 <select disabled="disabled" name="select1" class="test" id="select1" style="width: 200px;">
