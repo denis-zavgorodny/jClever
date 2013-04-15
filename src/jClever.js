@@ -695,8 +695,7 @@
                                 $(this).find('option').each(function(){
                                     ul.append($('<li data-value="'+$(this).val()+'" class="'+($(this).prop('selected')?"active":"")+'  '+($(this).is(':disabled') ? 'disabled' : '') +'"><span><i>'+$(this).text()+'</i></span></li>'));
                                 });
-                                $(this).parents('.jClever-element-select-wrapper').find('.jClever-element-select-center').text($(select).find('option:eq(0)').text());    
-                                $(this).parents('.jClever-element-select-wrapper').find('.jClever-element-select-center').text($(select).find('option:not(:disabled):first').text());    
+                                $(this).parents('.jClever-element-select-wrapper').find('.jClever-element-select-center').text($(select).find('option:selected')?$(select).find('option:selected').text():$(select).find('option:not(:disabled):first').text());    
                             });
                             selectObject.on('focus.jClever', function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused'); $(this).removeClass('opened');});
                             selectLabel.on('click.jClever', function(){
