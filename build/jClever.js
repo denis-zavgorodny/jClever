@@ -623,7 +623,7 @@ window.onDomChange = onDomChange;
                                                         self.trigger('update');
                                                         break;
                                             case "INPUT":
-                                                        self.trigger('change');
+                                                        self.trigger('updates.jClever');
                                                         break;            
    
                                         }
@@ -1217,7 +1217,7 @@ window.onDomChange = onDomChange;
                                 return;
                             }
                                 
-                            _radio.on('change.jClever', function(){
+                            _radio.on('change.jClever, updates.jClever', function(e){
                                 if ($(this).attr('disabled'))
                                     return false;
                                 var _self = $(this);
@@ -1227,17 +1227,20 @@ window.onDomChange = onDomChange;
                                 } else {
                                     _self.next('.jClever-element-radio-twins').removeClass('checked');
                                     $('label[for='+radioId+']').removeClass('active');
-                                }    
-                                $('input:radio[name="'+ $(radio).attr('name') +'"]').not($(radio)).each(function(){
-                                    var _self = $(this);
-                                    _self.attr('checked',false).next('.jClever-element-radio-twins').removeClass('checked');
-                                    $('label[for='+$(this).attr('id')+']').removeClass('active');
-                                });    
+                                }   
+                                if (e.type != 'updates') { 
+                                    $('input:radio[name="'+ $(radio).attr('name') +'"]').not($(this)).each(function(){
+                                        var _self = $(this);
+
+                                        _self.removeAttr('checked').prop('checked', false).next('.jClever-element-radio-twins').removeClass('checked');
+                                        $('label[for='+$(this).attr('id')+']').removeClass('active');
+                                    });    
+                                }
                             });
                             _radio.next('.jClever-element-radio-twins').on('click', function(){
                                 var _self = $(this);
                                 if (_self.prev('input[type=radio]').is(':checked'))
-                                    _self.prev('input[type=radio]').attr('checked');
+                                    _self.prev('input[type=radio]').attr('checked','checked').prop('checked', true);
                                 else
                                     _self.prev('input[type=radio]').attr('checked', 'checked').prop('checked', true);
                                 _self.prev('input[type=radio]').trigger('change');    
@@ -1469,7 +1472,6 @@ window.onDomChange = onDomChange;
                         if ($.inArray(this,that) == -1)
                             that.push(this);
                     });     
-                    console.log(that);                 
                 }, delayTime);
             });
         }
