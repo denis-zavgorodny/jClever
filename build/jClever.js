@@ -1455,13 +1455,7 @@ window.onDomChange = onDomChange;
         /**
         *   Add onDomChange custom event. Temporary limit for 100ms refresh frequency 
         */
-        if (options.autoTracking) {
-            $(document).on('onDomChange.jClever', function(e){
-                if (typeof timeLinkTraking != 'undefied' && timeLinkTraking != null)
-                    clearTimeout(timeLinkTraking); 
-                timeLinkTraking = setTimeout(function(){methods.refresh(that);}, delayTime);
-            });
-        }    
+            
         if (options.autoInit) {
             $(document).on('onDomChange.jClever', function(e){
                 if (typeof timeLinkInit != 'undefied' && timeLinkInit != null)
@@ -1474,6 +1468,13 @@ window.onDomChange = onDomChange;
                         startFunction.call(this);
                     });    
                 }, delayTime);
+            });
+        }
+        if (options.autoTracking) {
+            $(document).on('onDomChange.jClever', function(e){
+                if (typeof timeLinkTraking != 'undefied' && timeLinkTraking != null)
+                    clearTimeout(timeLinkTraking); 
+                timeLinkTraking = setTimeout(function(){methods.refresh(that);}, delayTime);
             });
         }    
 
