@@ -1466,14 +1466,17 @@ window.onDomChange = onDomChange;
                         selector = options.autoinitClass;
                     $('body').find(selector).each(function(){
                         startFunction.call(this);
-                    });    
+                        if ($.inArray(this,that) == -1)
+                            that.push(this);
+                    });     
+                    console.log(that);                 
                 }, delayTime);
             });
         }
         if (options.autoTracking) {
             $(document).on('onDomChange.jClever', function(e){
                 if (typeof timeLinkTraking != 'undefied' && timeLinkTraking != null)
-                    clearTimeout(timeLinkTraking); 
+                    clearTimeout(timeLinkTraking);
                 timeLinkTraking = setTimeout(function(){methods.refresh(that);}, delayTime);
             });
         }    
