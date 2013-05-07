@@ -549,7 +549,11 @@
                             var charText = '';
                             var queTime = null;
                             selectObject.on('keydown.jClever', function(e){
-                                var selectedIndex = $(select)[0].selectedIndex;
+                                var self = $(this),
+                                    selectedIndex = !isNaN(self.data('current'))?self.data('current'):0,
+                                    isSelect = false;
+                                
+
                                 switch(e.keyCode){
                                     case 40: /* Down */
                                         if ($(select).attr('disabled'))
@@ -569,7 +573,8 @@
                                                 return false;
                                             selectListWrapper.show();
                                             jScrollApi[$(select).attr('name')] = selectListWrapperToScroll.jScrollPane().data('jsp');
-                                        }    
+                                        }  
+                                        isSelect = true;  
                                         break;
                                     case 32: /* Space */
                                         if (selectListWrapper.is(':visible'))
@@ -579,52 +584,36 @@
                                                 return false;
                                             selectListWrapper.show();
                                             jScrollApi[$(select).attr('name')] = selectListWrapperToScroll.jScrollPane().data('jsp');
-                                        }    
+                                        } 
+                                        isSelect = true;     
                                         break;
                                     case 9: /* Tab */
                                             selectListWrapper.hide();
+                                            isSelect = true;
                                             return true;
                                            
                                     default: /* Key select */
-                                        //$(select).focus();
-                                        charText += String.fromCharCode(e.keyCode);
-                                        clearTimeout(queTime);
-                                        queTime = setTimeout(function(){
-                                            var tmpIndex = 0;
-                                            var count = $(select)[0].options.length;
-                                            for (var key  = 0; key < count; key ++) {
-                                                if (typeof $(select)[0].options[key].text == 'string') {
-                                                    var localString = $(select)[0].options[key].text.toUpperCase();
-                                                    var reg = new RegExp("^"+charText, "i")
-                                                    if (reg.test(localString)) {
-                                                        selectedIndex = tmpIndex;
-
-                                                        $(select)[0].selectedIndex = selectedIndex;
-                                                        selectObject.find('li.selected').removeClass('selected');
-                                                        selectObject.find('li:eq('+selectedIndex+')').addClass('selected');
-                                                        selectObject.find('option').removeAttr('selected');
-                                                        selectObject.find('option:eq('+selectedIndex+')').attr('selected','selected');
-                                                        $(select).trigger('change');
-                                                        if (selectListWrapper.is(':visible'))
-                                                            jScrollApi[$(select).attr('name')].scrollToElement(selectObject.find('li:eq('+selectedIndex+')'));
-
-                                                        break;    
-                                                    }
-                                                    tmpIndex++;
-                                                }
-                                            }
-                                            charText = '';
-                                        }, 500);
+                                        
                                             
                                         break;
                                         return false;
                                 }
-                                $(select)[0].selectedIndex = selectedIndex;
+                                //$(select)[0].selectedIndex = selectedIndex;
+                                self.data('current', selectedIndex);
                                 selectObject.find('li.selected').removeClass('selected');
                                 selectObject.find('li:eq('+selectedIndex+')').addClass('selected');
-                                selectObject.find('option').removeAttr('selected');
-                                selectObject.find('option:eq('+selectedIndex+')').attr('selected','selected');
-                                $(select).trigger('change');
+                                if (isSelect) {
+                                    var _current = $(select).find('option:eq('+selectedIndex+')');
+                                    if (_current.attr('selected') == 'selected') {
+                                        _current.removeAttr('selected');
+                                    } else {
+                                        _current.attr('selected', 'selected');
+                                    }
+                                    
+                                    
+                                    $(select).trigger('change');
+                                    $(select).trigger('update');
+                                }
                                 if (selectListWrapper.is(':visible'))
                                     jScrollApi[$(select).attr('name')].scrollToElement(selectObject.find('li:eq('+selectedIndex+')'));
                                 return false;
