@@ -798,12 +798,12 @@ window.onDomChange = onDomChange;
                             if ($(select).find(':selected')) {
                                 var _text = '';
                                 $(select).find('option:selected').each(function(){
-                                    _text += $(this).text()+', ';
+                                    _text += "<span class='multiple-item' data-value='"+$(this).val()+"'><span class='multiple-item-text'>"+$(this).text()+"</span><a href='#' class='multiple-item-remove'></a></span>";
                                 });
                                 if (_text.length == 0)
                                     selectText.html('&nbsp;');
                                 else
-                                    selectText.text(_text.substring(0,_text.length-2));
+                                    selectText.html(_text);//selectText.html(_text.substring(0,_text.length-2));
                             } else {
                                 //selectText.text($(select).find('option:eq(0)').text());
                                 selectText.text('&nbsp;');
@@ -819,6 +819,15 @@ window.onDomChange = onDomChange;
                                     selectObject.trigger('focus');
                                     jScrollApi[$(select).attr('name')] = selectListWrapperToScroll.jScrollPane().data('jsp');
                                 }
+                            });
+
+                            selectObject.on('click.jClever', '.multiple-item-remove', function(){
+                                var self = $(this),
+                                    element = self.closest('span');
+                                $(select).find('option[value="'+element.data('value')+'"]').removeAttr('selected');
+                                $(select).trigger('change');
+                                $(select).trigger('update.jClever');
+                                return false;
                             });
 
                             selectListWrapper.on('blur.jClever', function(){
@@ -841,18 +850,28 @@ window.onDomChange = onDomChange;
                                     return false;
                                 var _text = '';
                                 $(select).find('option:selected').each(function(){
-                                    _text += $(this).text()+', ';
+                                    //_text += $(this).text()+', ';
+                                    _text += "<span class='multiple-item' data-value='"+$(this).val()+"'><span class='multiple-item-text'>"+$(this).text()+"</span><a href='#' class='multiple-item-remove'></a></span>";
                                 });
-                                selectText.text(_text.substring(0,_text.length-2));
+                                selectText.html(_text);//selectText.text(_text.substring(0,_text.length-2));
+
+
                             });
                             $(select).on('update.jClever',function(){
                                 var ul = $(this).parents('.jClever-element-select-wrapper')
                                         .find('.jClever-element-select-list')
-                                        .empty();
-                                $(this).find('option').each(function(){
-                                    ul.append($('<li data-value="'+$(this).val()+'"><span><i>'+$(this).text()+'</i></span></li>'));
+                                        .empty(),
+
+                                        self = $(this);
+                                self.find('option').each(function(){
+                                    var _option = $(this);
+                                    ul.append($('<li class="'+(_option.attr('selected')=='selected'?"active":"")+'" data-value="'+_option.val()+'"><span><i>'+_option.text()+'</i></span></li>'));
                                 });
-                                $(this).parents('.jClever-element-select-wrapper').find('.jClever-element-select-center').text($(select).find('option:eq(0)').text());    
+                                
+                                self.find('option:selected').each(function(){
+                                    //_text += $(this).text()+', ';
+                                    _text += "<span class='multiple-item' data-value='"+$(this).val()+"'><span class='multiple-item-text'>"+$(this).text()+"</span><a href='#' class='multiple-item-remove'></a></span>";
+                                });
                             });
                             selectObject.on('focus.jClever', function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
                             selectLabel.on('click.jClever', function(){
@@ -997,14 +1016,16 @@ window.onDomChange = onDomChange;
                                 selectObject.removeClass('opened');
                             });
                             selectObject.on('click.jClever','li' ,function(event){
-                                var value = $(this).attr('data-value');
+                                var value = $(this).attr('data-value'),
+                                    _select = $(select);
                                 selectList.find('li.active').removeClass('active');
                                 $(this).addClass('active');
-                                $(select).find('option').removeAttr('selected');
-                                $(select).find('option').prop('selected', false);
-                                $(select).find('option[value="'+value+'"]').attr('selected','selected');
-                                $(select).find('option[value="'+value+'"]').prop('selected',true);
-                                $(select).trigger('change');
+                                _select.find('option[selected=selected]').removeAttr('selected');
+                                _select.find('option[selected=selected]').prop('selected', false);
+                                _select.find('option[value="'+value+'"]').prop('selected',true);
+                                _select.find('option[value="'+value+'"]').attr('selected','selected');
+                                _select.trigger('change');
+                                
                                 selectListWrapper.hide();
                                 selectObject.removeClass('opened');
                                 return false;
@@ -1023,6 +1044,7 @@ window.onDomChange = onDomChange;
                                 selectObject.removeClass('focused');
                             });
                             $(select).on('update.jClever',function(){
+                                select = this;
                                 var ul = $(this).parents('.jClever-element-select-wrapper')
                                         .find('.jClever-element-select-list')
                                         .empty();

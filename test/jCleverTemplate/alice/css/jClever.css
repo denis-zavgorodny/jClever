@@ -630,3 +630,41 @@
 .clevered.alice .jClever-element.error .jClever-error-label {
     display:-moz-inline-box; display:inline-block; *zoom: 1; *display:inline;
 }
+
+
+/**
+*   Multiselect
+*
+*/
+.clevered.alice .jClever-element-select-wrapper.multiselect {
+    height: auto;
+    min-height: 34px;
+}
+.clevered.alice .jClever-element-select-wrapper.multiselect .jClever-element-select-list-wrapper {
+    top: 100%;
+    margin-top: 1px;
+
+}
+.clevered.alice .jClever-element-select-wrapper.multiselect .jClever-element-select-center {
+    white-space: normal;
+}
+.multiple-item {
+    display:-moz-inline-box; display:inline-block; *zoom: 1; *display:inline;
+    vertical-align: middle;
+    border: 1px solid #c0c0c0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    padding: 3px 10px 3px 3px;
+
+    position: relative;
+    margin: 2px 2px 2px 0;
+}
+.multiple-item-remove {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 10px;
+    height: 10px;
+    background: red;
+}
