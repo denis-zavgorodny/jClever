@@ -647,6 +647,7 @@
 }
 .clevered.alice .jClever-element-select-wrapper.multiselect .jClever-element-select-center {
     white-space: normal;
+    padding: 0 30px 0 10px;
 }
 .multiple-item {
     display:-moz-inline-box; display:inline-block; *zoom: 1; *display:inline;
@@ -660,11 +661,16 @@
     position: relative;
     margin: 2px 2px 2px 0;
 }
+.multiple-item > .multiple-item-text {
+    display:-moz-inline-box; display:inline-block; *zoom: 1; *display:inline;
+    vertical-align: middle;
+    padding: 0 3px;
+}
 .multiple-item-remove {
     position: absolute;
     top: 3px;
     right: 3px;
     width: 10px;
     height: 10px;
-    background: red;
+    background: url(../images/remove.png) no-repeat left top;
 }
