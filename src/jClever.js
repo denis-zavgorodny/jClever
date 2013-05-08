@@ -70,9 +70,9 @@
                         init: function(element) {
                             //validate form
                             if (options.validate.state === true) {
-                                
-                                $(element).submit(function(){
-                                    var _form = $(element).get(0);
+                                var _element = $(element);
+                                _element.submit(function(){
+                                    var _form = $(this).get(0);
                                     var errorsForm = {};
                                     $(_form).find('.error').removeClass('error');
                                     for (var validateItem in options.validate.items) {
@@ -134,7 +134,7 @@
                             
                             
                             //placeholder INPUT[type=text], textarea init
-                            $(element).find('input[type=text], input[type=password], textarea').each(function(){
+                            _element.find('input[type=text], input[type=password], textarea').each(function(){
                                 var _this = $(this);
                                 var holderText = $(this).data('placeholder');
                                 if (typeof holderText === 'string') {
@@ -152,7 +152,7 @@
                                 }
                             });
                             //
-                            var formElements = $(element).get(0).elements;
+                            var formElements = _element.get(0).elements;
                             var formHash = '';
                             for (key = 0; key < formElements.length; key++) {
                                 var self = $(formElements[key]),
@@ -234,7 +234,7 @@
                                                 break;                                                          
                                 }
                             }
-                            $(element).find('input[type=password]').each(function(){
+                            _element.find('input[type=password]').each(function(){
                                 var _this = $(this);
                                 var holderText = $(this).data('placeholder-pass');
                                 var placeholder;
@@ -266,11 +266,12 @@
                                 }
                             });
 
-                            $(element).data('jCleverHash', md5(formHash));
+                            _element.data('jCleverHash', md5(formHash));
                             //Hook reset event
-                            $(element).find('button[type=reset]').click(function(){
-                                methods.reset($(element));
+                            _element.find('button[type=reset]').click(function(){
+                                methods.reset(_element);
                             });
+
                         },
                         refresh: function(form) {
                             var formElements = $(form).get(0).elements;
