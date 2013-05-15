@@ -332,8 +332,8 @@ el.removeChild( dummy );
 window.onDomChange = onDomChange;
 
 })( window );
-/*
-    *   jClever HEAD:v 1.2.1 :)
+/**
+*   jClever HEAD:v 1.2.1 :)
 *
 *   by Denis Zavgorodny
 *   zavgorodny@alterego.biz.ua
@@ -373,8 +373,10 @@ window.onDomChange = onDomChange;
                                 );
         var selects = {};                        
         var jScrollApi = [];
-        var formState = {};
-
+        var formState = {},
+            $errors = {
+                validation: 'validation'
+            };  
         var validateMethod = {
             isNumeric: function(data) {
                 var pattern = /^\d+$/;
@@ -447,7 +449,8 @@ window.onDomChange = onDomChange;
                                             
                                         }    
                                     }
-                                    var isError = 0;
+                                    var isError = 0,
+                                        errorResponse = [];
                                     for(var key in errorsForm) {
                                         if (_form[key] != undefined) {
                                             var labelText = errorsForm[key];
@@ -456,12 +459,14 @@ window.onDomChange = onDomChange;
                                             var error = wrapper.find('.'+options.errorClassTemplate);
                                             wrapper.addClass('error');
                                             error.text(labelText);
+                                            errorResponse.push({type: $errors.validation,element: formElement, text: labelText});
                                             isError++;
                                         }
                                     }
-                                    if (isError)
+                                    if (isError) {
+                                        $(_form).trigger('error.jClever', [errorResponse]);
                                         return false;
-                                    else    
+                                    } else    
                                         return true;
                                 });
                             }
@@ -488,86 +493,87 @@ window.onDomChange = onDomChange;
                             //
                             var formElements = _element.get(0).elements;
                             var formHash = '';
-                            for (key = 0; key < formElements.length; key++) {
-                                var self = $(formElements[key]),
-                                    elementHash = md5(methods.elementToString(self));
-                                formHash += elementHash;
-                                self.data('jCleverHash',elementHash);
-                                if (typeof formElements[key].nodeName == 'undefined')
-                                    continue;
-                                switch (formElements[key].nodeName) {
-                                    case "SELECT":  
-                                                //Select init
-                                                if (options.applyTo.select) {
-                                                    if (typeof self.attr('multiple') == 'undefined') {
-                                                        methods.selectActivate(formElements[key],innerCounter, tabindex);
-                                                    } else {
-                                                        methods.multiSelectActivate(formElements[key],innerCounter, tabindex);
+                            if (typeof formElements != 'undefined')
+                                for (key = 0; key < formElements.length; key++) {
+                                    var self = $(formElements[key]),
+                                        elementHash = md5(methods.elementToString(self));
+                                    formHash += elementHash;
+                                    self.data('jCleverHash',elementHash);
+                                    if (typeof formElements[key].nodeName == 'undefined')
+                                        continue;
+                                    switch (formElements[key].nodeName) {
+                                        case "SELECT":  
+                                                    //Select init
+                                                    if (options.applyTo.select) {
+                                                        if (typeof self.attr('multiple') == 'undefined') {
+                                                            methods.selectActivate(formElements[key],innerCounter, tabindex);
+                                                        } else {
+                                                            methods.multiSelectActivate(formElements[key],innerCounter, tabindex);
+                                                        }
+                                                        formState[self.attr('name')] = {
+                                                            type: "select",
+                                                            value: self.attr('value')
+                                                        };
+                                                        self.data('jclevered',true);
+                                                        
+                                                        innerCounter--;
+                                                        tabindex++;
+                                                    }    
+                                                    break;    
+                                        case "TEXTAREA":
+                                                    //Textarea
+                                                    if (options.applyTo.textarea) {
+                                                        methods.textareaActivate(formElements[key], tabindex);
+                                                        self.data('jclevered',true);
+                                                        tabindex++;
+                                                    }        
+                                                    break;     
+                                        case "INPUT":
+                                                    //Checkbox init
+                                                    if (options.applyTo.checkbox && self.attr('type') == 'checkbox') {
+                                                        formState[self.attr('name')] = {
+                                                            type: "checkbox",
+                                                            value: (self.is(':checked')?1:0)
+                                                        };
+                                                        methods.checkboxActivate(formElements[key], tabindex);
+                                                        self.data('jclevered',true);
+                                                        tabindex++;
+                                                    }    
+                                                    //Radio Button init
+                                                    if (options.applyTo.radio && self.attr('type') == 'radio') {
+                                                        formState[self.attr('name')] = {
+                                                            type: "radio",
+                                                            value: (self.is(':checked')?1:0)
+                                                        };
+                                                        methods.radioActivate(formElements[key], tabindex);
+                                                        self.data('jclevered',true);
+                                                        tabindex++;
+                                                    }                                                       
+                                                    //Input File                                                
+                                                    if (options.applyTo.file && self.attr('type') == 'file') {
+                                                        formState[self.attr('name')] = {
+                                                            type: "file",
+                                                            value: ''
+                                                        };
+                                                        methods.fileActivate(formElements[key], tabindex);
+                                                        self.data('jclevered',true);
+                                                        tabindex++;
                                                     }
-                                                    formState[self.attr('name')] = {
-                                                        type: "select",
-                                                        value: self.attr('value')
-                                                    };
-                                                    self.data('jclevered',true);
-                                                    
-                                                    innerCounter--;
-                                                    tabindex++;
-                                                }    
-                                                break;    
-                                    case "TEXTAREA":
-                                                //Textarea
-                                                if (options.applyTo.textarea) {
-                                                    methods.textareaActivate(formElements[key], tabindex);
-                                                    self.data('jclevered',true);
-                                                    tabindex++;
-                                                }        
-                                                break;     
-                                    case "INPUT":
-                                                //Checkbox init
-                                                if (options.applyTo.checkbox && self.attr('type') == 'checkbox') {
-                                                    formState[self.attr('name')] = {
-                                                        type: "checkbox",
-                                                        value: (self.is(':checked')?1:0)
-                                                    };
-                                                    methods.checkboxActivate(formElements[key], tabindex);
-                                                    self.data('jclevered',true);
-                                                    tabindex++;
-                                                }    
-                                                //Radio Button init
-                                                if (options.applyTo.radio && self.attr('type') == 'radio') {
-                                                    formState[self.attr('name')] = {
-                                                        type: "radio",
-                                                        value: (self.is(':checked')?1:0)
-                                                    };
-                                                    methods.radioActivate(formElements[key], tabindex);
-                                                    self.data('jclevered',true);
-                                                    tabindex++;
-                                                }                                                       
-                                                //Input File                                                
-                                                if (options.applyTo.file && self.attr('type') == 'file') {
-                                                    formState[self.attr('name')] = {
-                                                        type: "file",
-                                                        value: ''
-                                                    };
-                                                    methods.fileActivate(formElements[key], tabindex);
-                                                    self.data('jclevered',true);
-                                                    tabindex++;
-                                                }
-                                                //Input [type=submit, reset, button] (input)
-                                                if (options.applyTo.button && (self.attr('type') == 'submit' || self.attr('type') == 'reset' || self.attr('type') == 'button')) {
-                                                    methods.submitActivate(formElements[key], tabindex);
-                                                    self.data('jclevered',true);
-                                                    tabindex++;
-                                                }
-                                                //Input [type=text]
-                                                if (options.applyTo.input && (self.attr('type') == 'text' || self.attr('type') == 'password')) {
-                                                    methods.inputActivate(formElements[key], tabindex);
-                                                    self.data('jclevered',true);
-                                                    tabindex++;
-                                                }        
-                                                break;                                                          
+                                                    //Input [type=submit, reset, button] (input)
+                                                    if (options.applyTo.button && (self.attr('type') == 'submit' || self.attr('type') == 'reset' || self.attr('type') == 'button')) {
+                                                        methods.submitActivate(formElements[key], tabindex);
+                                                        self.data('jclevered',true);
+                                                        tabindex++;
+                                                    }
+                                                    //Input [type=text]
+                                                    if (options.applyTo.input && (self.attr('type') == 'text' || self.attr('type') == 'password')) {
+                                                        methods.inputActivate(formElements[key], tabindex);
+                                                        self.data('jclevered',true);
+                                                        tabindex++;
+                                                    }        
+                                                    break;                                                          
+                                    }
                                 }
-                            }
                             _element.find('input[type=password]').each(function(){
                                 var _this = $(this);
                                 var holderText = $(this).data('placeholder-pass');
@@ -609,6 +615,8 @@ window.onDomChange = onDomChange;
                         },
                         refresh: function(form) {
                             var formElements = $(form).get(0).elements;
+                            if (typeof formElements == 'undefined')
+                                return false;
                             for (key = 0; key < formElements.length; key++) {
                                 var self = $(formElements[key]),
                                     jclevered = self.data('jclevered');
