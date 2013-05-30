@@ -341,7 +341,7 @@ window.onDomChange = onDomChange;
 *   
 *
 *
-*/ 
+*/
 (function($){
     $.fn.jClever = function(options) {
         var options = $.extend(
@@ -404,9 +404,10 @@ window.onDomChange = onDomChange;
         var tabindex = 1;
         var methods = {
                         init: function(element) {
+                            var _element = $(element);
                             //validate form
                             if (options.validate.state === true) {
-                                var _element = $(element);
+                                
                                 _element.submit(function(){
                                     var _form = $(this).get(0);
                                     var errorsForm = {};
