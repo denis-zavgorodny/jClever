@@ -1104,6 +1104,11 @@
                             if (typeof selector == 'string')
                                 selector = $(selector);
                             selector.removeAttr('disabled').closest('.jClever-element').removeClass('disabled');
+                        },
+                        themeSet: function(name) {
+                            console.log(options.selfClass);
+                            $(this).removeClass(options.selfClass).addClass(name);
+                            options.selfClass = name;
                         }
         };
         
@@ -1132,7 +1137,8 @@
                                 //scrollingAPI: jScrollApi,
                                 elementAdd: function(selector, type, selfAPIObject) {return methods.elementAdd(selector, type, selfAPIObject)},
                                 elementDisable: function(selector) {return methods.elementDisable(selector)},
-                                elementEnable: function(selector) {return methods.elementEnable(selector)}
+                                elementEnable: function(selector) {return methods.elementEnable(selector)},
+                                themeSet: function(name) {return methods.themeSet.call($(this), name);}
                                 
                             };
                     selects = {};        
@@ -1188,7 +1194,8 @@
             else
                 params[arguments.length-1] = publicApi;
 
-            var newAPI = publicApi[methodName].apply(arguments.callee, params);
+            //var newAPI = publicApi[methodName].apply(arguments.callee, params);
+            var newAPI = publicApi[methodName].apply($(this), params);
             
             if (typeof newAPI == 'object')
                 $.data($(this).get(0), 'publicApi', newAPI);
