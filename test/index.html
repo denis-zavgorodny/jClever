@@ -18,10 +18,10 @@
     <script type="text/javascript" src="js/jquery.jscrollpane.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.10.2.custom.min.js"></script>
 
-    <script src="../build/jClever.min.js" type="text/javascript"></script>
-    <!--<script src="../src/md5.js" type="text/javascript" charset="utf-8"></script>
+    <!--<script src="../build/jClever.min.js" type="text/javascript"></script>-->
+    <script src="../src/md5.js" type="text/javascript" charset="utf-8"></script>
     <script src="../src/jquery.domchange.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../src/jClever.js" type="text/javascript" charset="utf-8"></script>-->
+    <script src="../src/jClever.js" type="text/javascript" charset="utf-8"></script>
 
 
     <script src="js/jClever.min.js" type="text/javascript" charset="utf-8"></script>
@@ -52,7 +52,8 @@
                         state: true,
                         items: {
                             text: {
-                                required: "Поле обязательное для заполнения"
+                                custom: "Поле обязательное для заполнения",
+                                fn: function(data) {return true;}
                             },
                             textarea: {
                                 required: "Поле обязательное для заполнения"

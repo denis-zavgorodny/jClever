@@ -82,6 +82,11 @@
                                         if (!(_form[validateItem] === undefined)) {
                                             for (var validateType in options.validate.items[validateItem]) {
                                                 switch(validateType) {
+                                                    case "custom": 
+                                                        if (typeof options.validate.items[validateItem].fn == 'function' && options.validate.items[validateItem].fn(_form[validateItem].value) != true) {
+                                                            errorsForm[validateItem] = options.validate.items[validateItem][validateType];
+                                                        }
+                                                        break;
                                                     case "required":
                                                         if (_form[validateItem].value == '' || _form[validateItem].value == $(_form[validateItem]).data('placeholder'))
                                                             errorsForm[validateItem] = options.validate.items[validateItem][validateType];
