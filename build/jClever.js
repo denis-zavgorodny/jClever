@@ -416,6 +416,11 @@ window.onDomChange = onDomChange;
                                         if (!(_form[validateItem] === undefined)) {
                                             for (var validateType in options.validate.items[validateItem]) {
                                                 switch(validateType) {
+                                                    case "custom": 
+                                                        if (typeof options.validate.items[validateItem].fn == 'function' && options.validate.items[validateItem].fn(_form[validateItem].value) != true) {
+                                                            errorsForm[validateItem] = options.validate.items[validateItem][validateType];
+                                                        }
+                                                        break;
                                                     case "required":
                                                         if (_form[validateItem].value == '' || _form[validateItem].value == $(_form[validateItem]).data('placeholder'))
                                                             errorsForm[validateItem] = options.validate.items[validateItem][validateType];
@@ -730,6 +735,7 @@ window.onDomChange = onDomChange;
                             select.find('option').removeAttr('selected');
                             select.find('option[value="'+value+'"]').attr('selected','selected');
                             select.trigger('change');
+                            select.trigger('update');
                         },
                         selectAdd: function(selector) {
                                 $(element).find(selector).each(function(){
@@ -756,6 +762,9 @@ window.onDomChange = onDomChange;
                             else
                                 radio.removeAttr('checked').prop('checked', false);
                             radio.trigger('change');    
+                        },
+                        updateFromHTML: function(select, data){
+                            select.html(data).trigger('update');
                         },
                         fileSetState: function(file, value) {
                             file.parents('.jClever-element-file').find('.jClever-element-file-name').text(value);
@@ -1468,6 +1477,7 @@ window.onDomChange = onDomChange;
                                 selectAdd: function(select) {methods.selectAdd(select);},
                                 checkboxSetState: function(checkbox, value) {if ($(checkbox).length) methods.checkboxSetState($(checkbox), value); else return false},                            
                                 radioSetState: function(radio, value) {if ($(radio).length) methods.radioSetState($(radio), value); else return false;},                            
+                                updateFromHTML: function(select, value){if ($(select).length) methods.updateFromHTML($(select), value); else return false;},
                                 //scrollingAPI: jScrollApi,
                                 elementAdd: function(selector, type, selfAPIObject) {return methods.elementAdd(selector, type, selfAPIObject)},
                                 elementDisable: function(selector) {return methods.elementDisable(selector)},
