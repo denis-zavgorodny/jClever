@@ -33,7 +33,7 @@
                                     fileUploadText: 'Загрузить',
                                     autoTracking: false,
                                     autoInit: false,
-                                    autoinitClass: ''
+                                    autoinitClass: 'autoInit'
                                 },
                                 options
                                 );
@@ -71,6 +71,7 @@
         var methods = {
                         init: function(element) {
                             var _element = $(element);
+                            
                             //validate form
                             if (options.validate.state === true) {
                                 
@@ -129,6 +130,8 @@
                                             var formElement = $(_form[key]);
                                             var wrapper = formElement.parents('.jClever-element');
                                             var error = wrapper.find('.'+options.errorClassTemplate);
+                                            var _id = formElement.attr('id');
+                                            var _label = $('label[for='+_id+']').addClass('error');
                                             wrapper.addClass('error');
                                             error.text(labelText);
                                             errorResponse.push({type: $errors.validation,element: formElement, text: labelText});
@@ -454,6 +457,8 @@
                             return collection;
                         },
                         multiSelectActivate: function(select, innerCounter, tabindex) {
+                            if ($(select).hasClass('jc-ignore'))
+                                    return;
                             jScrollApi[$(select).attr('name')] = {};
                             selects = methods.selectCollectionExtend(selects, $(select));
                             var self_width = $(select).width();
@@ -464,7 +469,7 @@
                             var selectList = selectObject.find('.jClever-element-select-list');
                             var selectListWrapper = selectObject.find('.jClever-element-select-list-wrapper');
                             var selectListWrapperToScroll = selectObject.find('.jClever-element-select-list-wrapper--');
-                            var selectLabel = $('label[for='+$(select).attr('id')+']');
+                            var selectLabel = $(select).attr('id')?$('label[for='+$(select).attr('id')+']'):$('labels');
 
                             if ($(select).attr('disabled'))
                                 selectObject.addClass('disabled');
@@ -639,6 +644,8 @@
                             });
                         },
                         selectActivate: function(select, innerCounter, tabindex) {
+                            if ($(select).hasClass('jc-ignore'))
+                                    return;
                             jScrollApi[$(select).attr('name')] = {};
                             selects = methods.selectCollectionExtend(selects, $(select));
                             var self_width = $(select).width();
@@ -649,7 +656,7 @@
                             var selectList = selectObject.find('.jClever-element-select-list');
                             var selectListWrapper = selectObject.find('.jClever-element-select-list-wrapper');
                             var selectListWrapperToScroll = selectObject.find('.jClever-element-select-list-wrapper--');
-                            var selectLabel = $('label[for='+$(select).attr('id')+']');
+                            var selectLabel = $(select).attr('id')?$('label[for='+$(select).attr('id')+']'):$('labels');
 
                             if ($(select).attr('disabled'))
                                 selectObject.addClass('disabled');
@@ -850,6 +857,8 @@
                             wrapper.removeClass('opened');
                         },
                         checkboxActivate: function(checkbox, tabindex) {
+                            if ($(checkbox).hasClass('jc-ignore'))
+                                    return;
                             var _checkbox = $(checkbox).wrap('<div class="jClever-element" tabindex="'+tabindex+'">').addClass('hidden').after('<span class="jClever-element-checkbox-twins"><span class="jClever-element-checkbox-twins-element"></span><span class="jClever-element-checkbox-twins-color"></span></span>');
                             var checkboxId = _checkbox.attr('id');
                             _checkbox.parents('.jClever-element').append(options.errorTemplate);
@@ -901,6 +910,8 @@
                             _checkbox.parent('.jClever-element').focus(function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
                         },
                         radioActivate: function(radio, tabindex) {
+                            if ($(radio).hasClass('jc-ignore'))
+                                    return;
                             var _radio = $(radio).wrap('<div class="jClever-element" tabindex="'+tabindex+'">').addClass('hidden').after('<span class="jClever-element-radio-twins"><span class="jClever-element-radio-twins-element"></span><span class="jClever-element-radio-twins-color"></span></span>');
                             var radioId = _radio.attr('id');
                             _radio.parents('.jClever-element').append(options.errorTemplate);
@@ -964,12 +975,16 @@
                             _radio.parent('.jClever-element').focus(function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
                         },
                         submitActivate: function(button, tabindex) {
+                            if ($(button).hasClass('jc-ignore'))
+                                    return;
                             var value = $(button).attr('value');
                             var newButton = $(button).replaceWith('<button type="'+ button.type +'" name="'+ button.name +'" id="'+ button.id +'"  class="styled '+ button.className +'" value="'+ value +'"><span><span><span>'+ value +'</span></span></span>');
                             elementHash = md5(methods.elementToString(newButton));
                             newButton.data('jCleverHash',elementHash);
                         },
                         fileActivate: function(file, tabindex) {
+                            if ($(file).hasClass('jc-ignore'))
+                                    return;
                             $(file).wrap('<div class="jClever-element" tabindex="'+tabindex+'"><div class="jClever-element-file">').addClass('hidden-file').after('<span class="jClever-element-file-name"><span><span></span></span></span><span class="jClever-element-file-button"><span><span>'+options.fileUploadText+'</span></span></span>').wrap('<div class="input-file-helper">');
                             $(file).parents('.jClever-element').append(options.errorTemplate);
                             
@@ -997,6 +1012,8 @@
                             $(file).parents('.jClever-element').focus(function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
                         },
                         inputActivate: function(input, tabindex) {
+                            if ($(input).hasClass('jc-ignore'))
+                                    return;
                             $(input).wrap('<div class="jClever-element"><div class="jClever-element-input"><div class="jClever-element-input"><div class="jClever-element-input">');
                             $(input).parents('.jClever-element').append(options.errorTemplate);
                             $(input).on('focusin.jClever', function(){
@@ -1007,6 +1024,8 @@
                             });
                         },
                         textareaActivate: function(textarea, tabindex) {
+                            if ($(textarea).hasClass('jc-ignore'))
+                                    return;
                             $(textarea).wrap('<div class="jClever-element"><div class="jClever-element-textarea"><div class="jClever-element-textarea"><div class="jClever-element-textarea">');
                             $(textarea).parents('.jClever-element').append(options.errorTemplate);
                             $(textarea).on('focusin.jClever', function(){
@@ -1124,7 +1143,7 @@
         var publicApi = {};
         var that = this;
 
-        var delayTime = 100,
+        var delayTime = 10,
             timeLinkTraking = null,
             timeLinkInit = null,
             startFunction = function(){
@@ -1182,7 +1201,11 @@
             $(document).on('onDomChange.jClever', function(e){
                 if (typeof timeLinkTraking != 'undefied' && timeLinkTraking != null)
                     clearTimeout(timeLinkTraking);
-                timeLinkTraking = setTimeout(function(){methods.refresh(that);}, delayTime);
+                timeLinkTraking = setTimeout(function(){
+                    that.each(function(){
+                        methods.refresh(this);
+                    });                    
+                }, delayTime);
             });
         }    
 
