@@ -1371,6 +1371,8 @@ window.onDomChange = onDomChange;
                             });
                         },
                         elementAdd: function(selector, type, selfAPIObject) {
+                            if (typeof selfAPIObject == 'undefined')
+                                return false;
                             switch(type) {
                                 case "text":
                                 case "password":
