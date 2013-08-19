@@ -33,7 +33,7 @@
                                     fileUploadText: 'Загрузить',
                                     autoTracking: false,
                                     autoInit: false,
-                                    autoinitClass: 'autoInit'
+                                    autoinitSelector: ''
                                 },
                                 options
                                 );
@@ -722,7 +722,8 @@
                                     return false;
                                 selectText.text(value);
                                 self.get(0).selectedIndex = selectedElement.index();
-                                selectObject.removeClass('focused');
+                                //selectObject.removeClass('focused');
+                                //selectObject.removeClass('opened');
                             });
                             $(select).on('update.jClever',function(){
                                 select = this;
@@ -1187,8 +1188,8 @@
                     clearTimeout(timeLinkInit); 
                 timeLinkInit = setTimeout(function(){
                     var selector = 'form';
-                    if (options.autoinitClass != '')
-                        selector = options.autoinitClass;
+                    if (options.autoinitSelector != '')
+                        selector = options.autoinitSelector;
                     $('body').find(selector).each(function(){
                         startFunction.call(this);
                         if ($.inArray(this,that) == -1)
