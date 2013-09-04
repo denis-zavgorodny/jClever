@@ -1074,7 +1074,7 @@
                                     autocompleteListWrapper.hide();
                                     autocompleteListWrapper.removeClass('opened');
                                 } else {
-                                    if ($self.attr('disabled'))
+                                    if ($self.attr('disabled') || resultIndexes.length == 0)
                                         return false;
                                     autocompleteListWrapper.show();
                                     autocompleteObject.addClass('opened');
@@ -1104,6 +1104,7 @@
                                             autocompleteObject.addClass('opened');
                                             $self.val(dataSourceName[selectedIndex].value);
                                             jScrollAPI = autocompleteListWrapperToScroll.jScrollPane().data('jsp');
+                                            $self.trigger('selected.jclever', selectedIndex);
                                         } 
                                         break;    
                                     default: 
@@ -1168,7 +1169,12 @@
                                 autocompleteListWrapper.hide();
                                 autocompleteObject.removeClass('opened');
                                 $self.val(dataSourceName[$(this).index()].value);
+                                $self.trigger('selected.jclever', $(this).index());
                                 return false;
+                            });
+
+                            $self.on('selected.jclever', function(e,a){
+                                console.log(e,a);
                             });
 
 

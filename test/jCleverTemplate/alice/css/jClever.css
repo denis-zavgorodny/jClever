@@ -719,6 +719,9 @@
     behavior: url(jCleverTemplate/alice/css/PIE.htc);
     position: relative;
 }
+.jClever-element-autocomplete-wrapper-design {
+    height: 30px;
+}
 .clevered.alice .jClever-element.focused .jClever-element-input-center {
     background: #f2f6f7;
 }
