@@ -1430,13 +1430,13 @@ window.onDomChange = onDomChange;
                                         if (autocompleteListWrapper.is(':visible')) {
                                             autocompleteListWrapper.hide();
                                             autocompleteListWrapper.removeClass('opened');
-                                            $self.val(dataSourceName[selectedIndex].value);
+                                            $self.val(dataSourceName[resultIndexes[selectedIndex]].value);
                                         } else {
                                             if ($self.attr('disabled'))
                                                 return false;
                                             autocompleteListWrapper.show();
                                             autocompleteObject.addClass('opened');
-                                            $self.val(dataSourceName[selectedIndex].value);
+                                            $self.val(dataSourceName[resultIndexes[selectedIndex]].value);
                                             jScrollAPI = autocompleteListWrapperToScroll.jScrollPane().data('jsp');
                                             $self.trigger('selected.jclever', selectedIndex);
                                         } 
@@ -1502,13 +1502,14 @@ window.onDomChange = onDomChange;
                                 
                                 autocompleteListWrapper.hide();
                                 autocompleteObject.removeClass('opened');
-                                $self.val(dataSourceName[$(this).index()].value);
-                                $self.trigger('selected.jclever', $(this).index());
+                                selectedIndex = $(this).index();
+                                $self.val(dataSourceName[resultIndexes[selectedIndex]].value);
+                                $self.trigger('selected.jclever', $(this).index(), dataSourceName, resultIndexes);
                                 return false;
                             });
 
-                            $self.on('selected.jclever', function(e,a){
-                                console.log(e,a);
+                            $self.on('selected.jclever', function(e,data, selected, selectedIndex){
+                                
                             });
 
 
@@ -1642,7 +1643,6 @@ window.onDomChange = onDomChange;
                             selector.removeAttr('disabled').closest('.jClever-element').removeClass('disabled');
                         },
                         themeSet: function(name) {
-                            console.log(options.selfClass);
                             $(this).removeClass(options.selfClass).addClass(name);
                             options.selfClass = name;
                         }
