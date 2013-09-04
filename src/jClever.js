@@ -241,10 +241,17 @@
                                                         tabindex++;
                                                     }
                                                     //Input [type=text]
-                                                    if (options.applyTo.input && (self.attr('type') == 'text' || self.attr('type') == 'password')) {
+                                                    if (options.applyTo.input && (self.attr('type') == 'text' || self.attr('type') == 'password') && typeof self.data('autocomplete') == 'undefined') {
                                                         methods.inputActivate(formElements[key], tabindex);
                                                         self.data('jclevered',true);
                                                         tabindex++;
+                                                    }
+                                                    //Input [type=autocomplete]
+                                                    if (options.applyTo.input && (self.attr('type') == 'text') && typeof self.data('autocomplete') != 'undefined') {
+                                                        methods.autocompleteActivate(formElements[key],innerCounter, tabindex);
+                                                        self.data('jclevered',true);
+                                                        tabindex++;
+                                                        innerCounter++;
                                                     }        
                                                     break;                                                          
                                     }
@@ -1012,6 +1019,164 @@
                             
                             $(file).parents('.jClever-element').focus(function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
                         },
+                        autocompleteActivate: function(input, innerCounter, tabindex) {
+                            var $self = $(input);
+                            /**
+                             * data for autocomplete
+                             * @type Array
+                             */
+                            var data = [];
+
+                            var dataSourceName = $self.data('source');
+                            var dataRequestType = (typeof $self.data('request-type') != 'undefined'?$self.data('request-type'):null);
+                            if (dataRequestType == null) {
+                                dataSourceName = window[dataSourceName];
+                            }
+                            var jScrollAPI;
+                            var resultIndexes = [];
+                            var selectedIndex = 0;
+                            var searchPhrase;
+                            var searchDelay = 600;
+                            var minLength = 3;
+                            var searchTimer;
+                            if ($self.hasClass('jc-ignore'))
+                                    return;
+                            jScrollApi[$self.attr('name')] = {};
+
+                            var self_width = $self.width();
+                            $self.wrap('<div class="jClever-element" style="z-index:'+innerCounter+';"><div class="jClever-element-autocomplete-wrapper" style="width:'+self_width+'px; z-index:'+innerCounter+';"><div class="jClever-element-autocomplete-wrapper-design"><div class="jClever-element-autocomplete-wrapper-design">')
+                            .after('<span class="jClever-element-input-center">&nbsp;</span><span class="jClever-element-input-right"><span>v</span></span><div class="jClever-element-input-list-wrapper" style="z-index:'+innerCounter+';"><div class="jClever-element-input-list-wrapper-"><div class="jClever-element-input-list-wrapper--"><ul class="jClever-element-input-list"></ul></div></div></div>');
+
+
+
+
+                            var autocompleteObject = $self.parents('.jClever-element').attr('tabindex',tabindex);
+                            var autocompleteText = autocompleteObject.find('.jClever-element-input-center');
+                            var autocompleteRight = autocompleteObject.find('.jClever-element-input-right');
+                            var autocompleteList = autocompleteObject.find('.jClever-element-input-list');
+                            var autocompleteListWrapper = autocompleteObject.find('.jClever-element-input-list-wrapper');
+                            var autocompleteListWrapperToScroll = autocompleteObject.find('.jClever-element-input-list-wrapper--');
+                            var autocompleteLabel = $self.attr('id')?$('label[for='+$self.attr('id')+']'):$('labels');
+
+                            if ($(input).attr('disabled'))
+                                autocompleteObject.addClass('disabled');
+                            //Add error label
+                            autocompleteObject.append(options.errorTemplate);
+                            $self.on('keydown.jClever', function(e){
+                                switch(e.keyCode){
+                                    case 13:
+                                        return false;
+                                }
+                                
+                            });
+                            autocompleteRight.on('click.jClever', function(){
+                                if (autocompleteListWrapper.is(':visible')) {
+                                    autocompleteListWrapper.hide();
+                                    autocompleteListWrapper.removeClass('opened');
+                                } else {
+                                    if ($self.attr('disabled'))
+                                        return false;
+                                    autocompleteListWrapper.show();
+                                    autocompleteObject.addClass('opened');
+                                    jScrollAPI = autocompleteListWrapperToScroll.jScrollPane().data('jsp');
+                                } 
+                            });
+                            $self.on('keyup.jClever',function(e) {
+                                var preSelectedInex = resultIndexes;
+                                if (typeof searchTimer != 'undefined')
+                                    clearTimeout(searchTimer);
+                                switch(e.keyCode){
+                                    case 40: /* Down */
+                                        if (selectedIndex < resultIndexes.length-1){ selectedIndex++; }
+                                        break;
+                                    case 38: /* Up */
+                                        if (selectedIndex > 0){ selectedIndex--; }
+                                        break; 
+                                    case 13: /* Enter */
+                                        if (autocompleteListWrapper.is(':visible')) {
+                                            autocompleteListWrapper.hide();
+                                            autocompleteListWrapper.removeClass('opened');
+                                            $self.val(dataSourceName[selectedIndex].value);
+                                        } else {
+                                            if ($self.attr('disabled'))
+                                                return false;
+                                            autocompleteListWrapper.show();
+                                            autocompleteObject.addClass('opened');
+                                            $self.val(dataSourceName[selectedIndex].value);
+                                            jScrollAPI = autocompleteListWrapperToScroll.jScrollPane().data('jsp');
+                                        } 
+                                        break;    
+                                    default: 
+                                       searchPhrase = $self.val();  
+                                       if ($self.val() != '' && $self.val().length >= minLength)
+                                            searchTimer = setTimeout(function(){$self.trigger('searchstart.jClever')}, searchDelay);      
+
+                                }
+                                if (preSelectedInex != selectedIndex)
+                                    $self.trigger('navigate.jClever');
+
+                                return false;
+                            });
+                            $self.on('searchstart.jClever',function(e) {
+                                resultIndexes = [];
+                                //заполняем автокомплит локальными данными
+                                if (dataRequestType == null && dataSourceName.length) {
+                                    for(var i = 0; i < dataSourceName.length; i++) {
+                                        var str = dataSourceName[i].value;
+                                        if(str.indexOf($self.val()) + 1) {
+                                            resultIndexes.push(i);
+                                        }
+                                    }
+                                    if (resultIndexes.length == 0)
+                                        autocompleteListWrapper.hide();
+                                    $self.trigger('searchend.jClever');
+                                }
+                            });
+                            $self.on('navigate.jClever', function(e){
+                                autocompleteList.find('li.active').removeClass('active'); 
+                                var el = autocompleteList.find('li:eq('+selectedIndex+')').addClass('active');
+                                jScrollAPI.scrollToElement(el);
+                            });
+
+                            $self.on('searchend.jClever',function(e) {
+                                if (resultIndexes.length == 0)
+                                    return false;
+                                var template = '';
+                                for(var i = 0; i < resultIndexes.length; i++) {
+                                    template += '<li>'+dataSourceName[resultIndexes[i]]['value']+'</li>';
+                                }
+                                autocompleteList.html(template);
+
+                                autocompleteListWrapper.show();
+                                jScrollAPI = autocompleteListWrapperToScroll.jScrollPane().data('jsp');
+                                $self.trigger('autocompletedraw.jClever');
+                            });
+
+                            autocompleteListWrapper.on('blur.jClever', function(){
+                                $(this).hide();
+                                autocompleteObject.removeClass('opened');
+                            });
+                            
+                            autocompleteListWrapper.on('click','li' ,function(event){
+                                var value = $(this).attr('data-value'),
+                                    _input = $(input);
+                                autocompleteList.find('li.active').removeClass('active');
+                                $(this).addClass('active');
+                                
+                                _input.trigger('change');
+                                
+                                autocompleteListWrapper.hide();
+                                autocompleteObject.removeClass('opened');
+                                $self.val(dataSourceName[$(this).index()].value);
+                                return false;
+                            });
+
+
+
+                            
+
+                            
+                        },
                         inputActivate: function(input, tabindex) {
                             if ($(input).hasClass('jc-ignore'))
                                     return;
@@ -1247,5 +1412,6 @@
     //Thanks jNiсe for idea
         $(document).mousedown(function(event){
             if ($(event.target).parents('.jClever-element-select-wrapper').length === 0) { $('.jClever-element-select-list-wrapper:visible').hide(); }
+            if ($(event.target).closest('.jClever-element-input-list-wrapper').length === 0) { $('.jClever-element-input-list-wrapper:visible').hide(); }
     });
 })(jQuery);    
