@@ -105,7 +105,19 @@
             jQuery('#form-1').jCleverAPI("elementAdd","#radio-new", "radio");
 
             jQuery('#form-1').jCleverAPI("elementDisable","#radio-new");
-
+            jQuery.fn.jClever.renderRow = function(resultIndexes, dataSourceName){
+                var template = [],
+                    pattern = '<li><div class="jClever-autocomplete-avatar"><img src="%img%" /></div><div class="jClever-autocomplete-nick">%name%</div></li>';
+                for(var i = 0; i < resultIndexes.length; i++) {
+                    //template += '<li>'+dataSourceName[resultIndexes[i]]['value']+'</li>';
+                    template.push(
+                        pattern.
+                            replace('%img%', dataSourceName[resultIndexes[i]]['avatar'],'g').
+                            replace('%name%', dataSourceName[resultIndexes[i]]['value'],'g')
+                        );
+                }
+                return template;
+            }
 
         });
     </script>
@@ -124,7 +136,7 @@
                     <td>
                         <form action="#" method="get" class="jClever" id="form-1">
                             <div class="row">
-                                <input type="text" data-placeholder="autocomplete" data-source="autotest" data-autocomplete="true" />
+                                <input type="text" data-render="renderRow" data-placeholder="autocomplete" data-source="autotest" data-autocomplete="true" />
                             </div>
                             <div class="row">
                                 <input type="password" data-placeholder-pass="w323" />

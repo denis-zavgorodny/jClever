@@ -1366,6 +1366,8 @@ window.onDomChange = onDomChange;
                             if (dataRequestType == null) {
                                 dataSourceName = window[dataSourceName];
                             }
+
+                            var customRenderFunction = $self.data('render');
                             var jScrollAPI;
                             var resultIndexes = [];
                             var selectedIndex = 0;
@@ -1477,9 +1479,15 @@ window.onDomChange = onDomChange;
                                 if (resultIndexes.length == 0)
                                     return false;
                                 var template = '';
-                                for(var i = 0; i < resultIndexes.length; i++) {
-                                    template += '<li>'+dataSourceName[resultIndexes[i]]['value']+'</li>';
+                                if (typeof customRenderFunction != 'undefined' && typeof jQuery.fn.jClever[customRenderFunction] == 'function') {
+                                    template = jQuery.fn.jClever[customRenderFunction].call($self, resultIndexes, dataSourceName);
+                                } else {
+                                    for(var i = 0; i < resultIndexes.length; i++) {
+                                        template += '<li>'+dataSourceName[resultIndexes[i]]['value']+'</li>';
+                                    }    
                                 }
+                                
+                                
                                 autocompleteList.html(template);
 
                                 autocompleteListWrapper.show();
