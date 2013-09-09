@@ -1433,6 +1433,7 @@ window.onDomChange = onDomChange;
                                             autocompleteListWrapper.hide();
                                             autocompleteListWrapper.removeClass('opened');
                                             $self.val(dataSourceName[resultIndexes[selectedIndex]].value);
+                                            $self.trigger('selected.jclever', [dataSourceName, selectedIndex, resultIndexes]);
                                         } else {
                                             if ($self.attr('disabled'))
                                                 return false;
@@ -1440,7 +1441,6 @@ window.onDomChange = onDomChange;
                                             autocompleteObject.addClass('opened');
                                             $self.val(dataSourceName[resultIndexes[selectedIndex]].value);
                                             jScrollAPI = autocompleteListWrapperToScroll.jScrollPane().data('jsp');
-                                            $self.trigger('selected.jclever', selectedIndex);
                                         } 
                                         break;    
                                     default: 
@@ -1459,8 +1459,8 @@ window.onDomChange = onDomChange;
                                 //заполняем автокомплит локальными данными
                                 if (dataRequestType == null && dataSourceName.length) {
                                     for(var i = 0; i < dataSourceName.length; i++) {
-                                        var str = dataSourceName[i].value;
-                                        if(str.indexOf($self.val()) + 1) {
+                                        var str = dataSourceName[i].value.toLowerCase();
+                                        if(str.indexOf($self.val().toLowerCase()) + 1) {
                                             resultIndexes.push(i);
                                         }
                                     }
@@ -1512,7 +1512,7 @@ window.onDomChange = onDomChange;
                                 autocompleteObject.removeClass('opened');
                                 selectedIndex = $(this).index();
                                 $self.val(dataSourceName[resultIndexes[selectedIndex]].value);
-                                $self.trigger('selected.jclever', $(this).index(), dataSourceName, resultIndexes);
+                                $self.trigger('selected.jclever', [dataSourceName, selectedIndex, resultIndexes]);
                                 return false;
                             });
 
