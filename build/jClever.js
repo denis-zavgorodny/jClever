@@ -1471,7 +1471,6 @@ window.onDomChange = onDomChange;
                             selector.removeAttr('disabled').closest('.jClever-element').removeClass('disabled');
                         },
                         themeSet: function(name) {
-                            console.log(options.selfClass);
                             $(this).removeClass(options.selfClass).addClass(name);
                             options.selfClass = name;
                         }
