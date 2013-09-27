@@ -367,7 +367,9 @@ window.onDomChange = onDomChange;
                                     fileUploadText: 'Загрузить',
                                     autoTracking: false,
                                     autoInit: false,
-                                    autoinitSelector: ''
+                                    autoinitSelector: '',
+                                    cacheXHRTime: 1000,
+                                    cacheXHRLength: 2
                                 },
                                 options
                                 );
@@ -1365,8 +1367,24 @@ window.onDomChange = onDomChange;
                             var dataRequestType = (typeof $self.data('request-type') != 'undefined'?$self.data('request-type'):null);
                             if (dataRequestType == null) {
                                 dataSourceName = window[dataSourceName];
+                            } else {
+                                switch(dataRequestType) {
+                                    case 'POST':
+                                        dataRequestType = 'POST';
+                                        break; 
+                                    case 'post':
+                                        dataRequestType = 'POST';
+                                        break;     
+                                    case 'GET':
+                                        dataRequestType = 'GET';
+                                        break;         
+                                    case 'get':
+                                        dataRequestType = 'GET';
+                                        break;
+                                    default:
+                                        dataRequestType = 'GET';                 
+                                }
                             }
-
                             var customRenderFunction = $self.data('render');
                             var jScrollAPI;
                             var resultIndexes = [];
@@ -1375,6 +1393,8 @@ window.onDomChange = onDomChange;
                             var searchDelay = 600;
                             var minLength = 3;
                             var searchTimer;
+                            var tmpData;
+                            var cacheStorage = [];
                             if ($self.hasClass('jc-ignore'))
                                     return;
                             jScrollApi[$self.attr('name')] = {};
@@ -1432,14 +1452,14 @@ window.onDomChange = onDomChange;
                                         if (autocompleteListWrapper.is(':visible')) {
                                             autocompleteListWrapper.hide();
                                             autocompleteListWrapper.removeClass('opened');
-                                            $self.val(dataSourceName[resultIndexes[selectedIndex]].value);
-                                            $self.trigger('selected.jclever', [dataSourceName, selectedIndex, resultIndexes]);
+                                            $self.val(tmpData[resultIndexes[selectedIndex]].value);
+                                            $self.trigger('selected.jclever', [tmpData, selectedIndex, resultIndexes]);
                                         } else {
                                             if ($self.attr('disabled'))
                                                 return false;
                                             autocompleteListWrapper.show();
                                             autocompleteObject.addClass('opened');
-                                            $self.val(dataSourceName[resultIndexes[selectedIndex]].value);
+                                            $self.val(tmpData[resultIndexes[selectedIndex]].value);
                                             jScrollAPI = autocompleteListWrapperToScroll.jScrollPane().data('jsp');
                                         } 
                                         break;    
@@ -1458,15 +1478,51 @@ window.onDomChange = onDomChange;
                                 resultIndexes = [];
                                 //заполняем автокомплит локальными данными
                                 if (dataRequestType == null && dataSourceName.length) {
+                                    var needl = $self.val().toLowerCase();
                                     for(var i = 0; i < dataSourceName.length; i++) {
                                         var str = dataSourceName[i].value.toLowerCase();
-                                        if(str.indexOf($self.val().toLowerCase()) + 1) {
+                                        if(str.indexOf(needl) + 1) {
                                             resultIndexes.push(i);
                                         }
                                     }
+                                    tmpData = dataSourceName;
+                                    cacheStorage.push({
+                                        data: tmpData,
+                                        time: new Date()
+                                    });
+                                    //console.log(cacheStorage);
                                     if (resultIndexes.length == 0)
                                         autocompleteListWrapper.hide();
                                     $self.trigger('searchend.jClever');
+                                }
+                                //Заполняем автокомплит данными по сетевому запросу
+                                if (dataRequestType != null && typeof dataRequestType != 'undefined') {
+                                    $.ajax({
+                                        url: dataSourceName, 
+                                        dataType: 'json',
+                                        type: dataRequestType
+                                        }).done(function(response){
+                                            var needl = $self.val().toLowerCase();
+                                            for(var i = 0; i < response.length; i++) {
+                                                var str = response[i].value.toLowerCase();
+                                                if(str.indexOf(needl) + 1) {
+                                                    resultIndexes.push(i);
+                                                }
+                                            }
+                                            tmpData = response;
+                                            var timeStamp = new Date();
+                                            cacheStorage.push({
+                                                request: needl, 
+                                                data: tmpData,
+                                                time: timeStamp.getTime()
+                                            });
+                                            if (resultIndexes.length == 0)
+                                                autocompleteListWrapper.hide();
+                                            $self.trigger('searchend.jClever');   
+                                            methods.memoization(needl, cacheStorage);        
+                                        }).fail(function(){
+
+                                        });
                                 }
                             });
                             $self.on('navigate.jClever', function(e){
@@ -1480,10 +1536,10 @@ window.onDomChange = onDomChange;
                                     return false;
                                 var template = '';
                                 if (typeof customRenderFunction != 'undefined' && typeof jQuery.fn.jClever[customRenderFunction] == 'function') {
-                                    template = jQuery.fn.jClever[customRenderFunction].call($self, resultIndexes, dataSourceName);
+                                    template = jQuery.fn.jClever[customRenderFunction].call($self, resultIndexes, tmpData);
                                 } else {
                                     for(var i = 0; i < resultIndexes.length; i++) {
-                                        template += '<li>'+dataSourceName[resultIndexes[i]]['value']+'</li>';
+                                        template += '<li>'+tmpData[resultIndexes[i]]['value']+'</li>';
                                     }    
                                 }
                                 
@@ -1511,8 +1567,8 @@ window.onDomChange = onDomChange;
                                 autocompleteListWrapper.hide();
                                 autocompleteObject.removeClass('opened');
                                 selectedIndex = $(this).index();
-                                $self.val(dataSourceName[resultIndexes[selectedIndex]].value);
-                                $self.trigger('selected.jclever', [dataSourceName, selectedIndex, resultIndexes]);
+                                $self.val(tmpData[resultIndexes[selectedIndex]].value);
+                                $self.trigger('selected.jclever', [tmpData, selectedIndex, resultIndexes]);
                                 return false;
                             });
 
@@ -1524,6 +1580,11 @@ window.onDomChange = onDomChange;
 
                             
 
+                            
+                        },
+                        memoization: function(needl, stack) {
+                            if (stack.length > options.cacheXHRLength)
+                                stack.shift();
                             
                         },
                         inputActivate: function(input, tabindex) {

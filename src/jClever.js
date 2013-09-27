@@ -1156,7 +1156,7 @@
                                         data: tmpData,
                                         time: new Date()
                                     });
-                                    console.log(cacheStorage);
+                                    //console.log(cacheStorage);
                                     if (resultIndexes.length == 0)
                                         autocompleteListWrapper.hide();
                                     $self.trigger('searchend.jClever');
