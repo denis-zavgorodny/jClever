@@ -369,7 +369,7 @@ window.onDomChange = onDomChange;
                                     autoInit: false,
                                     autoinitSelector: '',
                                     cacheXHRTime: 1000,
-                                    cacheXHRLength: 2
+                                    cacheXHRLength: 5
                                 },
                                 options
                                 );
@@ -1390,7 +1390,7 @@ window.onDomChange = onDomChange;
                             var resultIndexes = [];
                             var selectedIndex = 0;
                             var searchPhrase;
-                            var searchDelay = 600;
+                            var searchDelay = 0;
                             var minLength = 3;
                             var searchTimer;
                             var tmpData;
@@ -1476,6 +1476,7 @@ window.onDomChange = onDomChange;
                             });
                             $self.on('searchstart.jClever',function(e) {
                                 resultIndexes = [];
+                                tmpData = [];
                                 //заполняем автокомплит локальными данными
                                 if (dataRequestType == null && dataSourceName.length) {
                                     var needl = $self.val().toLowerCase();
@@ -1497,32 +1498,51 @@ window.onDomChange = onDomChange;
                                 }
                                 //Заполняем автокомплит данными по сетевому запросу
                                 if (dataRequestType != null && typeof dataRequestType != 'undefined') {
-                                    $.ajax({
-                                        url: dataSourceName, 
-                                        dataType: 'json',
-                                        type: dataRequestType
-                                        }).done(function(response){
+                                    var q = $self.val().toLowerCase();
+                                    for (var i = 0; i < cacheStorage.length; i++) {
+                                        if (cacheStorage[i].request == q) {
+                                            tmpData = cacheStorage[i]['data'];
                                             var needl = $self.val().toLowerCase();
-                                            for(var i = 0; i < response.length; i++) {
-                                                var str = response[i].value.toLowerCase();
+                                            for(var i = 0; i < tmpData.length; i++) {
+                                                var str = tmpData[i].value.toLowerCase();
                                                 if(str.indexOf(needl) + 1) {
                                                     resultIndexes.push(i);
                                                 }
                                             }
-                                            tmpData = response;
-                                            var timeStamp = new Date();
-                                            cacheStorage.push({
-                                                request: needl, 
-                                                data: tmpData,
-                                                time: timeStamp.getTime()
-                                            });
                                             if (resultIndexes.length == 0)
                                                 autocompleteListWrapper.hide();
                                             $self.trigger('searchend.jClever');   
-                                            methods.memoization(needl, cacheStorage);        
-                                        }).fail(function(){
+                                        }
+                                    }
+                                    if (tmpData.length < 1) {
+                                        $.ajax({
+                                            url: dataSourceName, 
+                                            data: {search:q},
+                                            dataType: 'json',
+                                            type: dataRequestType
+                                            }).done(function(response){
+                                                var needl = $self.val().toLowerCase();
+                                                for(var i = 0; i < response.length; i++) {
+                                                    var str = response[i].value.toLowerCase();
+                                                    if(str.indexOf(needl) + 1) {
+                                                        resultIndexes.push(i);
+                                                    }
+                                                }
+                                                tmpData = response;
+                                                var timeStamp = new Date();
+                                                cacheStorage.push({
+                                                    request: needl, 
+                                                    data: tmpData,
+                                                    time: timeStamp.getTime()
+                                                });
+                                                if (resultIndexes.length == 0)
+                                                    autocompleteListWrapper.hide();
+                                                $self.trigger('searchend.jClever');   
+                                                methods.memoization(needl, cacheStorage);        
+                                            }).fail(function(){
 
-                                        });
+                                            });
+                                    }        
                                 }
                             });
                             $self.on('navigate.jClever', function(e){
@@ -1585,7 +1605,6 @@ window.onDomChange = onDomChange;
                         memoization: function(needl, stack) {
                             if (stack.length > options.cacheXHRLength)
                                 stack.shift();
-                            
                         },
                         inputActivate: function(input, tabindex) {
                             if ($(input).hasClass('jc-ignore'))
