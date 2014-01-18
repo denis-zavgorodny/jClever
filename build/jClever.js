@@ -719,7 +719,7 @@ window.onDomChange = onDomChange;
                                 return false;
                             if (jObject.get(0).nodeName == 'SELECT')
                                 jObject.find('option').each(function(){
-                                    data.innerContent += $(this).attr('value').toString()+$(this).text();
+                                    data.innerContent += this.innerText+this.value;
                                 });
 
                             data.className = jObject.attr('class');
@@ -1640,11 +1640,23 @@ window.onDomChange = onDomChange;
                                                 break;
                                             if (typeof selector != 'string')
                                                 selector.each(function(){
-                                                    methods.inputActivate($(this), tabindex);    
+                                                    if (typeof selector.data('autocomplete') != 'undefined') { //Автокомплит
+                                                        methods.autocompleteActivate($(this),innerCounter, tabindex);
+                                                        tabindex++;
+                                                        innerCounter++;    
+                                                    } else {
+                                                        methods.inputActivate($(this), tabindex);    
+                                                    }
                                                     $(this).data('jclevered',true);
                                                 });
                                             else {
-                                                methods.inputActivate(selector, tabindex);
+                                                if (typeof selector.data('autocomplete') != 'undefined') { //Автокомплит
+                                                    methods.autocompleteActivate($(this),innerCounter, tabindex);
+                                                    tabindex++;
+                                                    innerCounter++;    
+                                                } else {
+                                                    methods.inputActivate(selector, tabindex);
+                                                }
                                                 $(selector).data('jclevered',true);
                                             }        
                                             break;
