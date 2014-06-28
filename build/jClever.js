@@ -785,7 +785,7 @@ window.onDomChange = onDomChange;
                             collection[element.attr('name')] = {
                                 object: element,
                                 updateFromHTML: function(data){
-                                    $('select[name='+this.object[0].name+']').html(data).trigger('update');
+                                    $('select[name="'+this.object[0].name+'"]').html(data).trigger('update');
                                     return false;
                                 },
                                 updateFromJsonObject: function(data){
@@ -905,6 +905,7 @@ window.onDomChange = onDomChange;
                                     //_text += $(this).text()+', ';
                                     _text += "<span class='multiple-item' data-value='"+$(this).val()+"'><span class='multiple-item-text'>"+$(this).text()+"</span><a href='#' class='multiple-item-remove'></a></span>";
                                 });
+                                self.trigger('change.jClever');
                             });
                             selectObject.on('focus.jClever', function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
                             selectLabel.on('click.jClever', function(){
