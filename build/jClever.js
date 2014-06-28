@@ -793,7 +793,7 @@ window.onDomChange = onDomChange;
                                     for(var key in data) {
                                         _data += '<option value="'+key+'">'+data[key]+'</option>';
                                     }
-                                    $('select[name='+this.object[0].name+']').html(_data).trigger('update');
+                                    $('select[name="'+this.object[0].name+'"]').html(_data).trigger('update');
                                     return false;
                                 }
                             };
