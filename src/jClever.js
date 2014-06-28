@@ -442,7 +442,7 @@
                             collection[element.attr('name')] = {
                                 object: element,
                                 updateFromHTML: function(data){
-                                    $('select[name='+this.object[0].name+']').html(data).trigger('update');
+                                    $('select[name="'+this.object[0].name+'"]').html(data).trigger('update');
                                     return false;
                                 },
                                 updateFromJsonObject: function(data){
@@ -450,7 +450,7 @@
                                     for(var key in data) {
                                         _data += '<option value="'+key+'">'+data[key]+'</option>';
                                     }
-                                    $('select[name='+this.object[0].name+']').html(_data).trigger('update');
+                                    $('select[name="'+this.object[0].name+'"]').html(_data).trigger('update');
                                     return false;
                                 }
                             };
@@ -562,6 +562,7 @@
                                     //_text += $(this).text()+', ';
                                     _text += "<span class='multiple-item' data-value='"+$(this).val()+"'><span class='multiple-item-text'>"+$(this).text()+"</span><a href='#' class='multiple-item-remove'></a></span>";
                                 });
+                                self.trigger('change.jClever');
                             });
                             selectObject.on('focus.jClever', function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused')});
                             selectLabel.on('click.jClever', function(){
