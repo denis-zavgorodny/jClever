@@ -745,7 +745,8 @@
                                 });
                                 $(this).parents('.jClever-element-select-wrapper').find('.jClever-element-select-center').text($(select).find('option:selected')?$(select).find('option:selected').text():$(select).find('option:not(:disabled):first').text());    
                             });
-                            selectObject.on('focus.jClever', function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused'); $(this).removeClass('opened');});
+                            //selectObject.on('focus.jClever', function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused'); $(this).removeClass('opened');});
+                            selectObject.on('focus.jClever', function(){$(this).addClass('focused')}).blur(function(){$(this).removeClass('focused'); $(this).removeClass('opened');$(select).trigger('blur');});
                             selectLabel.on('click.jClever', function(){
                                 selectObject.trigger('focus.jClever').addClass('focused');
                                 selectListWrapper.show();
