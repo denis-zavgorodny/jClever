@@ -1392,8 +1392,10 @@ window.onDomChange = onDomChange;
                             var resultIndexes = [];
                             var selectedIndex = 0;
                             var searchPhrase;
-                            var searchDelay = 0;
-                            var minLength = 3;
+                            //var searchDelay = 0;
+                            var searchDelay = (typeof $self.data('search-delay') != 'undefined'?$self.data('search-delay'):800);
+                            var minLength = (typeof $self.data('min-length') != 'undefined'?$self.data('min-length'):3);
+                            var ajaxBusy = false;
                             var searchTimer;
                             var tmpData;
                             var cacheStorage = [];
@@ -1467,7 +1469,7 @@ window.onDomChange = onDomChange;
                                         break;    
                                     default: 
                                        searchPhrase = $self.val();  
-                                       if ($self.val() != '' && $self.val().length >= minLength)
+                                       if ($self.val() != '' && $self.val().length >= minLength && !ajaxBusy)
                                             searchTimer = setTimeout(function(){$self.trigger('searchstart.jClever')}, searchDelay);      
 
                                 }
@@ -1504,47 +1506,52 @@ window.onDomChange = onDomChange;
                                     for (var i = 0; i < cacheStorage.length; i++) {
                                         if (cacheStorage[i].request == q) {
                                             tmpData = cacheStorage[i]['data'];
-                                            var needl = $self.val().toLowerCase();
                                             for(var i = 0; i < tmpData.length; i++) {
                                                 var str = tmpData[i].value.toLowerCase();
-                                                if(str.indexOf(needl) + 1) {
+                                                if(str.indexOf(q) + 1) {
                                                     resultIndexes.push(i);
                                                 }
                                             }
                                             if (resultIndexes.length == 0)
                                                 autocompleteListWrapper.hide();
                                             $self.trigger('searchend.jClever');   
+                                            break;
                                         }
                                     }
+                                    
                                     if (tmpData.length < 1) {
+                                        ajaxBusy = true;
                                         $.ajax({
                                             url: dataSourceName, 
                                             data: {search:q},
                                             dataType: 'json',
                                             type: dataRequestType
                                             }).done(function(response){
-                                                var needl = $self.val().toLowerCase();
+
                                                 for(var i = 0; i < response.length; i++) {
                                                     var str = response[i].value.toLowerCase();
-                                                    if(str.indexOf(needl) + 1) {
+                                                    if(str.indexOf(q) + 1) {
                                                         resultIndexes.push(i);
                                                     }
                                                 }
                                                 tmpData = response;
                                                 var timeStamp = new Date();
                                                 cacheStorage.push({
-                                                    request: needl, 
+                                                    request: q, 
                                                     data: tmpData,
                                                     time: timeStamp.getTime()
                                                 });
                                                 if (resultIndexes.length == 0)
                                                     autocompleteListWrapper.hide();
                                                 $self.trigger('searchend.jClever');   
-                                                methods.memoization(needl, cacheStorage);        
+                                                methods.memoization(q, cacheStorage);        
                                             }).fail(function(){
 
+                                            }).always(function(){
+                                                ajaxBusy = false;
                                             });
-                                    }        
+                                    }   
+
                                 }
                             });
                             $self.on('navigate.jClever', function(e){
