@@ -1119,20 +1119,23 @@
                                         if (selectedIndex > 0){ selectedIndex--; }
                                         break; 
                                     case 13: /* Enter */
-                                        if (autocompleteListWrapper.is(':visible')) {
-                                            autocompleteListWrapper.hide();
-                                            autocompleteListWrapper.removeClass('opened');
-                                            $self.val(tmpData[resultIndexes[selectedIndex]].value);
-                                            $self.trigger('selected.jclever', [tmpData, selectedIndex, resultIndexes]);
-                                        } else {
-                                            if ($self.attr('disabled'))
-                                                return false;
-                                            autocompleteListWrapper.show();
-                                            autocompleteObject.addClass('opened');
-                                            $self.val(tmpData[resultIndexes[selectedIndex]].value);
-                                            jScrollAPI = autocompleteListWrapperToScroll.jScrollPane().data('jsp');
-                                        } 
+                                        $self.closest('form').submit();
                                         break;    
+                                    // case 13: /* Enter */
+                                    //     if (autocompleteListWrapper.is(':visible')) {
+                                    //         autocompleteListWrapper.hide();
+                                    //         autocompleteListWrapper.removeClass('opened');
+                                    //         $self.val(tmpData[resultIndexes[selectedIndex]].value);
+                                    //         $self.trigger('selected.jclever', [tmpData, selectedIndex, resultIndexes]);
+                                    //     } else {
+                                    //         if ($self.attr('disabled'))
+                                    //             return false;
+                                    //         autocompleteListWrapper.show();
+                                    //         autocompleteObject.addClass('opened');
+                                    //         $self.val(tmpData[resultIndexes[selectedIndex]].value);
+                                    //         jScrollAPI = autocompleteListWrapperToScroll.jScrollPane().data('jsp');
+                                    //     } 
+                                    //     break;    
                                     default: 
                                        searchPhrase = $self.val();  
                                        if ($self.val() != '' && $self.val().length >= minLength && !ajaxBusy)
@@ -1164,7 +1167,7 @@
                                     //console.log(cacheStorage);
                                     if (resultIndexes.length == 0)
                                         autocompleteListWrapper.hide();
-                                    $self.trigger('searchend.jClever');
+                                    $self.trigger('searchend.jClever', [tmpData, resultIndexes]);
                                 }
                                 //Заполняем автокомплит данными по сетевому запросу
                                 if (dataRequestType != null && typeof dataRequestType != 'undefined') {
@@ -1174,13 +1177,13 @@
                                             tmpData = cacheStorage[i]['data'];
                                             for(var i = 0; i < tmpData.length; i++) {
                                                 var str = tmpData[i].value.toLowerCase();
-                                                if(str.indexOf(q) + 1) {
+                                                if(str.indexOf(q) + 1 || true) {
                                                     resultIndexes.push(i);
                                                 }
                                             }
                                             if (resultIndexes.length == 0)
                                                 autocompleteListWrapper.hide();
-                                            $self.trigger('searchend.jClever');   
+                                            $self.trigger('searchend.jClever', [tmpData, resultIndexes]);
                                             break;
                                         }
                                     }
@@ -1196,7 +1199,7 @@
 
                                                 for(var i = 0; i < response.length; i++) {
                                                     var str = response[i].value.toLowerCase();
-                                                    if(str.indexOf(q) + 1) {
+                                                    if(str.indexOf(q) + 1 || true) {
                                                         resultIndexes.push(i);
                                                     }
                                                 }
@@ -1209,7 +1212,7 @@
                                                 });
                                                 if (resultIndexes.length == 0)
                                                     autocompleteListWrapper.hide();
-                                                $self.trigger('searchend.jClever');   
+                                                $self.trigger('searchend.jClever', [tmpData, resultIndexes]); 
                                                 methods.memoization(q, cacheStorage);        
                                             }).fail(function(){
 
